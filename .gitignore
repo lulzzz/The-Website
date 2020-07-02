@@ -361,4 +361,4 @@ SAWebsite/Client/wwwroot/webfonts
 SAWebsite/Client/wwwroot/bundle.css.map
 SAWebsite/Client/wwwroot/bundle.min.css
 SAWebsite/Client/wwwroot/bundle.min.js
-SAWebsite/Client/wwwroot/*.png
+*.png
