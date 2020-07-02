@@ -28,13 +28,13 @@ namespace SAWebsite.Server.WebSockets
         public async Task AddSocket(WebSocket socket)
         {
             Guid g = Guid.NewGuid();
-            await Logger.Log(LogLevel.Info, "Connected socket: " + g);
+            await Logger.LogInfo("Connected socket: " + g);
             socketDictionary.TryAdd(g, socket);
         }
 
         public async Task RemoveSocket(Guid id)
         {
-            await Logger.Log(LogLevel.Info, "Disconnected socket: " + id);
+            await Logger.LogWarn("Disconnected socket: " + id);
             socketDictionary.TryRemove(id, out WebSocket socket);
             await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server.", CancellationToken.None);
             socket.Dispose();

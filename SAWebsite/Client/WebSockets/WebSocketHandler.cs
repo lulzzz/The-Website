@@ -28,7 +28,7 @@ namespace SAWebsite.Client.WebSockets
 
         public virtual async Task OnDisconnected(ClientWebSocket socket)
         {
-            await Logger.Log(LogLevel.Info, "Connecting to server state...");
+            await Logger.LogInfo("Connecting to server state...");
             ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUserAlert("The client has lost connection to the server. This could either be the server itself or your network. Attempting to reconnect...");
             for (int i = 0; i < int.MaxValue; i++)
             {
@@ -43,13 +43,13 @@ namespace SAWebsite.Client.WebSockets
                     await socket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None);
 #endif
                     await OnConnected(socket);
-                    await Logger.Log(LogLevel.Info, "Connecting to server state successful.");
+                    await Logger.LogInfo("Connecting to server state successful.");
                     ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUserAlert("The client has successfully reconnected to server. Everything should function as normal again.");
                     break;
                 } 
                 catch (WebSocketException) { }
                 catch (InvalidOperationException) { }
-                await Logger.Log(LogLevel.Info, "Connecting to server state unsuccessful. Trying again.");
+                await Logger.LogInfo("Connecting to server state unsuccessful. Trying again.");
             }
         }
 

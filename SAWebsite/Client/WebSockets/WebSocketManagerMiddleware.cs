@@ -24,7 +24,7 @@ namespace SAWebsite.Client.WebSockets
 
         public async Task Connect(ClientState state)
         {
-            await Logger.Log(LogLevel.Info, "Connecting to server state...");
+            await Logger.LogInfo("Connecting to server state...");
             ClientSocket = new ClientWebSocket();
             try
             {
@@ -40,7 +40,7 @@ namespace SAWebsite.Client.WebSockets
             }
             if (ClientSocket.State == WebSocketState.Open)
             {
-                await Logger.Log(LogLevel.Info, "Connecting to server state successful.");
+                await Logger.LogInfo("Connecting to server state successful.");
                 await SocketHandler.OnConnected(ClientSocket);
                 await Receive(ClientSocket, async (result, buffer) =>
                 {
@@ -56,7 +56,7 @@ namespace SAWebsite.Client.WebSockets
                     }
                 });
             }
-            else await Logger.Log(LogLevel.Info, "Connecting to server state unsuccessful. Running in offline mode.");
+            else await Logger.LogInfo("Connecting to server state unsuccessful. Running in offline mode.");
         }
 
         private async Task Receive(ClientWebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)

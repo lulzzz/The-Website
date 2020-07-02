@@ -20,7 +20,7 @@ namespace SAWebsite.Server.Data
         {
             bool sendUpdate = false;
 
-            await Logger.Log(LogLevel.Info, "Checking for repository updates...");
+            await Logger.LogInfo("Checking for repository updates...");
             WebRequest request = WebRequest.Create(ServerState.LastUpdateTimesLink);
             LastUpdateTimes upTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await DownloadDataString(ServerState.LastUpdateTimesLink));
             if (ServerState.RoadmapData == null || DateTime.Compare(upTimes.RoadmapDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.RoadmapDataUpdate.ToUniversalTime()) > 0)
@@ -34,7 +34,7 @@ namespace SAWebsite.Server.Data
                         {
                             r.Cards.Add(JsonConvert.DeserializeObject<RoadmapCard>(await DownloadDataString(new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/roadmap-cards/" + v + ".json"))));
                         }
-                        catch (JsonSerializationException e) { await Logger.Log(LogLevel.Error, e.Message); }
+                        catch (JsonSerializationException e) { await Logger.LogError(e.Message); }
                     }
                     ServerState.RoadmapData = r;
                 }, out RoadmapCardVersions result);
@@ -64,7 +64,7 @@ namespace SAWebsite.Server.Data
 
             Task GetData<T>(string logName, Uri link, Action<T> notify, out T result)
             {
-                Logger.Log(LogLevel.Info, "  -  " + logName + " update available.");
+                Logger.LogInfo("  -  " + logName + " update available.");
                 result = JsonConvert.DeserializeObject<T>(DownloadDataString(link).GetAwaiter().GetResult(), ServerState.JsonSettings);
                 notify.Invoke(result);
                 sendUpdate = true;
