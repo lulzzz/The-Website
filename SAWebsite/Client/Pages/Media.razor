@@ -1,0 +1,41 @@
+﻿@page "/media"
+
+<main id="media-container" class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="row justify-content-center">
+                @if (State.PhotographyData != null)
+                {
+                    @foreach (MediaPhoto p in State.PhotographyData.Photos)
+                    {
+                        <MediaPhotographyElement Photo="p" />
+                    }
+                }
+            </div>
+        </div>
+        <div class="col">
+            <div class="row justify-content-center warning">
+                <div class="col-auto">
+                    <h6>Videos for <a href="https://store.steampowered.com/app/431960/Wallpaper_Engine/" target="_blank">Wallpaper Engine</a> will come when it is possible to record Star Citizen in 4k60fps without compromise!</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@inject ClientState State
+
+@code {
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        State.OnPhotographyDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
+        {
+            await State.RequestPhotographyData(true);
+        };
+        if (State.UpdateTimes != null && State.PhotographyData == null) await State.RequestPhotographyData();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

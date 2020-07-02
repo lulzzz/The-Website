@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SAWebsite.Shared.Data.WebSockets
+{
+    public class BlogData
+    {
+        public List<BlogEntryData> BlogPosts { get; set; }
+    }
+
+    public class BlogEntryData
+    {
+        public string Title { get; set; }
+        public DateTime Date { get; set; }
+        public List<string> Content { get; set; } 
+    }
+}

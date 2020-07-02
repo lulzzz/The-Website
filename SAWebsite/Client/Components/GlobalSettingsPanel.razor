@@ -1,0 +1,47 @@
+﻿@if (State.IsSettingsPanelVisible)
+{
+    <div class="row settings-panel">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <small>All data on the website is stored in its Local Storage. The website does not make use of Cookies.</small>
+                    <small>This website has zero ads and trackers. Privacy is strictly supported!</small>
+                    <small>This website is designed and developed for and on <a href="https://www.microsoft.com/edge" target="_blank">Microsoft Edge</a> at 4k.</small>
+                    <small>Minimum supported resolution is 1920x1080.</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!--
+                    <GlobalSettingsPanelToggleButton Title="Play loading screen ambient audio" Value="Cookie.Cookie.PlayLoadingAmbientAudio" ToggleValue="(val) => Cookie.Cookie.PlayLoadingAmbientAudio = val" />
+                    <GlobalSettingsPanelToggleButton Title="Play background ambient audio" Value="Cookie.Cookie.PlayBackgroundAmbientAudio" ToggleValue="(val) => Cookie.Cookie.PlayBackgroundAmbientAudio = val" />
+                     -->
+                    <GlobalSettingsPanelToggleButton Title="Show notification on blog update" Value="State.Settings.ShowBlogUpdateNotification" ToggleValue="(val) => State.Settings.ShowBlogUpdateNotification = val" />
+                    <GlobalSettingsPanelToggleButton Title="Show notification on changelog update" Value="State.Settings.ShowChangelogUpdateNotification" ToggleValue="(val) => State.Settings.ShowChangelogUpdateNotification = val" />
+                    <GlobalSettingsPanelToggleButton Title="Show notification on roadmap update" Value="State.Settings.ShowRoadmapUpdateNotification" ToggleValue="(val) => State.Settings.ShowRoadmapUpdateNotification = val" />
+                    <GlobalSettingsPanelToggleButton Title="Show notification on photography update" Value="State.Settings.ShowPhotographyUpdateNotification" ToggleValue="(val) => State.Settings.ShowPhotographyUpdateNotification = val" />
+                    <GlobalSettingsPanelToggleButton Title="Show notification on videography update" Value="State.Settings.ShowVideographyUpdateNotification" ToggleValue="(val) => State.Settings.ShowPhotographyUpdateNotification = val" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <button @onclick="async () => await State.SetLocalData<GlobalSettings>(true)">
+                        Reset to defaults
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@inject ClientState State
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        State.OnSettingsPanelVisibilityToggle += StateHasChanged;
+        State.OnSettingsUpdate += StateHasChanged;
+        await base.OnInitializedAsync();
+    }
+}

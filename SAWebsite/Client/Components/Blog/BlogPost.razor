@@ -1,0 +1,13 @@
+﻿<div class="row blog-entry">
+    <div class="col">
+        <BlogPostHeader Entry="@Entry" />
+        <BlogPostContent Entry="@Entry" />
+        <BlogPostFooter Entry="@Entry" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public BlogEntryData Entry { get; set; }
+}

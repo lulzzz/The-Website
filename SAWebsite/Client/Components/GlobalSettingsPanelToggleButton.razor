@@ -1,0 +1,38 @@
+﻿<div class="row">
+    <div class="col-auto">
+        <label class="switch">
+            @if (Value)
+            {
+                <input type="checkbox" checked @onclick="@(async () => await Toggle())">
+            }
+            else
+            {
+                <input type="checkbox" @onclick="@(async () => await Toggle())">
+            }
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="col d-flex align-items-center">
+        <small>@Title</small>
+    </div>
+</div>
+
+@inject ClientState State
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ToggleValue { get; set; }
+
+    private async Task Toggle()
+    {
+        await ToggleValue.InvokeAsync(Value = !Value);
+        await State.SetLocalData<GlobalSettings>();
+    }
+}

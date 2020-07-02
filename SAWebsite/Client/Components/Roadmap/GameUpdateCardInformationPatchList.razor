@@ -1,0 +1,77 @@
+﻿<div class="col">
+    @if (Card.Patches.Count() >= 2)
+    {
+        @for (byte i = 1; i < (byte)Card.Patches.Keys.Count(); i++)
+        {
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <small class="title">@("Patch: " + Card.MajorVersion + "." + Card.MinorVersion + "." + i)</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <small>Version String</small>
+                        </div>
+                        <div class="col">
+                            <small>@(Card.Patches[i].VersionString != null ? Card.Patches[i].VersionString : "Unknown")</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <small>PU Release</small>
+                        </div>
+                        <div class="col">
+                            <small>@(Card.Patches[i].PUReleaseDate != null ? Card.Patches[i].PUReleaseDate?.ToShortDateString() : "Unknown")</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <small>PTU Release</small>
+                        </div>
+                        <div class="col">
+                            <small>@(Card.Patches[i].PTUTestingStartDate != null ? Card.Patches[i].PTUTestingStartDate?.ToShortDateString() : "Unknown")</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <small>Evocati Release</small>
+                        </div>
+                        <div class="col">
+                            <small>@(Card.Patches[i].EvocatiTestingDate != null ? Card.Patches[i].EvocatiTestingDate?.ToShortDateString() : "Unknown")</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <small>Changelog</small>
+                        </div>
+                        <div class="col">
+                            <small><a href="@Card.Patches[i].SpectrumPatchNotes" target="_blank">Spectrum Link</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                <small>There have been no patches for this version.</small>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+}

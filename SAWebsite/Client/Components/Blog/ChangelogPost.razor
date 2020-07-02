@@ -1,0 +1,12 @@
+﻿<div class="row changelog-entry">
+    <div class="col">
+        <ChangelogHeader Entry="@Entry" />
+        <ChangelogContent Entry="@Entry" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public ChangelogEntryData Entry { get; set; }
+}

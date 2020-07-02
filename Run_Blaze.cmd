@@ -1,0 +1,1 @@
+"Blaze\Blaze.exe" -projectPath "SAWebsite\Client"

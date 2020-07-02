@@ -348,3 +348,17 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Ignore resources resx due to confidentiality
+*.resx
+
+###############################################################################################################################################################
+# Temp ignored due to requirements
+SAWebsite/Client/wwwroot/css/thirdparty
+SAWebsite/Client/wwwroot/js/*.third.js
+SAWebsite/Client/wwwroot/paypal
+SAWebsite/Client/wwwroot/webfonts
+SAWebsite/Client/wwwroot/bundle.css.map
+SAWebsite/Client/wwwroot/bundle.min.css
+SAWebsite/Client/wwwroot/bundle.min.js
+SAWebsite/Client/wwwroot/*.png

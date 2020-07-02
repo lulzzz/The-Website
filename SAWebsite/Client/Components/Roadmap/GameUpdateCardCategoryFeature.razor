@@ -1,0 +1,100 @@
+﻿<div class="col">
+    <div class="row feature">
+        <div class="col">
+            @if (!NotAddedYet)
+            {
+                <div class="row">
+                    <div class="col feature-img">
+                        <img src="/img/roadmap/@(Feature.Category.ToString().ToLower()).webp" draggable="false" alt="Feature Image" />
+                        <div class="task-overlay">
+                            <small>
+                                @((TaskCount != -1 && TasksCompleted != -1
+                            ? TaskCount != -2 && TaskCount != -2
+                            ? "Tasks: " + (TaskCount != -1
+                                ? TaskCount.ToString() : "Unknown")
+                            + "/" + (TasksCompleted != -1
+                                ? TasksCompleted.ToString() : "Unknown")
+                            + " | " + Progress.ToString("0.00") + "% | " : string.Empty : "Data Unknown | ")
+                            + Regex.Replace(Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString(), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0"))
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="feature-progression">
+                            <div class="bar" style="width: @(Progress * 3.9D + "px");" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col feature-description">
+                        <small>@(Feature.Description)</small>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col d-flex align-items-center not-added">
+                        <small>This feature wasnt added on or before @SelectedDate.ToShortDateString()</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@inject ClientState State
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    [Parameter]
+    public RoadmapFeature Feature { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; }
+
+    public bool NotAddedYet { get; set; } = false;
+
+    public int TaskCount { get; set; } = 0;
+    public int TasksCompleted { get; set; } = 0;
+    public double Progress { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            TaskCount = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
+        ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
+            || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
+                ? -2 : Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TasksCompleted = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
+                    ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
+                        || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
+                            ? -2 : Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+
+            Progress = (double)TaskCount == 0D && (double)TasksCompleted == 0D && Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
+                ? 100D :
+                Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
+                ? 0D :
+                (double)TaskCount == 0D && (double)TasksCompleted == 0D
+                ? 0D : 100D * ((double)TaskCount / (double)TasksCompleted);
+        }
+        catch (JSException)
+        {
+            NotAddedYet = true;
+        }
+        catch (InvalidOperationException)
+        {
+            NotAddedYet = true;
+        }
+        await base.OnInitializedAsync();
+    }
+}

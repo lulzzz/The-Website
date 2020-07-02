@@ -1,0 +1,43 @@
+﻿@page "/blog"
+
+<main id="blog-container" class="container-fluid">
+    <div class="row">
+        <div class="col">
+            @if (State.BlogData != null)
+            {
+                @foreach (BlogEntryData b in State.BlogData.BlogPosts)
+                {
+                    <BlogPost Entry="@b" />
+                }
+            }
+        </div>
+        <div class="col">
+            @if (State.ChangelogData != null)
+            {
+                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts)
+                {
+                    <ChangelogPost Entry="@b" />
+                }
+            }
+        </div>
+    </div>
+</main>
+
+@inject ClientState State
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        State.OnBlogDataChanged += StateHasChanged;
+        State.OnChangelogDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
+        {
+            await State.RequestBlogData(true);
+            await State.RequestChangelogData(true);
+        };
+        if (State.UpdateTimes != null && State.BlogData == null) await State.RequestBlogData();
+        if (State.UpdateTimes != null && State.ChangelogData == null) await State.RequestChangelogData();
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
