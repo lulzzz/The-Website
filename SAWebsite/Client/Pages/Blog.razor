@@ -5,7 +5,7 @@
         <div class="col">
             @if (State.BlogData != null)
             {
-                @foreach (BlogEntryData b in State.BlogData.BlogPosts)
+                @foreach (BlogEntryData b in State.BlogData.BlogPosts.Reverse<BlogEntryData>())
                 {
                     <BlogPost Entry="@b" />
                 }
@@ -14,7 +14,7 @@
         <div class="col">
             @if (State.ChangelogData != null)
             {
-                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts)
+                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
                 {
                     <ChangelogPost Entry="@b" />
                 }
