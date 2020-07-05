@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.gitmodules = .gitmodules
+		blaze-settings.json = blaze-settings.json
 		LICENSE = LICENSE
 		README.md = README.md
 		Run_Blaze.cmd = Run_Blaze.cmd
@@ -41,6 +42,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{693AB01D-EC39-48EE-B66B-78CFB1786FFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStarLib.Extensions", "BinaryStarLib\BinaryStarLib.Extensions\BinaryStarLib.Extensions.csproj", "{18291ABC-381A-4917-B838-9113296E65D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5433A021-0649-4328-B86C-2C4D868C02E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloud-Memoria", "Cloud-Memoria\Cloud-Memoria.csproj", "{972019D7-99FA-4084-99C5-FDBD37D971CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +141,14 @@ Global
 		{18291ABC-381A-4917-B838-9113296E65D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18291ABC-381A-4917-B838-9113296E65D4}.Release|x64.ActiveCfg = Release|x64
 		{18291ABC-381A-4917-B838-9113296E65D4}.Release|x64.Build.0 = Release|x64
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Debug|x64.ActiveCfg = Debug|x64
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Debug|x64.Build.0 = Debug|x64
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Release|x64.ActiveCfg = Release|Any CPU
+		{972019D7-99FA-4084-99C5-FDBD37D971CC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +167,7 @@ Global
 		{5C680EFA-BA1D-46EF-B81F-9E70871DE7F4} = {693AB01D-EC39-48EE-B66B-78CFB1786FFA}
 		{3D39F135-E776-466A-BB67-0ED30E8F76E1} = {693AB01D-EC39-48EE-B66B-78CFB1786FFA}
 		{18291ABC-381A-4917-B838-9113296E65D4} = {693AB01D-EC39-48EE-B66B-78CFB1786FFA}
+		{972019D7-99FA-4084-99C5-FDBD37D971CC} = {5433A021-0649-4328-B86C-2C4D868C02E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D72CF491-B94E-4A72-BFFC-B63E7EED7963}
