@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Star Athenaeum</title>
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="theme-color" content="#0a5688" />
+    <meta name="description" content="The easy and informative app for the progression of the Star Citizen universe." />
+
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/pwa-192.png">
+</head>
+<body>
+    <noscript>
+        This website requires Javascript. If you dont have Javascript enabled, you must find out how to enable it.
+        For no reason should Javascript be disabled in the modern day.
+    </noscript>
+    <app>
+        <div id="loading-overlay">
+            <img draggable="false" height="200" width="200" src="/favicon.svg" alt="Logo" />
+            <p>Loading...</p>
+            <style type="text/css">
+                body {
+                    overflow: hidden;
+                }
+
+                #loading-overlay {
+                    z-index: 1000001;
+                    background-color: rgb(91, 146, 229, 0.75);
+                    backdrop-filter: blur(20px) saturate(125%);
+                    position: fixed;
+                    top: 0px;
+                    bottom: 0px;
+                    left: 0px;
+                    right: 0px;
+                }
+
+                #loading-overlay img {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(-50%);
+                }
+
+                #loading-overlay p {
+                    position: fixed;
+                    top: 65%;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(-50%);
+                }
+            </style>
+        </div>
+    </app>
+    <script async type="text/javascript" charset="UTF-8">
+        if (window.location.host.includes("ueesa")) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+        /*navigator.serviceWorker.ready.then(async function (swRegistration) {
+            return swRegistration.sync.register('initSync');
+        });*/
+    </script>
+    <script async type="text/javascript" charset="UTF-8" src="_framework/blazor.webassembly.js"></script>
+    <script async type="text/javascript" charset="UTF-8" src="bundle.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="bundle.min.css" />
+</body>
+</html>

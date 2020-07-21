@@ -1,1 +1,1 @@
-"Blaze\Blaze.exe" -projectPath "SAWebsite\Client"
+"Blaze\BlazeApp.exe" "SA.Web\Client"
