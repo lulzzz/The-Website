@@ -34,7 +34,7 @@ namespace SA.Web.Server.Data
         public static void StartDataCollection()
         {
             DataUpdateTimer = new Timer(async (object state) => await CIGDataCollector.CollectRoadmapData(), 
-                null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1));
+                null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
         }
     }
 }
