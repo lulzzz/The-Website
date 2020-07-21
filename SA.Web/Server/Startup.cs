@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.WebSockets;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Net.Http.Headers;
 
-using SA.Web.Server.Properties;
 using SA.Web.Shared.Data;
 using SA.Web.Server.WebSockets;
 using SA.Web.Server.Data;
@@ -33,7 +32,7 @@ namespace SA.Web.Server
         public void ConfigureServices(IServiceCollection services)
         {
 #if !DEBUG
-            if (!string.IsNullOrEmpty(Resources.ApplicationInsightsKey)) services.AddApplicationInsightsTelemetry(Resources.ApplicationInsightsKey);
+            if (!string.IsNullOrEmpty(SA.Web.Server.Properties.Resources.ApplicationInsightsKey)) services.AddApplicationInsightsTelemetry(SA.Web.Server.Properties.Resources.ApplicationInsightsKey);
 #endif
             services.AddRazorPages();
             services.AddRouting();
