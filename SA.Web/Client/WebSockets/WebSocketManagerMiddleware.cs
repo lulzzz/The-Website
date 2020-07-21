@@ -33,31 +33,32 @@ namespace SA.Web.Client.WebSockets
 #else
                 await ClientSocket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None);
 #endif
+
+                if (ClientSocket.State == WebSocketState.Open)
+                {
+                    await Logger.LogInfo("Connection to server was successful.");
+                    await SocketHandler.OnConnected(ClientSocket);
+                    await Receive(ClientSocket, async (result, buffer) =>
+                    {
+                        if (result.MessageType == WebSocketMessageType.Text)
+                        {
+                            await SocketHandler.Receive(ClientSocket, result, buffer);
+                            return;
+                        }
+                        else if (result.MessageType == WebSocketMessageType.Close)
+                        {
+                            await SocketHandler.OnDisconnected(ClientSocket);
+                            return;
+                        }
+                    });
+                }
+                else await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
             }
             catch (WebSocketException)
             {
                 await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
                 state.NotifyUserWarn("Connection to the server cannot be established. Running in offline mode.");
             }
-            if (ClientSocket.State == WebSocketState.Open)
-            {
-                await Logger.LogInfo("Connection to server was successful.");
-                await SocketHandler.OnConnected(ClientSocket);
-                await Receive(ClientSocket, async (result, buffer) =>
-                {
-                    if (result.MessageType == WebSocketMessageType.Text)
-                    {
-                        await SocketHandler.Receive(ClientSocket, result, buffer);
-                        return;
-                    }
-                    else if (result.MessageType == WebSocketMessageType.Close)
-                    {
-                        await SocketHandler.OnDisconnected(ClientSocket);
-                        return;
-                    }
-                });
-            }
-            else await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
         }
 
         private async Task Receive(ClientWebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)

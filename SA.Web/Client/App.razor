@@ -18,8 +18,8 @@
     protected override async Task OnInitializedAsync()
     {
         await State.GetLocalData<GlobalSettings>();
-        await State.RequestUpdateData();
         await WebSockets.Connect(State);
+        await State.RequestUpdateData();
         await base.OnInitializedAsync();
     }
 }
