@@ -24,7 +24,7 @@ namespace SA.Web.Client.WebSockets
 
         public async Task Connect(ClientState state)
         {
-            await Logger.LogInfo("Connecting to server state...");
+            await Logger.LogInfo("Connecting to server...");
             ClientSocket = new ClientWebSocket();
             try
             {
@@ -34,13 +34,14 @@ namespace SA.Web.Client.WebSockets
                 await ClientSocket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None);
 #endif
             }
-            catch (WebSocketException e)
+            catch (WebSocketException)
             {
+                await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
                 state.NotifyUserWarn("Connection to the server cannot be established. Running in offline mode.");
             }
             if (ClientSocket.State == WebSocketState.Open)
             {
-                await Logger.LogInfo("Connecting to server state successful.");
+                await Logger.LogInfo("Connection to server was successful.");
                 await SocketHandler.OnConnected(ClientSocket);
                 await Receive(ClientSocket, async (result, buffer) =>
                 {
@@ -56,7 +57,7 @@ namespace SA.Web.Client.WebSockets
                     }
                 });
             }
-            else await Logger.LogInfo("Connecting to server state unsuccessful. Running in offline mode.");
+            else await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
         }
 
         private async Task Receive(ClientWebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
