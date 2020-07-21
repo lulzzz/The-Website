@@ -25,6 +25,7 @@ namespace SA.Web.Server.WebSockets
         {
             return socketDictionary.FirstOrDefault(p => p.Value == socket).Key;
         }
+
         public async Task AddSocket(WebSocket socket)
         {
             Guid g = Guid.NewGuid();

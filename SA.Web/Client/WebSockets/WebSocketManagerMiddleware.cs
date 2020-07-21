@@ -34,7 +34,7 @@ namespace SA.Web.Client.WebSockets
                 await ClientSocket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None);
 #endif
             }
-            catch (WebSocketException)
+            catch (WebSocketException e)
             {
                 state.NotifyUserWarn("Connection to the server cannot be established. Running in offline mode.");
             }

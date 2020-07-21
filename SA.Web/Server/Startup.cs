@@ -87,6 +87,7 @@ namespace SA.Web.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+            Console.Write("\n");
         }
     }
 }
