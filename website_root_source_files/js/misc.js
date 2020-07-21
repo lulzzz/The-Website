@@ -5,5 +5,5 @@ window.setData = (name, data) =>
 
 window.getData = (name) => 
 {
-    return window.localStorage.getItem(name);
+    return (window.localStorage.getItem(name));
 }
