@@ -13,7 +13,7 @@ namespace SA.Web.Server
         {
             webBuilder.UseKestrel(serverOptions =>
             {
-                serverOptions.Listen(IPAddress.Loopback, 5000,
+                serverOptions.Listen(IPAddress.Loopback, 443,
                     listenOptions =>
                     {
                         listenOptions.UseHttps("certificate.pfx", SA.Web.Server.Properties.Resources.CertPass);
