@@ -30,7 +30,7 @@ namespace SA.Web.Client.WebSockets
             runtime.InvokeVoidAsync("GLOBAL.SetJSSocketInterfaceReference", lDotNetReference);
         }
 
-        public async Task Connect() => await runtime.InvokeVoidAsync("connectServerState", "ws://localhost:5000/state");
+        public async Task Connect() => await runtime.InvokeVoidAsync("connectServerState", "wss://localhost:5000/state");
 
         public async Task Send(string message) => await runtime.InvokeVoidAsync("sendToServer", message);
 
