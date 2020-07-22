@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
@@ -24,8 +21,8 @@ namespace SA.Web.Client.WebSockets
         };
 
         private IJSRuntime runtime = (IJSRuntime)Startup.Host.Services.GetService(typeof(IJSRuntime));
-        private List<string> buffer = new List<string>();
-        private bool IsBuffered = true;
+        public bool IsConnected = false;
+        public event Action OnServerConnected;
 
         public JSSocketInterface()
         {
@@ -35,17 +32,13 @@ namespace SA.Web.Client.WebSockets
 
         public async Task Connect() => await runtime.InvokeVoidAsync("connectServerState", "ws://localhost:5000/state");
 
-        public async Task Send(string message)
-        {
-            if (IsBuffered) buffer.Add(message);
-            else await runtime.InvokeVoidAsync("sendToServer", message);
-        }
+        public async Task Send(string message) => await runtime.InvokeVoidAsync("sendToServer", message);
 
-        [JSInvokable("SendSocketBuffer")]
-        public async Task SendBuffer()
+        [JSInvokable("SendConnectionActive")]
+        public async Task ConnectionActive()
         {
-            IsBuffered = false;
-            foreach (string msg in buffer) await Send(msg);
+            IsConnected = true;
+            OnServerConnected?.Invoke();
         }
 
         [JSInvokable("SocketReceive")]

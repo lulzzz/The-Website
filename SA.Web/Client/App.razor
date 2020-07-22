@@ -17,10 +17,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         await State.GetLocalData<GlobalSettings>();
         //await WebSockets.Connect(State);
         await SocketInterface.Connect();
-        await State.RequestUpdateData();
+        SocketInterface.OnServerConnected += async () =>
+        {
+            await State.RequestUpdateData();
+        };
+        await base.OnInitializedAsync();
     }
 }

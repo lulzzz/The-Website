@@ -49,7 +49,7 @@ namespace SA.Web.Client.Data
         {
             if (!isLocalData)
             {
-                if (Settings.ShowBlogUpdateNotification && UpdateTimes != null)
+                if (Settings.ShowBlogUpdateNotification)
                     NotifyUserInfo("The blog section updated to " + UpdateTimes.BlogDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 BlogData = data;
@@ -64,7 +64,7 @@ namespace SA.Web.Client.Data
         {
             if (!isLocalData)
             {
-                if (Settings.ShowChangelogUpdateNotification && UpdateTimes != null)
+                if (Settings.ShowChangelogUpdateNotification)
                     NotifyUserInfo("The changelog section updated to " + UpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 ChangelogData = data;
@@ -83,7 +83,7 @@ namespace SA.Web.Client.Data
             if (!isLocalData)
             {
                 if (RoadmapData != null) PreviousRoadmapData = RoadmapData;
-                if (Settings.ShowRoadmapUpdateNotification && UpdateTimes != null)
+                if (Settings.ShowRoadmapUpdateNotification)
                     NotifyUserInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 RoadmapData = data;
@@ -127,7 +127,7 @@ namespace SA.Web.Client.Data
             data.Photos = data.Photos.OrderBy(o => o.TakenDate).Reverse().ToList();
             if (!isLocalData)
             {
-                if (Settings.ShowPhotographyUpdateNotification && UpdateTimes != null)
+                if (Settings.ShowPhotographyUpdateNotification)
                     NotifyUserInfo("The photography section updated to " + UpdateTimes.PhotographyDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.PhotographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 PhotographyData = data;
@@ -142,7 +142,7 @@ namespace SA.Web.Client.Data
         {
             if (!isLocalData)
             {
-                if (Settings.ShowVideographyUpdateNotification && UpdateTimes != null)
+                if (Settings.ShowVideographyUpdateNotification)
                     NotifyUserInfo("The videography section updated to " + UpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 VideographyData = data;

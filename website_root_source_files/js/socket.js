@@ -19,7 +19,7 @@ GLOBAL.SetJSSocketInterfaceReference = function (ref)
         clientSocket.onopen = (e) => 
         {
             console.log("Connection to the server state successful.");
-            GLOBAL.JSSocketInterfaceReference.invokeMethodAsync('SendSocketBuffer', event.data);
+            GLOBAL.JSSocketInterfaceReference.invokeMethodAsync('SendConnectionActive', event.data);
         };
     
         clientSocket.onmessage = (event) => 
