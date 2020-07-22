@@ -63,14 +63,6 @@ namespace SA.Web.Server
             if (Globals.IsDevelopmentMode) app.UseDeveloperExceptionPage();
             else app.UseExceptionHandler("/Error");
 
-            if (Globals.IsDevelopmentMode)
-            {
-                app.UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                });
-            }
-
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseWebSockets();
