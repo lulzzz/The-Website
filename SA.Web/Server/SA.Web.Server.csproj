@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>6bbb3e48-422e-4fbc-9133-003a99c3d85c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
