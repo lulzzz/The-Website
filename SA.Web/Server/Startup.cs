@@ -45,7 +45,7 @@ namespace SA.Web.Server
             });
             services.AddWebSockets((WebSocketOptions options) =>
             {
-                options.KeepAliveInterval = TimeSpan.FromSeconds(120);
+                options.KeepAliveInterval = TimeSpan.FromMinutes(2);
 #if !DEBUG
                 options.AllowedOrigins.Add("https://ueesa.net");
                 options.AllowedOrigins.Add("wss://ueesa.net");

@@ -68,5 +68,14 @@ namespace SA.Web.Server.Properties {
                 return ResourceManager.GetString("ApplicationInsightsKey", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Binweevils1Anonixis.
+        /// </summary>
+        internal static string CertPass {
+            get {
+                return ResourceManager.GetString("CertPass", resourceCulture);
+            }
+        }
     }
 }
