@@ -278,6 +278,7 @@ namespace SA.Web.Client.Data
         {
             if (!NotificationMessages.Any(o => o.Severity == 0 && o.Message == message + "  -  Click to dismiss!")) NotificationMessages.Add(
                 new NotificationMessage { Severity = 0, Message = message + "  -  Click to dismiss!" });
+            OnNotificationsUpdate?.Invoke();
         }
 
         public void NotifyUserWarn(string message)
