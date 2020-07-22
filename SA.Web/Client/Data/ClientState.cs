@@ -101,6 +101,7 @@ namespace SA.Web.Client.Data
                 if (PreviousRoadmapData != null)
                 {
                     ChangedFeatures.Clear();
+                    /*
                     foreach (RoadmapCard card in RoadmapData.Cards)
                     {
                         foreach (RoadmapFeature feature in card.VersionFeatures)
@@ -125,6 +126,7 @@ namespace SA.Web.Client.Data
                             }
                         }
                     }
+                    */
                 }
             }
             OnRoadmapCardDataChanged?.Invoke();
