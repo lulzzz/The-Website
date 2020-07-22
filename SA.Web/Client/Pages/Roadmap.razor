@@ -23,9 +23,9 @@
 
 @code {        
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync()
     {
-        await base.OnInitializedAsync();
+        await base.OnAfterRenderAsync();
         State.OnRoadmapCardDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {

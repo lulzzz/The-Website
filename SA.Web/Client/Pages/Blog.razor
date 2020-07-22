@@ -27,9 +27,9 @@
 
 @code {      
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync()
     {
-        await base.OnInitializedAsync();
+        await base.OnAfterRenderAsync();
         State.OnBlogDataChanged += StateHasChanged;
         State.OnChangelogDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
