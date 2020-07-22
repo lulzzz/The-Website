@@ -137,10 +137,10 @@ namespace SA.Web.Client.Data
             {
                 if (Settings.ShowPhotographyUpdateNotification)
                 {
-                    await Logger.LogInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The photography page updated to " + LocalUpdateTimes.PhotographyDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.PhotographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The photography page updated to " + LocalUpdateTimes.PhotographyDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.PhotographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 PhotographyData = data;
                 await SetLocalData<MediaPhotographyData>();
