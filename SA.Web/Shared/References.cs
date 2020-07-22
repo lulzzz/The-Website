@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SA.Web.Client
+namespace SA.Web.Shared
 {
     public static class References
     {
