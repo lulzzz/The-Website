@@ -63,7 +63,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         foreach (RoadmapFeature f in Features)
         {
             RoadmapFeatureStatus status = f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()];
