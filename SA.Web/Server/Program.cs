@@ -15,7 +15,6 @@ namespace SA.Web.Server
             {
                 serverOptions.Limits.MaxConcurrentConnections = 1000;
                 serverOptions.Limits.MaxConcurrentUpgradedConnections = 1000;
-                serverOptions.Limits.MaxRequestBodySize = 10 * 1024;
                 serverOptions.Listen(IPAddress.Loopback, 5000,
                     listenOptions =>
                     {
@@ -23,6 +22,7 @@ namespace SA.Web.Server
                     });
                 serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
                 serverOptions.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(1);
+                serverOptions.Limits.Http2.KeepAlivePingTimeout = TimeSpan.FromMinutes(2);
             });
 
             webBuilder.UseStartup<Startup>();
