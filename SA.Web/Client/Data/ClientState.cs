@@ -27,17 +27,14 @@ namespace SA.Web.Client.Data
             JSRuntime = jsruntime;
         }
 
-        public LastUpdateTimes UpdateTimes { get; private set; } = null;
+        public LastUpdateTimes LocalUpdateTimes { get; private set; } = null;
         public event Action OnUpdateTimesChanged;
-        public async Task NotifyUpdateTimesChange(LastUpdateTimes data, bool isLocalData)
+        public async Task NotifyUpdateTimesChange(LastUpdateTimes data)
         {
-            if (UpdateTimes != data)
+            if (LocalUpdateTimes != data)
             {
-                if (!isLocalData)
-                {
-                    UpdateTimes = data;
-                    await SetLocalData<LastUpdateTimes>();
-                }
+                LocalUpdateTimes = data;
+                await SetLocalData<LastUpdateTimes>();
                 OnUpdateTimesChanged?.Invoke();
             }
         }
@@ -50,10 +47,10 @@ namespace SA.Web.Client.Data
             {
                 if (Settings.ShowBlogUpdateNotification)
                 {
-                    await Logger.LogInfo("The blog section updated to " + UpdateTimes.BlogDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The blog section updated to " + UpdateTimes.BlogDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The blog section updated to " + LocalUpdateTimes.BlogDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The blog section updated to " + LocalUpdateTimes.BlogDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 BlogData = data;
                 await SetLocalData<BlogData>();
@@ -69,10 +66,10 @@ namespace SA.Web.Client.Data
             {
                 if (Settings.ShowChangelogUpdateNotification)
                 {
-                    await Logger.LogInfo("The changelog section updated to " + UpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The changelog section updated to " + UpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The changelog section updated to " + LocalUpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The changelog section updated to " + LocalUpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 ChangelogData = data;
                 await SetLocalData<ChangelogData>();
@@ -92,10 +89,10 @@ namespace SA.Web.Client.Data
                 if (RoadmapData != null) PreviousRoadmapData = RoadmapData;
                 if (Settings.ShowRoadmapUpdateNotification)
                 {
-                    await Logger.LogInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 RoadmapData = data;
                 await SetLocalData<RoadmapData>();
@@ -140,10 +137,10 @@ namespace SA.Web.Client.Data
             {
                 if (Settings.ShowPhotographyUpdateNotification)
                 {
-                    await Logger.LogInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The roadmap page updated to " + LocalUpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 PhotographyData = data;
                 await SetLocalData<MediaPhotographyData>();
@@ -159,10 +156,10 @@ namespace SA.Web.Client.Data
             {
                 if (Settings.ShowVideographyUpdateNotification)
                 {
-                    await Logger.LogInfo("The videography section updated to " + UpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The videography section updated to " + UpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The videography section updated to " + LocalUpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The videography section updated to " + LocalUpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
                 VideographyData = data;
                 await SetLocalData<MediaVideographyData>();
@@ -224,40 +221,46 @@ namespace SA.Web.Client.Data
 
         */
 
-        public async Task RequestUpdateData(bool forceUpdate = false)
+        public async Task RequestUpdateData(bool getLocal = false)
         {
-            if (!forceUpdate && UpdateTimes != null) await GetLocalData<LastUpdateTimes>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal) 
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
+            else await GetLocalData<LastUpdateTimes>();
         }
 
-        public async Task RequestBlogData(bool forceUpdate = false)
+        public async Task RequestBlogData(bool getLocal = false)
         {
-            if (!forceUpdate && BlogData != null) await GetLocalData<BlogData>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
+            else await GetLocalData<BlogData>();
         }
 
-        public async Task RequestChangelogData(bool forceUpdate = false)
+        public async Task RequestChangelogData(bool getLocal = false)
         {
-            if (!forceUpdate && ChangelogData != null) await GetLocalData<ChangelogData>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
+            else await GetLocalData<ChangelogData>();
         }
 
-        public async Task RequestRoadmapData(bool forceUpdate = false)
+        public async Task RequestRoadmapData(bool getLocal = false)
         {
-            if (!forceUpdate && RoadmapData != null) await GetLocalData<RoadmapData>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
+            else await GetLocalData<RoadmapData>();
         }
 
-        public async Task RequestPhotographyData(bool forceUpdate = false)
+        public async Task RequestPhotographyData(bool getLocal = false)
         {
-            if (!forceUpdate && PhotographyData != null) await GetLocalData<MediaPhotographyData>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
+            else await GetLocalData<MediaPhotographyData>();
         }
 
-        public async Task RequestVideographyData(bool forceUpdate = false) 
+        public async Task RequestVideographyData(bool getLocal = false) 
         {
-            if (!forceUpdate && VideographyData != null) await GetLocalData<MediaVideographyData>();
-            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
+            else await GetLocalData<MediaVideographyData>();
         }
 
         // UI State
@@ -314,7 +317,7 @@ namespace SA.Web.Client.Data
                     await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(Settings = defaultData ? new GlobalSettings() : Settings, JSONSettings));
                     break;
                 case Type t when t == typeof(LastUpdateTimes):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(UpdateTimes = defaultData ? new LastUpdateTimes() : UpdateTimes, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(LocalUpdateTimes = defaultData ? new LastUpdateTimes() : LocalUpdateTimes, JSONSettings));
                     break;
                 case Type t when t == typeof(BlogData):
                     await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(BlogData = defaultData ? new BlogData() : BlogData, JSONSettings));
@@ -345,8 +348,7 @@ namespace SA.Web.Client.Data
                         OnSettingsUpdate?.Invoke();
                         break;
                     case Type t when t == typeof(LastUpdateTimes):
-                        UpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyUpdateTimesChange(UpdateTimes, true);
+                        LocalUpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
                         break;
                     case Type t when t == typeof(BlogData):
                         BlogData = JsonConvert.DeserializeObject<BlogData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);

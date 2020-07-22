@@ -33,9 +33,9 @@
         State.OnPhotographyDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
-            await State.RequestPhotographyData(true);
+            await State.RequestPhotographyData();
         };
-        if (State.UpdateTimes != null && State.PhotographyData == null) await State.RequestPhotographyData();
+        if (State.LocalUpdateTimes != null && State.PhotographyData == null) await State.RequestPhotographyData();
         await base.OnAfterRenderAsync(firstRender);
     }
 }

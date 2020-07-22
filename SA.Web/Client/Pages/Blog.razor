@@ -33,11 +33,11 @@
         State.OnChangelogDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
-            await State.RequestBlogData(true);
-            await State.RequestChangelogData(true);
+            await State.RequestBlogData();
+            await State.RequestChangelogData();
         };
-        if (State.UpdateTimes != null && State.BlogData == null) await State.RequestBlogData();
-        if (State.UpdateTimes != null && State.ChangelogData == null) await State.RequestChangelogData();
+        if (State.LocalUpdateTimes != null && State.BlogData == null) await State.RequestBlogData();
+        if (State.LocalUpdateTimes != null && State.ChangelogData == null) await State.RequestChangelogData();
         await base.OnAfterRenderAsync(firstRender);
     }
 }

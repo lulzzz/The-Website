@@ -28,9 +28,9 @@
         State.OnRoadmapCardDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
-            await State.RequestRoadmapData(true);
+            await State.RequestRoadmapData();
         };
-        if (State.UpdateTimes != null && State.RoadmapData == null) await State.RequestRoadmapData();
+        if (State.LocalUpdateTimes != null && State.RoadmapData == null) await State.RequestRoadmapData();
         await base.OnInitializedAsync();
     }
 }

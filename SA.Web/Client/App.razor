@@ -22,7 +22,8 @@
         await SocketInterface.Connect();
         SocketInterface.OnServerConnected += async () =>
         {
-            await State.RequestUpdateData();
+            await State.RequestUpdateData(true);
+            await State.RequestUpdateData(false);
         };
         await base.OnInitializedAsync();
     }
