@@ -49,8 +49,12 @@ namespace SA.Web.Client.Data
             if (!isLocalData)
             {
                 if (Settings.ShowBlogUpdateNotification)
+                {
+                    await Logger.LogInfo("The blog section updated to " + UpdateTimes.BlogDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                     NotifyUserInfo("The blog section updated to " + UpdateTimes.BlogDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                }
                 BlogData = data;
                 await SetLocalData<BlogData>();
             }
@@ -64,8 +68,12 @@ namespace SA.Web.Client.Data
             if (!isLocalData)
             {
                 if (Settings.ShowChangelogUpdateNotification)
+                {
+                    await Logger.LogInfo("The changelog section updated to " + UpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                     NotifyUserInfo("The changelog section updated to " + UpdateTimes.ChangelogDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.ChangelogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                }
                 ChangelogData = data;
                 await SetLocalData<ChangelogData>();
             }
@@ -83,8 +91,12 @@ namespace SA.Web.Client.Data
             {
                 if (RoadmapData != null) PreviousRoadmapData = RoadmapData;
                 if (Settings.ShowRoadmapUpdateNotification)
+                {
+                    await Logger.LogInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                     NotifyUserInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                }
                 RoadmapData = data;
                 await SetLocalData<RoadmapData>();
                 if (PreviousRoadmapData != null)
@@ -127,8 +139,12 @@ namespace SA.Web.Client.Data
             if (!isLocalData)
             {
                 if (Settings.ShowPhotographyUpdateNotification)
-                    NotifyUserInfo("The photography section updated to " + UpdateTimes.PhotographyDataUpdate.ToShortDateString() + " "
-                        + UpdateTimes.PhotographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                {
+                    await Logger.LogInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The roadmap page updated to " + UpdateTimes.RoadmapDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.RoadmapDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                }
                 PhotographyData = data;
                 await SetLocalData<MediaPhotographyData>();
             }
@@ -142,8 +158,12 @@ namespace SA.Web.Client.Data
             if (!isLocalData)
             {
                 if (Settings.ShowVideographyUpdateNotification)
+                {
+                    await Logger.LogInfo("The videography section updated to " + UpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
+                        + UpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                     NotifyUserInfo("The videography section updated to " + UpdateTimes.VideographyDataUpdate.ToShortDateString() + " "
                         + UpdateTimes.VideographyDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                }
                 VideographyData = data;
                 await SetLocalData<MediaVideographyData>();
             }
