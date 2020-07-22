@@ -24,7 +24,6 @@ GLOBAL.SetJSSocketInterfaceReference = function (ref)
     
         clientSocket.onmessage = (event) => 
         {
-            console.log(event.data);
             GLOBAL.JSSocketInterfaceReference.invokeMethodAsync('SocketReceive', event.data);
         };
     
