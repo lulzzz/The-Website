@@ -30,7 +30,11 @@
             State.OnRoadmapCardDataChanged += StateHasChanged;
             State.OnUpdateTimesChanged += async () =>
             {
-                if (State.PreviousLocalUpdateTimes != null && DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
+                if (State.PreviousLocalUpdateTimes != null)
+                {
+                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
+                    else await State.RequestRoadmapData();
+                }
                 else await State.RequestRoadmapData();
             };
             await State.RequestRoadmapData();
