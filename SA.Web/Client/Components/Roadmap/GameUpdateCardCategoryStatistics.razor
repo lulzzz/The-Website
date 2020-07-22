@@ -29,7 +29,7 @@
                 <small>Tasks</small>
             </div>
             <div class="col">
-                <small>@((TaskCount != -1 ? TaskCount.ToString() : "Unknown") + "/" + (TasksCompleted != -1 ? TasksCompleted.ToString() : "Unknown"))</small>
+                <small>@(TaskCount.ToString() + "/" + TasksCompleted.ToString())</small>
             </div>
         </div>
         <div class="row">
@@ -63,27 +63,22 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         foreach (RoadmapFeature f in Features)
         {
-            TaskCount += f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] != RoadmapFeatureStatus.Polishing
-                && f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] != RoadmapFeatureStatus.Released
-                ? f.TaskCount[f.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()] : f.TasksCompleted[f.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            RoadmapFeatureStatus status = f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TaskCount += f.TaskCount[f.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
             TasksCompleted += f.TasksCompleted[f.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
-            Progress += ((double)TaskCount == 0D && (double)TasksCompleted == 0D && f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
-                ? 100D :
-                f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
-                ? 0D :
-                (double)TaskCount == 0D && (double)TasksCompleted == 0D
-                ? 0D : 100D * ((double)TaskCount / (double)TasksCompleted)) / Features.Count();
+            bool IsDataKnown = status != RoadmapFeatureStatus.Scheduled && TaskCount > 0 && TasksCompleted > 0;
+
             if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled) ScheduledFeatures++;
             else if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.InDevelopment) InDevelopmentFeatures++;
             else PolishingReleasedFeatures++;
         }
-        if (TasksCompleted == 0)
-        {
-            TaskCount = -1;
-            TasksCompleted = -1;
-        }
+
+        if (PolishingReleasedFeatures > 0 && InDevelopmentFeatures == 0 && ScheduledFeatures == 0) TaskCount = TasksCompleted;
+        Progress = TaskCount > 0 && TasksCompleted > 0 ? 100D * (double)TaskCount / (double)TasksCompleted : 0D;
+
         await base.OnInitializedAsync();
     }
 }
