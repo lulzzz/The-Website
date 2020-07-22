@@ -41,17 +41,6 @@ namespace SA.Web.Client.WebSockets
             else await runtime.InvokeVoidAsync("sendToServer", message);
         }
 
-        //public async Task Send(string message) => await Send(Encoding.ASCII.GetBytes(message));
-
-        /*
-        public async Task Send(byte[] msg)
-        {
-            await Logger.LogError(Encoding.ASCII.GetString(msg));
-            if (IsBuffered) buffer.Add(msg);
-            else await runtime.InvokeVoidAsync("sendToServer", msg);
-        }
-        */
-
         [JSInvokable("SendSocketBuffer")]
         public async Task SendBuffer()
         {
