@@ -6,6 +6,6 @@ namespace SA.Web.Shared
     {
         public static string YearVersion { get; } = "2020";
         public static string MonthVersion { get; } = "07";
-        public static string DayVersion { get; } = "01";
+        public static string DayVersion { get; } = "22";
     }
 }
