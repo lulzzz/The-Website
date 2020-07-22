@@ -1,6 +1,6 @@
 ﻿<div class="row footer">
     <div class="col">
-        <small>Posted on @Entry.Date.ToShortDateString() at @Entry.Date.ToShortTimeString() @(Entry.LastEditTime != null ? "and last edited on " + Entry.LastEditTime.ToShortDateString() + " at " + Entry.LastEditTime.ToShortTimeString() : string.Empty)</small>
+        <small>Posted on @Entry.Date.ToShortDateString() at @Entry.Date.ToShortTimeString() @(Entry.LastEditTime != null ? "and last edited on " + ((DateTime)Entry.LastEditTime).ToShortDateString() + " at " + ((DateTime)Entry.LastEditTime).ToShortTimeString() : string.Empty)</small>
     </div>
 </div>
 
