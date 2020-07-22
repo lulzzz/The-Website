@@ -45,14 +45,3 @@ async function onFetch(event)
         return fetch(event.request);
     }
 }
-
-async function onSync(event) 
-{
-    if (event.tag == 'initSync') 
-    {
-        event.waitUntil(async () =>
-        {
-
-        });
-    }
-}
