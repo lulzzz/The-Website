@@ -81,7 +81,7 @@ namespace SA.Web.Server.Data
                     RequestUri = uri,
                     Method = HttpMethod.Get,
                 };
-                msg.Headers.Add(HeaderNames.UserAgent, "StarAthenaeumServer");
+                msg.Headers.Add(HeaderNames.UserAgent, "StarAthenaeumWebsiteServer");
                 string result = string.Empty;
                 await client.SendAsync(msg).ContinueWith(async (msgTask) => result = await msgTask.Result.Content.ReadAsStringAsync());
                 return result;

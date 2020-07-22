@@ -6,12 +6,9 @@
             <div class="row justify-content-center">
                 @if (State.PhotographyData != null)
                 {
-                    @if (State.PhotographyData.Photos != null)
+                    @foreach (MediaPhoto p in State.PhotographyData.Photos)
                     {
-                        @foreach (MediaPhoto p in State.PhotographyData.Photos)
-                        {
-                            <MediaPhotographyElement Photo="p" />
-                        }
+                        <MediaPhotographyElement Photo="p" />
                     }
                 }
             </div>
@@ -28,25 +25,21 @@
 
 @inject ClientState State
 
-@code {
+@code {    
 
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
+        await base.OnInitializedAsync();
+        State.OnPhotographyDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
         {
-            State.OnPhotographyDataChanged += StateHasChanged;
-            State.OnUpdateTimesChanged += async () =>
+            if (State.PreviousLocalUpdateTimes != null)
             {
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.PhotographyDataUpdate, State.LocalUpdateTimes.PhotographyDataUpdate) < 0) await State.RequestPhotographyData(true);
-                    else await State.RequestPhotographyData();
-                }
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.PhotographyDataUpdate, State.LocalUpdateTimes.PhotographyDataUpdate) < 0) await State.RequestPhotographyData(true);
                 else await State.RequestPhotographyData();
-            };
-            await State.RequestPhotographyData();
-        }
-        await base.OnAfterRenderAsync(firstRender);
+            }
+            else await State.RequestPhotographyData();
+        };
+        await State.RequestPhotographyData();
     }
 }

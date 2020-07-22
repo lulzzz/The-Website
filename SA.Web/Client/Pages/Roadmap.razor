@@ -9,12 +9,9 @@
             <div id="roadmap-cards" class="row align-items-stretch">
                 @if (State.RoadmapData != null)
                 {
-                    @if (State.RoadmapData.Cards != null)
+                    @foreach (RoadmapCard card in State.RoadmapData.Cards)
                     {
-                        @foreach (RoadmapCard card in State.RoadmapData.Cards)
-                        {
-                            <GameUpdateCard Card="card" />
-                        }
+                        <GameUpdateCard Card="card" />
                     }
                 }
             </div>
@@ -26,22 +23,19 @@
 
 @code {        
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
+        await base.OnInitializedAsync();
+        State.OnRoadmapCardDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
         {
-            State.OnRoadmapCardDataChanged += StateHasChanged;
-            State.OnUpdateTimesChanged += async () =>
+            if (State.PreviousLocalUpdateTimes != null)
             {
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
-                    else await State.RequestRoadmapData();
-                }
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
                 else await State.RequestRoadmapData();
-            };
-            await State.RequestRoadmapData();
-        }
-        await base.OnAfterRenderAsync(firstRender);
+            }
+            else await State.RequestRoadmapData();
+        };
+        await State.RequestRoadmapData();
     }
 }

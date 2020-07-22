@@ -11,7 +11,7 @@ namespace SA.Web.Server
         public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
         public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
         {
-            webBuilder.ConfigureKestrel(serverOptions =>
+            webBuilder.UseKestrel(serverOptions =>
             {
                 serverOptions.Listen(IPAddress.Loopback, 5000,
                     listenOptions =>

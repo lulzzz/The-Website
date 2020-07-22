@@ -5,24 +5,18 @@
         <div class="col">
             @if (State.BlogData != null)
             {
-                @if (State.BlogData.BlogPosts != null)
+                @foreach (BlogEntryData b in State.BlogData.BlogPosts.Reverse<BlogEntryData>())
                 {
-                    @foreach (BlogEntryData b in State.BlogData.BlogPosts.Reverse<BlogEntryData>())
-                    {
-                        <BlogPost Entry="@b" />
-                    }
+                    <BlogPost Entry="@b" />
                 }
             }
         </div>
         <div class="col">
             @if (State.ChangelogData != null)
             {
-                @if (State.ChangelogData.ChangelogPosts != null)
+                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
                 {
-                    @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
-                    {
-                        <ChangelogPost Entry="@b" />
-                    }
+                    <ChangelogPost Entry="@b" />
                 }
             }
         </div>
@@ -31,32 +25,29 @@
 
 @inject ClientState State
 
-@code {
+@code {      
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
+        await base.OnInitializedAsync();
+        State.OnBlogDataChanged += StateHasChanged;
+        State.OnChangelogDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
         {
-            State.OnBlogDataChanged += StateHasChanged;
-            State.OnChangelogDataChanged += StateHasChanged;
-            State.OnUpdateTimesChanged += async () =>
+            if (State.PreviousLocalUpdateTimes != null)
             {
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
-                    else await State.RequestBlogData();
-                }
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
                 else await State.RequestBlogData();
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
-                    else await State.RequestChangelogData();
-                }
+            }
+            else await State.RequestBlogData();
+            if (State.PreviousLocalUpdateTimes != null)
+            {
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
                 else await State.RequestChangelogData();
-            };
-            await State.RequestBlogData();
-            await State.RequestChangelogData();
-        }
-        await base.OnAfterRenderAsync(firstRender);
+            }
+            else await State.RequestChangelogData();
+        };
+        await State.RequestBlogData();
+        await State.RequestChangelogData();
     }
 }
