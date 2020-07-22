@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.JSInterop;
 
 using Newtonsoft.Json;
 
 using SA.Web.Client.Data;
 using SA.Web.Shared.Data.WebSockets;
 
+
 namespace SA.Web.Client.WebSockets
 {
-    public class StateSocketHandler : WebSocketHandler
+    public class JSSocketInterface
     {
         private JsonSerializerSettings Settings { get; set; } = new JsonSerializerSettings
         {
@@ -19,16 +23,45 @@ namespace SA.Web.Client.WebSockets
             MissingMemberHandling = MissingMemberHandling.Error
         };
 
-        public StateSocketHandler(ConnectionManager webSocketConnectionManager) : base (webSocketConnectionManager) { }
+        private IJSRuntime runtime = (IJSRuntime)Startup.Host.Services.GetService(typeof(IJSRuntime));
+        private List<string> buffer = new List<string>();
+        private bool IsBuffered = true;
 
-        public override async Task OnConnected(ClientWebSocket socket)
+        public JSSocketInterface()
         {
-            await base.OnConnected(socket);
+            DotNetObjectReference<JSSocketInterface> lDotNetReference = DotNetObjectReference.Create(this);
+            runtime.InvokeVoidAsync("GLOBAL.SetJSSocketInterfaceReference", lDotNetReference);
         }
 
-        public override async Task Receive(ClientWebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+        public async Task Connect() => await runtime.InvokeVoidAsync("connectServerState", "ws://localhost:5000/state");
+
+        public async Task Send(string message)
         {
-            string message = Encoding.ASCII.GetString(buffer, 0, result.Count);
+            if (IsBuffered) buffer.Add(message);
+            else await runtime.InvokeVoidAsync("sendToServer", message);
+        }
+
+        //public async Task Send(string message) => await Send(Encoding.ASCII.GetBytes(message));
+
+        /*
+        public async Task Send(byte[] msg)
+        {
+            await Logger.LogError(Encoding.ASCII.GetString(msg));
+            if (IsBuffered) buffer.Add(msg);
+            else await runtime.InvokeVoidAsync("sendToServer", msg);
+        }
+        */
+
+        [JSInvokable("SendSocketBuffer")]
+        public async Task SendBuffer()
+        {
+            IsBuffered = false;
+            foreach (string msg in buffer) await Send(msg);
+        }
+
+        [JSInvokable("SocketReceive")]
+        public async Task Receive(string message)
+        {
             try
             {
                 Commands? cmd;

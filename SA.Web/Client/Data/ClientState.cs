@@ -153,6 +153,8 @@ namespace SA.Web.Client.Data
 
         // Requests
 
+        /*
+
         public async Task RequestUpdateData(bool forceUpdate = false) =>            await Send(async (ClientWebSocket socket) => 
         {
             if (!forceUpdate && UpdateTimes != null) await GetLocalData<LastUpdateTimes>();
@@ -199,6 +201,44 @@ namespace SA.Web.Client.Data
         {
             act.Invoke(((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).ClientSocket);
             return Task.CompletedTask;
+        }
+
+        */
+
+        public async Task RequestUpdateData(bool forceUpdate = false)
+        {
+            if (!forceUpdate && UpdateTimes != null) await GetLocalData<LastUpdateTimes>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
+        }
+
+        public async Task RequestBlogData(bool forceUpdate = false)
+        {
+            if (!forceUpdate && BlogData != null) await GetLocalData<BlogData>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
+        }
+
+        public async Task RequestChangelogData(bool forceUpdate = false)
+        {
+            if (!forceUpdate && ChangelogData != null) await GetLocalData<ChangelogData>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
+        }
+
+        public async Task RequestRoadmapData(bool forceUpdate = false)
+        {
+            if (!forceUpdate && RoadmapData != null) await GetLocalData<RoadmapData>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
+        }
+
+        public async Task RequestPhotographyData(bool forceUpdate = false)
+        {
+            if (!forceUpdate && PhotographyData != null) await GetLocalData<MediaPhotographyData>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
+        }
+
+        public async Task RequestVideographyData(bool forceUpdate = false) 
+        {
+            if (!forceUpdate && VideographyData != null) await GetLocalData<MediaVideographyData>();
+            else await((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
         }
 
         // UI State

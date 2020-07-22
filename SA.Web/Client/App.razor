@@ -10,16 +10,17 @@
 </Router>
 
 @inject ClientState State
-@inject WebSocketManagerMiddleware WebSockets
+@inject JSSocketInterface SocketInterface
 
 @code {
 
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         await State.GetLocalData<GlobalSettings>();
         //await WebSockets.Connect(State);
+        await SocketInterface.Connect();
         await State.RequestUpdateData();
-        await base.OnInitializedAsync();
     }
 }

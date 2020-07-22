@@ -29,7 +29,7 @@ namespace SA.Web.Server.WebSockets
 
         public override async Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
-            string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            string message = Encoding.ASCII.GetString(buffer, 0, result.Count);
             try
             {
                 Commands? cmd;
