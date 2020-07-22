@@ -9,13 +9,13 @@
                         <div class="task-overlay">
                             <small>
                                 @((TaskCount != -1 && TasksCompleted != -1
-                            ? TaskCount != -2 && TaskCount != -2
-                            ? "Tasks: " + (TaskCount != -1
-                                ? TaskCount.ToString() : "Unknown")
-                            + "/" + (TasksCompleted != -1
-                                ? TasksCompleted.ToString() : "Unknown")
-                            + " | " + Progress.ToString("0.00") + "% | " : string.Empty : "Data Unknown | ")
-                            + Regex.Replace(Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString(), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0"))
+                                    ? TaskCount != -2 && TaskCount != -2
+                                    ? "Tasks: " + (TaskCount != -1
+                                        ? TaskCount.ToString() : "Unknown")
+                                    + "/" + (TasksCompleted != -1
+                                        ? TasksCompleted.ToString() : "Unknown")
+                                    + " | " + Progress.ToString("0.00") + "% | " : string.Empty : "Data Unknown | ")
+                                    + Regex.Replace(Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString(), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0"))
                             </small>
                         </div>
                     </div>
@@ -72,13 +72,13 @@
         try
         {
             TaskCount = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
-        ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
-            || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
-                ? -2 : Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
-            TasksCompleted = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
-                    ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
-                        || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
-                            ? -2 : Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+                ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
+                    || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
+                        ? -2 : Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+                    TasksCompleted = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
+                            ? -1 : Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Polishing
+                                || Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled
+                                    ? -2 : Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
 
             Progress = (double)TaskCount == 0D && (double)TasksCompleted == 0D && Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Released
                 ? 100D :
