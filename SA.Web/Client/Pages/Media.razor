@@ -27,19 +27,27 @@
 
 @code {    
 
-    protected override async Task OnAfterRenderAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync();
-        State.OnPhotographyDataChanged += StateHasChanged;
-        State.OnUpdateTimesChanged += async () =>
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
+            State.OnPhotographyDataChanged += StateHasChanged;
+            State.OnUpdateTimesChanged += async () =>
+            {
+                if (State.PreviousLocalUpdateTimes != null)
+                {
+                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.PhotographyDataUpdate, State.LocalUpdateTimes.PhotographyDataUpdate) < 0) await State.RequestPhotographyData(true);
+                    else await State.RequestPhotographyData();
+                }
+                else await State.RequestPhotographyData();
+            };
             if (State.PreviousLocalUpdateTimes != null)
             {
                 if (DateTime.Compare(State.PreviousLocalUpdateTimes.PhotographyDataUpdate, State.LocalUpdateTimes.PhotographyDataUpdate) < 0) await State.RequestPhotographyData(true);
                 else await State.RequestPhotographyData();
             }
             else await State.RequestPhotographyData();
-        };
-        await State.RequestPhotographyData();
+        }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.WebSockets;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Net.Http.Headers;
 
 using SA.Web.Shared.Data;
@@ -34,6 +35,10 @@ namespace SA.Web.Server
 #if !DEBUG
             if (!string.IsNullOrEmpty(SA.Web.Server.Properties.Resources.ApplicationInsightsKey)) services.AddApplicationInsightsTelemetry(SA.Web.Server.Properties.Resources.ApplicationInsightsKey);
 #endif
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+            });
             services.AddRazorPages();
             services.AddRouting();
             services.Configure((StaticFileOptions op) =>
@@ -65,6 +70,7 @@ namespace SA.Web.Server
 
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
+            app.UseResponseCompression();
             app.UseWebSockets();
             app.MapWebSocketManager("/state", Services.GetService<StateSocketHandler>());
             app.UseRouting();
