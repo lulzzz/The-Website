@@ -21,12 +21,6 @@
                 <NavLink draggable="false" href="/media" Match="NavLinkMatch.All"><p>Media</p></NavLink>
             </li>
         </ul>
-        <button id="controls-button" class="buttons" draggable="false" title="Show Controls." @onclick="() => State.NotifyUserInfo(ControlsMessage)">
-            <i class="fas fa-keyboard"></i>
-        </button>
-        <button id="battery-button" class="buttons" draggable="false" title="Battery Saver Mode. COMING SOON!">
-            <i class="fab fa-envira"></i>
-        </button>
         <button id="settings-button" class="buttons @(State.IsSettingsPanelVisible ? "active" : string.Empty)" draggable="false" title="Website Settings." @onclick="() => State.ToggleSettingsPanelVisibility()">
             <i class="fas fa-cog"></i>
         </button>

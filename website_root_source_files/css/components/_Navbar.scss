@@ -170,20 +170,6 @@
             }
         }
 
-        #battery-button {
-            filter: saturate(0%) brightness(50%);
-
-            right: 334px;
-
-            i {
-                left: 33px;
-            }
-        }
-
-        #controls-button {
-            right: 424px;
-        }
-
         #donation-button {
             transform: rotate(20deg) translateY(-50%);
             position: absolute;
