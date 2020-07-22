@@ -47,18 +47,3 @@ async function onSync(event) {
         });
     }
 }
-
-/*
-self.addEventListener('push', event => event.respondWith(onPush(event)));
-
-async function onPush(event) {
-    const payload = event.data.json();
-    event.waitUntil(
-        self.registration.showNotification('Blazing Pizza', {
-            body: payload.message,
-            icon: 'pwa-512.png',
-            vibrate: [100, 50, 100],
-            data: { url: payload.url }
-        })
-    );
-}*/
