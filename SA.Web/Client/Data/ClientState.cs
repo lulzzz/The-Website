@@ -27,16 +27,18 @@ namespace SA.Web.Client.Data
             JSRuntime = jsruntime;
         }
 
+        public LastUpdateTimes PreviousLocalUpdateTimes { get; private set; } = null;
         public LastUpdateTimes LocalUpdateTimes { get; private set; } = null;
         public event Action OnUpdateTimesChanged;
         public async Task NotifyUpdateTimesChange(LastUpdateTimes data)
         {
             if (LocalUpdateTimes != data)
             {
+                PreviousLocalUpdateTimes = LocalUpdateTimes;
                 LocalUpdateTimes = data;
                 await SetLocalData<LastUpdateTimes>();
-                OnUpdateTimesChanged?.Invoke();
             }
+            OnUpdateTimesChanged?.Invoke();
         }
 
         public BlogData BlogData { get; private set; } = null;
@@ -221,44 +223,44 @@ namespace SA.Web.Client.Data
 
         */
 
-        public async Task RequestUpdateData(bool getLocal = false)
+        public async Task RequestUpdateData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal) 
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
             else await GetLocalData<LastUpdateTimes>();
         }
 
-        public async Task RequestBlogData(bool getLocal = false)
+        public async Task RequestBlogData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
             else await GetLocalData<BlogData>();
         }
 
-        public async Task RequestChangelogData(bool getLocal = false)
+        public async Task RequestChangelogData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
             else await GetLocalData<ChangelogData>();
         }
 
-        public async Task RequestRoadmapData(bool getLocal = false)
+        public async Task RequestRoadmapData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
             else await GetLocalData<RoadmapData>();
         }
 
-        public async Task RequestPhotographyData(bool getLocal = false)
+        public async Task RequestPhotographyData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
             else await GetLocalData<MediaPhotographyData>();
         }
 
-        public async Task RequestVideographyData(bool getLocal = false) 
+        public async Task RequestVideographyData(bool getFreshCopy = false) 
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && !getLocal)
+            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
             else await GetLocalData<MediaVideographyData>();
         }
@@ -349,6 +351,7 @@ namespace SA.Web.Client.Data
                         break;
                     case Type t when t == typeof(LastUpdateTimes):
                         LocalUpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
+                        OnUpdateTimesChanged?.Invoke();
                         break;
                     case Type t when t == typeof(BlogData):
                         BlogData = JsonConvert.DeserializeObject<BlogData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);

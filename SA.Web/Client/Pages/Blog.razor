@@ -29,15 +29,20 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        State.OnBlogDataChanged += StateHasChanged;
-        State.OnChangelogDataChanged += StateHasChanged;
-        State.OnUpdateTimesChanged += async () =>
+        if (firstRender)
         {
+            State.OnBlogDataChanged += StateHasChanged;
+            State.OnChangelogDataChanged += StateHasChanged;
+            State.OnUpdateTimesChanged += async () =>
+            {
+                if (State.PreviousLocalUpdateTimes != null && DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
+                else await State.RequestBlogData();
+                if (State.PreviousLocalUpdateTimes != null && DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
+                else await State.RequestChangelogData();
+            };
             await State.RequestBlogData();
             await State.RequestChangelogData();
-        };
-        if (State.LocalUpdateTimes != null && State.BlogData == null) await State.RequestBlogData();
-        if (State.LocalUpdateTimes != null && State.ChangelogData == null) await State.RequestChangelogData();
+        }
         await base.OnAfterRenderAsync(firstRender);
     }
 }

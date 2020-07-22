@@ -30,12 +30,16 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        State.OnPhotographyDataChanged += StateHasChanged;
-        State.OnUpdateTimesChanged += async () =>
+        if (firstRender)
         {
+            State.OnPhotographyDataChanged += StateHasChanged;
+            State.OnUpdateTimesChanged += async () =>
+            {
+                if (State.PreviousLocalUpdateTimes != null || DateTime.Compare(State.PreviousLocalUpdateTimes.PhotographyDataUpdate, State.LocalUpdateTimes.PhotographyDataUpdate) < 0) await State.RequestPhotographyData(true);
+                else await State.RequestPhotographyData();
+            };
             await State.RequestPhotographyData();
-        };
-        if (State.LocalUpdateTimes != null && State.PhotographyData == null) await State.RequestPhotographyData();
+        }
         await base.OnAfterRenderAsync(firstRender);
     }
 }
