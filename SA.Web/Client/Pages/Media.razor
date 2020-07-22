@@ -6,9 +6,12 @@
             <div class="row justify-content-center">
                 @if (State.PhotographyData != null)
                 {
-                    @foreach (MediaPhoto p in State.PhotographyData.Photos)
+                    @if (State.PhotographyData.Photos != null)
                     {
-                        <MediaPhotographyElement Photo="p" />
+                        @foreach (MediaPhoto p in State.PhotographyData.Photos)
+                        {
+                            <MediaPhotographyElement Photo="p" />
+                        }
                     }
                 }
             </div>

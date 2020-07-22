@@ -9,9 +9,12 @@
             <div id="roadmap-cards" class="row align-items-stretch">
                 @if (State.RoadmapData != null)
                 {
-                    @foreach (RoadmapCard card in State.RoadmapData.Cards)
+                    @if (State.RoadmapData.Cards != null)
                     {
-                        <GameUpdateCard Card="card" />
+                        @foreach (RoadmapCard card in State.RoadmapData.Cards)
+                        {
+                            <GameUpdateCard Card="card" />
+                        }
                     }
                 }
             </div>

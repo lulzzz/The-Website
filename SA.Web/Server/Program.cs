@@ -13,16 +13,11 @@ namespace SA.Web.Server
         {
             webBuilder.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.Limits.MaxConcurrentConnections = 1000;
-                serverOptions.Limits.MaxConcurrentUpgradedConnections = 1000;
                 serverOptions.Listen(IPAddress.Loopback, 5000,
                     listenOptions =>
                     {
                         listenOptions.UseHttps("certificate.pfx", SA.Web.Server.Properties.Resources.CertPass);
                     });
-                serverOptions.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2);
-                serverOptions.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(1);
-                serverOptions.Limits.Http2.KeepAlivePingTimeout = TimeSpan.FromMinutes(2);
             });
 
             webBuilder.UseStartup<Startup>();
