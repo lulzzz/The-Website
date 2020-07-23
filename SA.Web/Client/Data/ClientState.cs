@@ -227,7 +227,7 @@ namespace SA.Web.Client.Data
 
         public async Task RequestUpdateData(bool getFreshCopy = false)
         {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
+            if ((((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy))
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
             else await GetLocalData<LastUpdateTimes>();
         }
@@ -343,37 +343,67 @@ namespace SA.Web.Client.Data
 
         public async Task GetLocalData<T>()
         {
+            string content = await JSRuntime.InvokeAsync<string>("getData", typeof(T).Name);
+
             try
             {
                 switch (typeof(T))
                 {
                     case Type t when t == typeof(GlobalSettings):
-                        Settings = JsonConvert.DeserializeObject<GlobalSettings>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        OnSettingsUpdate?.Invoke();
+                        if (content != string.Empty && content != null)
+                        {
+                            Settings = JsonConvert.DeserializeObject<GlobalSettings>(content, JSONSettings);
+                            OnSettingsUpdate?.Invoke();
+                        }
+                        else Settings = new GlobalSettings();
                         break;
                     case Type t when t == typeof(LastUpdateTimes):
-                        LocalUpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        OnUpdateTimesChanged?.Invoke();
+                        if (content != string.Empty && content != null)
+                        {
+                            LocalUpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(content, JSONSettings);
+                            OnUpdateTimesChanged?.Invoke();
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestUpdateData(true);
                         break;
                     case Type t when t == typeof(BlogData):
-                        BlogData = JsonConvert.DeserializeObject<BlogData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyBlogDataChange(BlogData, true);
+                        if (content != string.Empty && content != null)
+                        {
+                            BlogData = JsonConvert.DeserializeObject<BlogData>(content, JSONSettings);
+                            await NotifyBlogDataChange(BlogData, true);
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestBlogData(true);
                         break;
                     case Type t when t == typeof(ChangelogData):
-                        ChangelogData = JsonConvert.DeserializeObject<ChangelogData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyChangelogDataChange(ChangelogData, true);
+                        if (content != string.Empty && content != null)
+                        {
+                            ChangelogData = JsonConvert.DeserializeObject<ChangelogData>(content, JSONSettings);
+                            await NotifyChangelogDataChange(ChangelogData, true);
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestChangelogData(true);
                         break;
                     case Type t when t == typeof(RoadmapData):
-                        RoadmapData = JsonConvert.DeserializeObject<RoadmapData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyRoadmapCardDataChange(RoadmapData, true);
+                        if (content != string.Empty && content != null)
+                        {
+                            RoadmapData = JsonConvert.DeserializeObject<RoadmapData>(content, JSONSettings);
+                            await NotifyRoadmapCardDataChange(RoadmapData, true);
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestRoadmapData(true);
                         break;
                     case Type t when t == typeof(MediaPhotographyData):
-                        PhotographyData = JsonConvert.DeserializeObject<MediaPhotographyData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyPhotographyDataChange(PhotographyData, true);
+                        if (content != string.Empty && content != null)
+                        {
+                            PhotographyData = JsonConvert.DeserializeObject<MediaPhotographyData>(content, JSONSettings);
+                            await NotifyPhotographyDataChange(PhotographyData, true);
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestPhotographyData(true);
                         break;
                     case Type t when t == typeof(MediaVideographyData):
-                        VideographyData = JsonConvert.DeserializeObject<MediaVideographyData>(await JSRuntime.InvokeAsync<string>("getData", t.Name), JSONSettings);
-                        await NotifyVideographyDataChange(VideographyData, true);
+                        if (content != string.Empty && content != null)
+                        {
+                            VideographyData = JsonConvert.DeserializeObject<MediaVideographyData>(content, JSONSettings);
+                            await NotifyVideographyDataChange(VideographyData, true);
+                        }
+                        else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestVideographyData(true);
                         break;
                 }
             }

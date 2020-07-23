@@ -38,12 +38,7 @@
                 }
                 else await State.RequestRoadmapData();
             };
-            if (State.PreviousLocalUpdateTimes != null)
-            {
-                if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
-                else await State.RequestRoadmapData();
-            }
-            else await State.RequestRoadmapData();
+            await State.RequestRoadmapData();
         }
     }
 }

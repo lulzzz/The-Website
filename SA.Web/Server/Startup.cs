@@ -35,12 +35,12 @@ namespace SA.Web.Server
 #if !DEBUG
             if (!string.IsNullOrEmpty(SA.Web.Server.Properties.Resources.ApplicationInsightsKey)) services.AddApplicationInsightsTelemetry(SA.Web.Server.Properties.Resources.ApplicationInsightsKey);
 #endif
+            services.AddRazorPages();
+            services.AddRouting();
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<BrotliCompressionProvider>();
             });
-            services.AddRazorPages();
-            services.AddRouting();
             services.Configure((StaticFileOptions op) =>
             {
                 op.OnPrepareResponse = (StaticFileResponseContext con) =>
@@ -67,6 +67,11 @@ namespace SA.Web.Server
             Globals.IsDevelopmentMode = env.IsDevelopment();
             if (Globals.IsDevelopmentMode) app.UseDeveloperExceptionPage();
             else app.UseExceptionHandler("/Error");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();

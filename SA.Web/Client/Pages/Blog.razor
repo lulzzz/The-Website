@@ -49,18 +49,8 @@
                 }
                 else await State.RequestChangelogData();
             };
-            if (State.PreviousLocalUpdateTimes != null)
-            {
-                if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
-                else await State.RequestBlogData();
-            }
-            else await State.RequestBlogData();
-            if (State.PreviousLocalUpdateTimes != null)
-            {
-                if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
-                else await State.RequestChangelogData();
-            }
-            else await State.RequestChangelogData();
+            await State.RequestBlogData();
+            await State.RequestChangelogData();
         }
     }
 }
