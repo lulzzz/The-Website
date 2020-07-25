@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
+using System.IO;
 
 using Microsoft.Net.Http.Headers;
 
-using Newtonsoft.Json;
-
 using SA.Web.Shared.Data.WebSockets;
 using SA.Web.Server.WebSockets;
+using System.Text;
 
 namespace SA.Web.Server.Data
 {
@@ -22,7 +23,8 @@ namespace SA.Web.Server.Data
 
             await Logger.LogInfo("Checking for repository updates...");
             WebRequest request = WebRequest.Create(ServerState.LastUpdateTimesLink);
-            LastUpdateTimes upTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(await DownloadDataString(ServerState.LastUpdateTimesLink));
+            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString(ServerState.LastUpdateTimesLink)));
+            LastUpdateTimes upTimes = JsonSerializer.DeserializeAsync<LastUpdateTimes>(upTimesStream).Result;
             if (ServerState.RoadmapData == null || DateTime.Compare(upTimes.RoadmapDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.RoadmapDataUpdate.ToUniversalTime()) > 0)
             {
                 await GetData("Roadmap Data", ServerState.RoadmapVersionsLink, async (result) =>
@@ -32,9 +34,10 @@ namespace SA.Web.Server.Data
                     {
                         try
                         {
-                            r.Cards.Add(JsonConvert.DeserializeObject<RoadmapCard>(await DownloadDataString(new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/roadmap-cards/" + v + ".json"))));
+                            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString(new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/roadmap-cards/" + v + ".json"))));
+                            r.Cards.Add(JsonSerializer.DeserializeAsync<RoadmapCard>(upTimesStream).Result);
                         }
-                        catch (JsonSerializationException e) { await Logger.LogError(e.Message); }
+                        catch (JsonException e) { await Logger.LogError(e.Message); }
                     }
                     ServerState.RoadmapData = r;
                 }, out RoadmapCardVersions result);
@@ -60,12 +63,14 @@ namespace SA.Web.Server.Data
                 ServerState.VideoData = result;
             }
             ServerState.UpdateTimes = upTimes;
-            if (Startup.Services != null && sendUpdate) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync(JsonConvert.SerializeObject(ServerState.UpdateTimes));
+            if (Startup.Services != null && sendUpdate) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync(
+                Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.UpdateTimes)));
 
             Task GetData<T>(string logName, Uri link, Action<T> notify, out T result)
             {
                 Logger.LogInfo("  -  " + logName + " update available.");
-                result = JsonConvert.DeserializeObject<T>(DownloadDataString(link).GetAwaiter().GetResult(), ServerState.JsonSettings);
+                MemoryStream resultStream = new MemoryStream(Encoding.UTF8.GetBytes(DownloadDataString(link).GetAwaiter().GetResult()));
+                result = JsonSerializer.DeserializeAsync<T>(resultStream).Result;
                 notify.Invoke(result);
                 sendUpdate = true;
                 return Task.CompletedTask;

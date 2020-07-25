@@ -1,13 +1,13 @@
 ﻿<div class="col">
     @if (Card.Patches.Count() >= 2)
     {
-        @for (byte i = 1; i < (byte)Card.Patches.Keys.Count(); i++)
+        @foreach (RoadmapCardChangelog changelog in Card.Patches)
         {
             <div class="row">
                 <div class="col">
                     <div class="row">
                         <div class="col">
-                            <small class="title">@("Patch: " + Card.MajorVersion + "." + Card.MinorVersion + "." + i)</small>
+                            <small class="title">@("Patch: " + Card.MajorVersion + "." + Card.MinorVersion + "." + changelog.PatchVersion)</small>
                         </div>
                     </div>
                     <div class="row">
@@ -15,7 +15,7 @@
                             <small>Version String</small>
                         </div>
                         <div class="col">
-                            <small>@(Card.Patches[i].VersionString != null ? Card.Patches[i].VersionString : "Unknown")</small>
+                            <small>@(changelog.VersionString != null ? changelog.VersionString : "Unknown")</small>
                         </div>
                     </div>
                     <div class="row">
@@ -23,7 +23,7 @@
                             <small>PU Release</small>
                         </div>
                         <div class="col">
-                            <small>@(Card.Patches[i].PUReleaseDate != null ? Card.Patches[i].PUReleaseDate?.ToShortDateString() : "Unknown")</small>
+                            <small>@(changelog.PUReleaseDate != null ? changelog.PUReleaseDate?.ToShortDateString() : "Unknown")</small>
                         </div>
                     </div>
                     <div class="row">
@@ -31,7 +31,7 @@
                             <small>PTU Release</small>
                         </div>
                         <div class="col">
-                            <small>@(Card.Patches[i].PTUTestingStartDate != null ? Card.Patches[i].PTUTestingStartDate?.ToShortDateString() : "Unknown")</small>
+                            <small>@(changelog.PTUTestingStartDate != null ? changelog.PTUTestingStartDate?.ToShortDateString() : "Unknown")</small>
                         </div>
                     </div>
                     <div class="row">
@@ -39,7 +39,7 @@
                             <small>Evocati Release</small>
                         </div>
                         <div class="col">
-                            <small>@(Card.Patches[i].EvocatiTestingDate != null ? Card.Patches[i].EvocatiTestingDate?.ToShortDateString() : "Unknown")</small>
+                            <small>@(changelog.EvocatiTestingDate != null ? changelog.EvocatiTestingDate?.ToShortDateString() : "Unknown")</small>
                         </div>
                     </div>
                     <div class="row">
@@ -47,7 +47,7 @@
                             <small>Changelog</small>
                         </div>
                         <div class="col">
-                            <small><a href="@Card.Patches[i].SpectrumPatchNotes" target="_blank">Spectrum Link</a></small>
+                            <small><a href="@changelog.SpectrumPatchNotes" target="_blank">Spectrum Link</a></small>
                         </div>
                     </div>
                 </div>

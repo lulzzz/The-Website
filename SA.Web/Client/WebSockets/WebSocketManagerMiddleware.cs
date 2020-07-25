@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
 
-using Newtonsoft.Json;
-
 using SA.Web.Shared;
 using SA.Web.Client.Data;
 
@@ -15,12 +13,6 @@ namespace SA.Web.Client.WebSockets
     {
         public WebSocketHandler SocketHandler { get; private set; } = (StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler));
         public ClientWebSocket ClientSocket { get; private set; }
-        public JsonSerializerSettings Settings { get; private set; } = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-            MissingMemberHandling = MissingMemberHandling.Error
-        };
 
         public async Task Connect(ClientState state)
         {

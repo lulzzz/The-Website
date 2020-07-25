@@ -5,4 +5,8 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BinaryStarLib\BinaryStarLib\BinaryStarLib.csproj" />
+  </ItemGroup>
+
 </Project>

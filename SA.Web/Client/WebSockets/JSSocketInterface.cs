@@ -1,9 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
-
-using Newtonsoft.Json;
 
 using SA.Web.Client.Data;
 using SA.Web.Shared.Data.WebSockets;
@@ -13,13 +14,6 @@ namespace SA.Web.Client.WebSockets
 {
     public class JSSocketInterface
     {
-        private JsonSerializerSettings Settings { get; set; } = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-            MissingMemberHandling = MissingMemberHandling.Error
-        };
-
         private IJSRuntime runtime = (IJSRuntime)Startup.Host.Services.GetService(typeof(IJSRuntime));
         public bool IsConnected = false;
         public event Action OnServerConnected;
@@ -48,10 +42,11 @@ namespace SA.Web.Client.WebSockets
         [JSInvokable("SocketReceive")]
         public async Task Receive(string message)
         {
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(message));
             try
             {
                 Commands? cmd;
-                if ((cmd = JsonConvert.DeserializeObject<Commands>(message, Settings)) != null)
+                if ((cmd = JsonSerializer.DeserializeAsync<Commands>(stream).Result) != null)
                 {
                     return;
                 }
@@ -60,7 +55,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 LastUpdateTimes times;
-                if ((times = JsonConvert.DeserializeObject<LastUpdateTimes>(message, Settings)) != null)
+                if ((times = JsonSerializer.DeserializeAsync<LastUpdateTimes>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUpdateTimesChange(times);
                     return;
@@ -70,7 +65,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 RoadmapData roadmapData;
-                if ((roadmapData = JsonConvert.DeserializeObject<RoadmapData>(message, Settings)) != null)
+                if ((roadmapData = JsonSerializer.DeserializeAsync<RoadmapData>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyRoadmapCardDataChange(roadmapData, false);
                     return;
@@ -80,7 +75,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 BlogData blogData;
-                if ((blogData = JsonConvert.DeserializeObject<BlogData>(message, Settings)) != null)
+                if ((blogData = JsonSerializer.DeserializeAsync<BlogData>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyBlogDataChange(blogData, false);
                     return;
@@ -90,7 +85,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 ChangelogData changelogData;
-                if ((changelogData = JsonConvert.DeserializeObject<ChangelogData>(message, Settings)) != null)
+                if ((changelogData = JsonSerializer.DeserializeAsync<ChangelogData>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyChangelogDataChange(changelogData, false);
                     return;
@@ -100,7 +95,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 MediaPhotographyData photographyData;
-                if ((photographyData = JsonConvert.DeserializeObject<MediaPhotographyData>(message, Settings)) != null)
+                if ((photographyData = JsonSerializer.DeserializeAsync<MediaPhotographyData>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyPhotographyDataChange(photographyData, false);
                     return;
@@ -110,7 +105,7 @@ namespace SA.Web.Client.WebSockets
             try
             {
                 MediaVideographyData videographyData;
-                if ((videographyData = JsonConvert.DeserializeObject<MediaVideographyData>(message, Settings)) != null)
+                if ((videographyData = JsonSerializer.DeserializeAsync<MediaVideographyData>(stream).Result) != null)
                 {
                     await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyVideographyDataChange(videographyData, false);
                     return;

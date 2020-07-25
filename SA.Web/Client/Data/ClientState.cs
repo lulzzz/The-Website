@@ -1,26 +1,22 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 using Microsoft.JSInterop;
 
-using Newtonsoft.Json;
-
 using SA.Web.Client.WebSockets;
 using SA.Web.Shared.Data.WebSockets;
+using System.Text;
+using BSL.FileSystem;
 
 namespace SA.Web.Client.Data
 {
     public class ClientState
     {
         private IJSRuntime JSRuntime { get; set; }
-        private JsonSerializerSettings JSONSettings { get; set; } = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-            MissingMemberHandling = MissingMemberHandling.Error
-        };
 
         public ClientState(IJSRuntime jsruntime)
         {
@@ -228,42 +224,42 @@ namespace SA.Web.Client.Data
         public async Task RequestUpdateData(bool getFreshCopy = false)
         {
             if ((((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy))
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetUpdateData)));
             else await GetLocalData<LastUpdateTimes>();
         }
 
         public async Task RequestBlogData(bool getFreshCopy = false)
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetBlogData)));
             else await GetLocalData<BlogData>();
         }
 
         public async Task RequestChangelogData(bool getFreshCopy = false)
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetChangelogData)));
             else await GetLocalData<ChangelogData>();
         }
 
         public async Task RequestRoadmapData(bool getFreshCopy = false)
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetRoadmapData)));
             else await GetLocalData<RoadmapData>();
         }
 
         public async Task RequestPhotographyData(bool getFreshCopy = false)
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetPhotographyData)));
             else await GetLocalData<MediaPhotographyData>();
         }
 
         public async Task RequestVideographyData(bool getFreshCopy = false) 
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
+                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send(Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Commands.GetVideographyData)));
             else await GetLocalData<MediaVideographyData>();
         }
 
@@ -318,25 +314,25 @@ namespace SA.Web.Client.Data
             switch (typeof(T))
             {
                 case Type t when t == typeof(GlobalSettings):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(Settings = defaultData ? new GlobalSettings() : Settings, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(Settings = defaultData ? new GlobalSettings() : Settings)));
                     break;
                 case Type t when t == typeof(LastUpdateTimes):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(LocalUpdateTimes = defaultData ? new LastUpdateTimes() : LocalUpdateTimes, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(LocalUpdateTimes = defaultData ? new LastUpdateTimes() : LocalUpdateTimes)));
                     break;
                 case Type t when t == typeof(BlogData):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(BlogData = defaultData ? new BlogData() : BlogData, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(BlogData = defaultData ? new BlogData() : BlogData)));
                     break;
                 case Type t when t == typeof(ChangelogData):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(ChangelogData = defaultData ? new ChangelogData() : ChangelogData, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ChangelogData = defaultData ? new ChangelogData() : ChangelogData)));
                     break;
                 case Type t when t == typeof(RoadmapData):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(RoadmapData = defaultData ? new RoadmapData() : RoadmapData, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(RoadmapData = defaultData ? new RoadmapData() : RoadmapData)));
                     break;
                 case Type t when t == typeof(MediaPhotographyData):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(PhotographyData = defaultData ? new MediaPhotographyData() : PhotographyData, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(PhotographyData = defaultData ? new MediaPhotographyData() : PhotographyData)));
                     break;
                 case Type t when t == typeof(MediaVideographyData):
-                    await JSRuntime.InvokeVoidAsync("setData", t.Name, JsonConvert.SerializeObject(VideographyData = defaultData ? new MediaVideographyData() : VideographyData, JSONSettings));
+                    await JSRuntime.InvokeVoidAsync("setData", t.Name, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(VideographyData = defaultData ? new MediaVideographyData() : VideographyData)));
                     break;
             }
         }
@@ -344,63 +340,65 @@ namespace SA.Web.Client.Data
         public async Task GetLocalData<T>()
         {
             string content = await JSRuntime.InvokeAsync<string>("getData", typeof(T).Name);
+            MemoryStream stream = null;
+            if (!string.IsNullOrEmpty(content)) new MemoryStream(Encoding.UTF8.GetBytes(content));
 
             try
             {
                 switch (typeof(T))
                 {
                     case Type t when t == typeof(GlobalSettings):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            Settings = JsonConvert.DeserializeObject<GlobalSettings>(content, JSONSettings);
+                            Settings = JsonSerializer.DeserializeAsync<GlobalSettings>(stream).Result;
                             OnSettingsUpdate?.Invoke();
                         }
                         else Settings = new GlobalSettings();
                         break;
                     case Type t when t == typeof(LastUpdateTimes):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            LocalUpdateTimes = JsonConvert.DeserializeObject<LastUpdateTimes>(content, JSONSettings);
+                            LocalUpdateTimes = JsonSerializer.DeserializeAsync<LastUpdateTimes>(stream).Result;
                             OnUpdateTimesChanged?.Invoke();
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestUpdateData(true);
                         break;
                     case Type t when t == typeof(BlogData):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            BlogData = JsonConvert.DeserializeObject<BlogData>(content, JSONSettings);
+                            BlogData = JsonSerializer.DeserializeAsync<BlogData>(stream).Result;
                             await NotifyBlogDataChange(BlogData, true);
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestBlogData(true);
                         break;
                     case Type t when t == typeof(ChangelogData):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            ChangelogData = JsonConvert.DeserializeObject<ChangelogData>(content, JSONSettings);
+                            ChangelogData = JsonSerializer.DeserializeAsync<ChangelogData>(stream).Result;
                             await NotifyChangelogDataChange(ChangelogData, true);
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestChangelogData(true);
                         break;
                     case Type t when t == typeof(RoadmapData):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            RoadmapData = JsonConvert.DeserializeObject<RoadmapData>(content, JSONSettings);
+                            RoadmapData = JsonSerializer.DeserializeAsync<RoadmapData>(stream).Result;
                             await NotifyRoadmapCardDataChange(RoadmapData, true);
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestRoadmapData(true);
                         break;
                     case Type t when t == typeof(MediaPhotographyData):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            PhotographyData = JsonConvert.DeserializeObject<MediaPhotographyData>(content, JSONSettings);
+                            PhotographyData = JsonSerializer.DeserializeAsync<MediaPhotographyData>(stream).Result;
                             await NotifyPhotographyDataChange(PhotographyData, true);
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestPhotographyData(true);
                         break;
                     case Type t when t == typeof(MediaVideographyData):
-                        if (content != string.Empty && content != null)
+                        if (stream != null)
                         {
-                            VideographyData = JsonConvert.DeserializeObject<MediaVideographyData>(content, JSONSettings);
+                            VideographyData = JsonSerializer.DeserializeAsync<MediaVideographyData>(stream).Result;
                             await NotifyVideographyDataChange(VideographyData, true);
                         }
                         else if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected) await RequestVideographyData(true);

@@ -1,10 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-
-using Newtonsoft.Json;
 
 using SA.Web.Server.Data;
 using SA.Web.Shared.Data.WebSockets;
@@ -13,13 +13,6 @@ namespace SA.Web.Server.WebSockets
 {
     public class StateSocketHandler : WebSocketHandler
     {
-        private JsonSerializerSettings Settings     { get; set; } = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-            MissingMemberHandling = MissingMemberHandling.Error
-        };
-
         public StateSocketHandler(ConnectionManager webSocketConnectionManager) : base(webSocketConnectionManager) { }
 
         public override async Task OnConnected(WebSocket socket)
@@ -29,18 +22,18 @@ namespace SA.Web.Server.WebSockets
 
         public override async Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
-            string message = Encoding.ASCII.GetString(buffer, 0, result.Count);
+            MemoryStream stream = new MemoryStream(buffer);
             try
             {
                 Commands? cmd;
-                if ((cmd = JsonConvert.DeserializeObject<Commands>(message, Settings)) != null)
+                if ((cmd = JsonSerializer.DeserializeAsync<Commands>(stream).Result) != null)
                 {
-                    if (cmd == Commands.GetUpdateData)                  await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.UpdateTimes, Settings));
-                    else if (cmd == Commands.GetRoadmapData)            await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.RoadmapData, Settings));
-                    else if (cmd == Commands.GetBlogData)               await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.BlogData, Settings));
-                    else if (cmd == Commands.GetChangelogData)          await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.ChangelogData, Settings));
-                    else if (cmd == Commands.GetPhotographyData)        await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.PhotoData, Settings));
-                    else if (cmd == Commands.GetVideographyData)        await SendMessageAsync(socket, JsonConvert.SerializeObject(ServerState.VideoData, Settings));
+                    if (cmd == Commands.GetUpdateData)                  await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.UpdateTimes)));
+                    else if (cmd == Commands.GetRoadmapData)            await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.RoadmapData)));
+                    else if (cmd == Commands.GetBlogData)               await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.BlogData)));
+                    else if (cmd == Commands.GetChangelogData)          await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.ChangelogData)));
+                    else if (cmd == Commands.GetPhotographyData)        await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.PhotoData)));
+                    else if (cmd == Commands.GetVideographyData)        await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.VideoData)));
                     return;
                 }
             }
