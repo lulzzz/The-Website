@@ -35,11 +35,18 @@ namespace SA.Web.Server.WebSockets
 
         public async Task RemoveSocket(Guid id)
         {
-            await Logger.LogWarn("Disconnected socket: " + id);
-            socketDictionary.TryRemove(id, out WebSocket socket);
-            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server.", CancellationToken.None);
-            socket.Dispose();
-            GC.Collect();
+            try
+            {
+                socketDictionary.TryRemove(id, out WebSocket socket);
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server.", CancellationToken.None);
+                await Logger.LogWarn("Disconnected socket: " + id);
+                socket.Dispose();
+                GC.Collect();
+            }
+            catch (WebSocketException)
+            {
+                await Logger.LogWarn("Disconnected socket prematurely: " + id);
+            }
         }
     }
 }
