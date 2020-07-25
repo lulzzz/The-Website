@@ -23,22 +23,18 @@
 
 @code {        
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        await base.OnInitializedAsync();
+        State.OnRoadmapCardDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
         {
-            State.OnRoadmapCardDataChanged += StateHasChanged;
-            State.OnUpdateTimesChanged += async () =>
+            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
             {
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
-                    else await State.RequestRoadmapData();
-                }
-                else await State.RequestRoadmapData();
-            };
-            await State.RequestRoadmapData();
-        }
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
+            }
+            else await State.RequestRoadmapData();
+        };
+        if (State.LocalUpdateTimes != null) await State.GetLocalData<GlobalSettings>();
     }
 }

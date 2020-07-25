@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
-
-using Newtonsoft.Json;
+using System.Text.Json;
 
 using SA.Web.Shared.Data.WebSockets;
 
@@ -17,18 +16,16 @@ namespace SA.Web.Server.Data
         public static Uri VideographyDataLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/videography-data.json");
 
         public static LastUpdateTimes UpdateTimes               { get; set; } = null;
-        public static BlogData BlogData                         { get; set; } = null;
-        public static ChangelogData ChangelogData               { get; set; } = null;
-        public static RoadmapData RoadmapData                   { get; set; } = null;
-        public static MediaPhotographyData PhotoData            { get; set; } = null;
-        public static MediaVideographyData VideoData            { get; set; } = null;
+        public static string BlogData                         { get; set; } = null;
+        public static string ChangelogData               { get; set; } = null;
+        public static string RoadmapData                   { get; set; } = null;
+        public static string PhotoData            { get; set; } = null;
+        public static string VideoData            { get; set; } = null;
 
         public static Timer DataUpdateTimer                     { get; private set; } = null;
-        public static JsonSerializerSettings JsonSettings       { get; set; } = new JsonSerializerSettings
+        public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            TypeNameHandling = TypeNameHandling.Auto,
-            MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
-            MissingMemberHandling = MissingMemberHandling.Error
+            PropertyNameCaseInsensitive = true,
         };
 
         public static void StartDataCollection()

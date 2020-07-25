@@ -27,28 +27,26 @@
 
 @code {      
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        await base.OnInitializedAsync();
+        State.OnBlogDataChanged += StateHasChanged;
+        State.OnChangelogDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
         {
-            State.OnBlogDataChanged += StateHasChanged;
-            State.OnChangelogDataChanged += StateHasChanged;
-            State.OnUpdateTimesChanged += async () =>
+            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
             {
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
-                    else await State.RequestBlogData();
-                }
-                else await State.RequestBlogData();
-                if (State.PreviousLocalUpdateTimes != null)
-                {
-                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
-                    else await State.RequestChangelogData();
-                }
-                else await State.RequestChangelogData();
-            };
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
+            }
+            else await State.RequestBlogData();
+            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+            {
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
+            }
+            else await State.RequestChangelogData();
+        };
+        if (State.LocalUpdateTimes != null)
+        {
             await State.RequestBlogData();
             await State.RequestChangelogData();
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.Json;
@@ -10,20 +9,27 @@ namespace SA.Web.Shared.Data.WebSockets
 {
     public class RoadmapData
     {
+        [JsonPropertyName("Cards")]
         public List<RoadmapCard> Cards { get; set; }
     }
 
     public class RoadmapCard
     {
+        [JsonPropertyName("MajorVersion")]
         public int MajorVersion { get; set; }
+        [JsonPropertyName("MinorVersion")]
         public int MinorVersion { get; set; }
+        [JsonPropertyName("Description")]
         public string Description { get; set; }
+        [JsonPropertyName("VersionFeatures")]
         public List<RoadmapFeature> VersionFeatures { get; set; }
+        [JsonPropertyName("Patches")]
         public List<RoadmapCardChangelog> Patches { get; set; }
     }
 
     public class RoadmapCardVersions
     {
+        [JsonPropertyName("Versions")]
         public List<string> Versions { get; set; }
     }
 
@@ -48,24 +54,36 @@ namespace SA.Web.Shared.Data.WebSockets
 
     public class RoadmapCardChangelog
     {
+        [JsonPropertyName("PatchVersion")]
         public int PatchVersion { get; set; }
+        [JsonPropertyName("VersionString")]
         public string VersionString { get; set; }
+        [JsonPropertyName("PUReleaseDate")]
         public DateTime? PUReleaseDate { get; set; }
+        [JsonPropertyName("EvocatiTestingDate")]
         public DateTime? EvocatiTestingDate { get; set; }
+        [JsonPropertyName("PTUTestingStartDate")]
         public DateTime? PTUTestingStartDate { get; set; }
+        [JsonPropertyName("SpectrumPatchNotes")]
         public string SpectrumPatchNotes { get; set; }
     }
 
     public class RoadmapFeature
     {
+        [JsonPropertyName("Title")]
         public string Title { get; set; }
+        [JsonPropertyName("Category")]
         public RoadmapCardCategory Category { get; set; }
+        [JsonPropertyName("Status")]
         [JsonConverter(typeof(DictionaryDateTimeRoadmapFeatureStatusConverter))]
         public Dictionary<DateTime, RoadmapFeatureStatus> Status { get; set; }
+        [JsonPropertyName("TaskCount")]
         [JsonConverter(typeof(DictionaryDateTimeIntConverter))]
         public Dictionary<DateTime, int> TaskCount { get; set; }
+        [JsonPropertyName("TasksCompleted")]
         [JsonConverter(typeof(DictionaryDateTimeIntConverter))]
         public Dictionary<DateTime, int> TasksCompleted { get; set; }
+        [JsonPropertyName("Description")]
         public string Description { get; set; }
     }
 

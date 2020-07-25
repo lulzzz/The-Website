@@ -36,7 +36,7 @@ namespace SA.Web.Client.WebSockets
                 LastUpdateTimes times;
                 if ((times = JsonSerializer.DeserializeAsync<LastUpdateTimes>(stream).Result) != null)
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUpdateTimesChange(times);
+                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUpdateTimesChange(times, false);
                     return;
                 }
             }

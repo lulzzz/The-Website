@@ -22,22 +22,20 @@ namespace SA.Web.Server.WebSockets
 
         public override async Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
+            string message = Encoding.UTF8.GetString(buffer).Replace("\0", string.Empty);
             MemoryStream stream = new MemoryStream(buffer);
-            try
+
+            if (message.StartsWith("CMD.") && Enum.TryParse(typeof(Commands), message.Replace("CMD.", string.Empty), out object cmd))
             {
-                Commands? cmd;
-                if ((cmd = JsonSerializer.DeserializeAsync<Commands>(stream).Result) != null)
-                {
-                    if (cmd == Commands.GetUpdateData)                  await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.UpdateTimes)));
-                    else if (cmd == Commands.GetRoadmapData)            await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.RoadmapData)));
-                    else if (cmd == Commands.GetBlogData)               await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.BlogData)));
-                    else if (cmd == Commands.GetChangelogData)          await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.ChangelogData)));
-                    else if (cmd == Commands.GetPhotographyData)        await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.PhotoData)));
-                    else if (cmd == Commands.GetVideographyData)        await SendMessageAsync(socket, Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.VideoData)));
-                    return;
-                }
+                if ((Commands)cmd == Commands.GetUpdateData) await SendMessageAsync(socket, 
+                    JsonSerializer.Serialize(ServerState.UpdateTimes, ServerState.UpdateTimes.GetType(), ServerState.jsonoptions));
+                else if ((Commands)cmd == Commands.GetRoadmapData) await SendMessageAsync(socket, ServerState.RoadmapData);
+                else if ((Commands)cmd == Commands.GetBlogData) await SendMessageAsync(socket, ServerState.BlogData);
+                else if ((Commands)cmd == Commands.GetChangelogData) await SendMessageAsync(socket, ServerState.ChangelogData);
+                else if ((Commands)cmd == Commands.GetPhotographyData) await SendMessageAsync(socket, ServerState.PhotoData);
+                else if ((Commands)cmd == Commands.GetVideographyData) await SendMessageAsync(socket, ServerState.VideoData);
+                return;
             }
-            catch (JsonException) { }
         }
     }
 }
