@@ -1,3 +1,6 @@
 [submodule "BinaryStarLib"]
 	path = BinaryStarLib
 	url = https://github.com/Star-Athenaeum/BinaryStarLib
+[submodule "website_root_source_files/css/thirdparty/bootstrap"]
+	path = website_root_source_files/css/thirdparty/bootstrap
+	url = https://github.com/twbs/bootstrap
