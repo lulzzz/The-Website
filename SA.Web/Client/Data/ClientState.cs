@@ -9,6 +9,7 @@ using Microsoft.JSInterop;
 using SA.Web.Client.WebSockets;
 using SA.Web.Shared.Data.WebSockets;
 using System.Text;
+using SA.Web.Shared;
 
 namespace SA.Web.Client.Data
 {
@@ -17,7 +18,9 @@ namespace SA.Web.Client.Data
         private IJSRuntime JSRuntime { get; set; }
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
+            MaxDepth = Globals.MaxWebSocketMessageBufferSize
         };
 
         public ClientState(IJSRuntime jsruntime)

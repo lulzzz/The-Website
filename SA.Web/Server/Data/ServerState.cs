@@ -3,6 +3,7 @@ using System.Threading;
 using System.Text.Json;
 
 using SA.Web.Shared.Data.WebSockets;
+using SA.Web.Shared;
 
 namespace SA.Web.Server.Data
 {
@@ -26,6 +27,8 @@ namespace SA.Web.Server.Data
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
+            DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
+            MaxDepth = Globals.MaxWebSocketMessageBufferSize
         };
 
         public static void StartDataCollection()

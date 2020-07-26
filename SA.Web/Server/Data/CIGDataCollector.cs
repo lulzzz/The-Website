@@ -40,7 +40,6 @@ namespace SA.Web.Server.Data
                         catch (JsonException e) { await Logger.LogError(e.Message); }
                     }
                     ServerState.RoadmapData = JsonSerializer.Serialize(r, typeof(RoadmapData));
-                    ServerState.RoadmapData = ServerState.RoadmapData.Substring(0, ServerState.RoadmapData.Length - 2) + "]}";
                 });
             }
             if (ServerState.BlogData == null || DateTime.Compare(upTimes.BlogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.BlogDataUpdate.ToUniversalTime()) > 0)
