@@ -73,7 +73,10 @@
       "enabled": true
     }
   },
-    "forceOverwrite": false,
-    "formatWebsiteRoot": true,
-    "sourceResourcesDir": "D:/Projects/StarAthenaeum/The-Website/website_root_source_files"
+  "forceOverwrite": false,
+  "formatWebsiteRoot": true,
+  "blacklistedDirectories": [
+    "website_root_source_files/css/thirdparty"
+  ],
+  "sourceResourcesDir": "D:/Projects/StarAthenaeum/The-Website/website_root_source_files"
 }
