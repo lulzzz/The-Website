@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using Microsoft.JSInterop;
 
 using SA.Web.Client.WebSockets;
 using SA.Web.Shared.Data.WebSockets;
-using System.Text;
 using SA.Web.Shared;
 
 namespace SA.Web.Client.Data
@@ -18,7 +18,6 @@ namespace SA.Web.Client.Data
         private IJSRuntime JSRuntime { get; set; }
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true,
             DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
             MaxDepth = Globals.MaxWebSocketMessageBufferSize
         };
@@ -87,7 +86,7 @@ namespace SA.Web.Client.Data
         public async Task NotifyRoadmapCardDataChange(RoadmapData data, bool isLocalData)
         {
             data.Cards = data.Cards.OrderBy(o => o.MajorVersion).ThenBy(o => o.MinorVersion).Reverse().ToList();
-            for (int i = 0; i < data.Cards.Count() - 1; i++) data.Cards[i].Patches = (List<RoadmapCardChangelog>)data.Cards[i].Patches.OrderBy(o => o.PatchVersion);
+            for (int i = 0; i < data.Cards.Count() - 1; i++) data.Cards[i].Patches = data.Cards[i].Patches.OrderBy(o => o.PatchVersion).ToList();
             if (!isLocalData)
             {
                 if (RoadmapData != null) PreviousRoadmapData = RoadmapData;
@@ -361,7 +360,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(GlobalSettings):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            Settings = JsonSerializer.Deserialize<GlobalSettings>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            Settings = JsonSerializer.Deserialize<GlobalSettings>(content, jsonoptions);
                             OnSettingsUpdate?.Invoke();
                         }
                         else Settings = new GlobalSettings();
@@ -369,7 +368,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(LastUpdateTimes):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            LocalUpdateTimes = JsonSerializer.Deserialize<LastUpdateTimes>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            LocalUpdateTimes = JsonSerializer.Deserialize<LastUpdateTimes>(content, jsonoptions);
                             OnUpdateTimesChanged?.Invoke();
                         }
                         else await RequestUpdateData(true);
@@ -377,7 +376,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(BlogData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            BlogData = JsonSerializer.Deserialize<BlogData>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            BlogData = JsonSerializer.Deserialize<BlogData>(content, jsonoptions);
                             await NotifyBlogDataChange(BlogData, true);
                         }
                         else await RequestBlogData(true);
@@ -385,7 +384,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(ChangelogData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            ChangelogData = JsonSerializer.Deserialize<ChangelogData>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            ChangelogData = JsonSerializer.Deserialize<ChangelogData>(content, jsonoptions);
                             await NotifyChangelogDataChange(ChangelogData, true);
                         }
                         else await RequestChangelogData(true);
@@ -393,7 +392,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(RoadmapData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            RoadmapData = JsonSerializer.Deserialize<RoadmapData>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            RoadmapData = JsonSerializer.Deserialize<RoadmapData>(content, jsonoptions);
                             await NotifyRoadmapCardDataChange(RoadmapData, true);
                         }
                         else await RequestRoadmapData(true);
@@ -401,7 +400,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(MediaPhotographyData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            PhotographyData = JsonSerializer.Deserialize<MediaPhotographyData>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            PhotographyData = JsonSerializer.Deserialize<MediaPhotographyData>(content, jsonoptions);
                             await NotifyPhotographyDataChange(PhotographyData, true);
                         }
                         else await RequestPhotographyData(true);
@@ -409,7 +408,7 @@ namespace SA.Web.Client.Data
                     case Type t when t == typeof(MediaVideographyData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            VideographyData = JsonSerializer.Deserialize<MediaVideographyData>(Encoding.UTF8.GetBytes(content), jsonoptions);
+                            VideographyData = JsonSerializer.Deserialize<MediaVideographyData>(content, jsonoptions);
                             await NotifyVideographyDataChange(VideographyData, true);
                         }
                         else await RequestVideographyData(true);

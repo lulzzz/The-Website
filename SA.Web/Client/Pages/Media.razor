@@ -29,7 +29,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         State.OnPhotographyDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
@@ -39,6 +38,6 @@
             }
             else await State.RequestPhotographyData();
         };
-        if (State.LocalUpdateTimes != null) await State.RequestPhotographyData();
+        await base.OnInitializedAsync();
     }
 }

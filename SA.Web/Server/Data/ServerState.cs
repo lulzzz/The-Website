@@ -26,7 +26,6 @@ namespace SA.Web.Server.Data
         public static Timer DataUpdateTimer                     { get; private set; } = null;
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true,
             DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
             MaxDepth = Globals.MaxWebSocketMessageBufferSize
         };

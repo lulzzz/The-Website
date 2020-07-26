@@ -27,13 +27,13 @@ namespace SA.Web.Server.WebSockets
 
             if (message.StartsWith("CMD.") && Enum.TryParse(typeof(Commands), message.Replace("CMD.", string.Empty), out object cmd))
             {
-                if ((Commands)cmd == Commands.GetUpdateData) await SendMessageAsync(socket, 
+                if ((Commands)cmd == Commands.GetUpdateData) await SendMessageAsync(socket, "JSON." + typeof(LastUpdateTimes).Name +
                     JsonSerializer.Serialize(ServerState.UpdateTimes, ServerState.UpdateTimes.GetType(), ServerState.jsonoptions));
-                else if ((Commands)cmd == Commands.GetRoadmapData) await SendMessageAsync(socket, ServerState.RoadmapData);
-                else if ((Commands)cmd == Commands.GetBlogData) await SendMessageAsync(socket, ServerState.BlogData);
-                else if ((Commands)cmd == Commands.GetChangelogData) await SendMessageAsync(socket, ServerState.ChangelogData);
-                else if ((Commands)cmd == Commands.GetPhotographyData) await SendMessageAsync(socket, ServerState.PhotoData);
-                else if ((Commands)cmd == Commands.GetVideographyData) await SendMessageAsync(socket, ServerState.VideoData);
+                else if ((Commands)cmd == Commands.GetRoadmapData) await SendMessageAsync(socket, "JSON." + typeof(RoadmapData).Name + ServerState.RoadmapData);
+                else if ((Commands)cmd == Commands.GetBlogData) await SendMessageAsync(socket, "JSON." + typeof(BlogData).Name + ServerState.BlogData);
+                else if ((Commands)cmd == Commands.GetChangelogData) await SendMessageAsync(socket, "JSON." + typeof(ChangelogData).Name + ServerState.ChangelogData);
+                else if ((Commands)cmd == Commands.GetPhotographyData) await SendMessageAsync(socket, "JSON." + typeof(MediaPhotographyData).Name + ServerState.PhotoData);
+                else if ((Commands)cmd == Commands.GetVideographyData) await SendMessageAsync(socket, "JSON." + typeof(MediaVideographyData).Name + ServerState.VideoData);
                 return;
             }
         }

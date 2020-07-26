@@ -29,7 +29,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         State.OnBlogDataChanged += StateHasChanged;
         State.OnChangelogDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
@@ -45,10 +44,6 @@
             }
             else await State.RequestChangelogData();
         };
-        if (State.LocalUpdateTimes != null)
-        {
-            await State.RequestBlogData();
-            await State.RequestChangelogData();
-        }
+        await base.OnInitializedAsync();
     }
 }

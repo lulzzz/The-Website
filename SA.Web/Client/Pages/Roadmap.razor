@@ -25,7 +25,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         State.OnRoadmapCardDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
@@ -35,6 +34,6 @@
             }
             else await State.RequestRoadmapData();
         };
-        if (State.LocalUpdateTimes != null) await State.GetLocalData<GlobalSettings>();
+        await base.OnInitializedAsync();
     }
 }

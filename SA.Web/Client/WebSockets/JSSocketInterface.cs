@@ -43,74 +43,83 @@ namespace SA.Web.Client.WebSockets
         public async Task Receive(string message)
         {
             message = message.Replace("\0", string.Empty);
-
             if (message.StartsWith("CMD.") && Enum.TryParse(typeof(Commands), message.Replace("CMD.", string.Empty), out object cmd))
             {
+                message = message.Replace("CMD.", string.Empty);
                 return;
             }
-
-            Console.WriteLine(message);
-
-            try
+            else if (message.StartsWith("JSON."))
             {
+                message = message.Replace("JSON.", string.Empty);
+                Type type;
+
                 LastUpdateTimes times;
-                if ((times = JsonSerializer.Deserialize<LastUpdateTimes>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(LastUpdateTimes)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUpdateTimesChange(times, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((times = JsonSerializer.Deserialize<LastUpdateTimes>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyUpdateTimesChange(times, false);
+                        return;
+                    }
                 }
-            }
-            catch (JsonException) { }
-            try
-            {
+
                 RoadmapData roadmapData;
-                if ((roadmapData = JsonSerializer.Deserialize<RoadmapData>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(RoadmapData)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyRoadmapCardDataChange(roadmapData, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((roadmapData = JsonSerializer.Deserialize<RoadmapData>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyRoadmapCardDataChange(roadmapData, false);
+                        return;
+                    }
                 }
-            }
-            catch (JsonException) { }
-            try
-            {
+
                 BlogData blogData;
-                if ((blogData = JsonSerializer.Deserialize<BlogData>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(BlogData)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyBlogDataChange(blogData, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((blogData = JsonSerializer.Deserialize<BlogData>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyBlogDataChange(blogData, false);
+                        return;
+                    }
                 }
-            }
-            catch (JsonException) { }
-            try
-            {
+
                 ChangelogData changelogData;
-                if ((changelogData = JsonSerializer.Deserialize<ChangelogData>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(ChangelogData)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyChangelogDataChange(changelogData, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((changelogData = JsonSerializer.Deserialize<ChangelogData>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyChangelogDataChange(changelogData, false);
+                        return;
+                    }
                 }
-            }
-            catch (JsonException) { }
-            try
-            {
+
                 MediaPhotographyData photographyData;
-                if ((photographyData = JsonSerializer.Deserialize<MediaPhotographyData>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(MediaPhotographyData)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyPhotographyDataChange(photographyData, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((photographyData = JsonSerializer.Deserialize<MediaPhotographyData>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyPhotographyDataChange(photographyData, false);
+                        return;
+                    }
                 }
-            }
-            catch (JsonException) { }
-            try
-            {
+
                 MediaVideographyData videographyData;
-                if ((videographyData = JsonSerializer.Deserialize<MediaVideographyData>(Encoding.UTF8.GetBytes(message), ClientState.jsonoptions)) != null)
+                if (message.StartsWith((type = typeof(MediaVideographyData)).Name))
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyVideographyDataChange(videographyData, false);
-                    return;
+                    message = message.Substring(type.Name.Length);
+                    if ((videographyData = JsonSerializer.Deserialize<MediaVideographyData>(message, ClientState.jsonoptions)) != null)
+                    {
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyVideographyDataChange(videographyData, false);
+                        return;
+                    }
                 }
             }
-            catch (JsonException) { }
+
             return;
         }
     }

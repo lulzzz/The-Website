@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.Json;
@@ -131,10 +132,11 @@ namespace SA.Web.Shared.Data.WebSockets
                     if (reader.TokenType == JsonTokenType.EndObject) return dictionary;
                     if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
                     string propName = reader.GetString();
-                    if (!DateTime.TryParse(propName, out DateTime key)) throw new JsonException("Unable to convert " + key);
+                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss");
+                    if (key == null) throw new JsonException("Unable to convert " + propName + " Output: " + key.ToString());
                     reader.Read();
                     int v = JsonSerializer.Deserialize<int>(ref reader, options);
-                    dictionary.Add(key, v);
+                    dictionary.Add((DateTime)key, v);
                 }
                 throw new JsonException();
             }
@@ -182,9 +184,10 @@ namespace SA.Web.Shared.Data.WebSockets
                     if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
 
                     string propName = reader.GetString();
-                    if (!DateTime.TryParse(propName, out DateTime key)) throw new JsonException("Unable to convert " + key);
+                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss");
+                    if (key == null) throw new JsonException("Unable to convert " + propName + " Output: " + key.ToString());
                     reader.Read();
-                    dictionary.Add(key, (RoadmapFeatureStatus)Enum.Parse(typeof(RoadmapFeatureStatus), reader.GetString()));
+                    dictionary.Add((DateTime)key, (RoadmapFeatureStatus)Enum.Parse(typeof(RoadmapFeatureStatus), reader.GetString()));
                 }
                 throw new JsonException();
             }
@@ -199,6 +202,24 @@ namespace SA.Web.Shared.Data.WebSockets
                 }
                 writer.WriteEndObject();
             }
+        }
+    }
+
+    // Move to BinaryStarLib
+    public static class DateTimeHelper
+    {
+        public static DateTime? GetDateTimeFromFormets(string timeString, params string[] formats)
+        {
+            DateTime? t = null;
+            foreach (string f in formats)
+            {
+                if (DateTime.TryParseExact(timeString, f, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime key))
+                {
+                    t = key;
+                    break;
+                }
+            }
+            return t;
         }
     }
 }
