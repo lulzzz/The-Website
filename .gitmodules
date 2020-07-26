@@ -4,6 +4,3 @@
 [submodule "bootstrap"]
 	path = website_root_source_files/css/thirdparty/bootstrap
 	url = https://github.com/twbs/bootstrap
-[submodule "fontawesome"]
-	path = website_root_source_files/css/thirdparty/fontawesome
-	url = https://github.com/FortAwesome/Font-Awesome
