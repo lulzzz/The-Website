@@ -74,7 +74,7 @@
             TaskCount = Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
             TasksCompleted = Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
 
-            IsDataKnown = Status != RoadmapFeatureStatus.Scheduled && TaskCount > 0 && TasksCompleted > 0;
+            IsDataKnown = Status != RoadmapFeatureStatus.Scheduled && TasksCompleted > 0;
 
             Progress = Status == RoadmapFeatureStatus.InDevelopment ?
                 100D * (double)TaskCount / (double)TasksCompleted : 
