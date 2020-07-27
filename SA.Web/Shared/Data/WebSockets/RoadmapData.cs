@@ -132,7 +132,7 @@ namespace SA.Web.Shared.Data.WebSockets
                     if (reader.TokenType == JsonTokenType.EndObject) return dictionary;
                     if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
                     string propName = reader.GetString();
-                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss");
+                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss", "MM/dd/yyyy hh:mm:ss");
                     if (key == null) throw new JsonException("Unable to convert " + propName + " Output: " + key.ToString());
                     reader.Read();
                     int v = JsonSerializer.Deserialize<int>(ref reader, options);
@@ -184,7 +184,7 @@ namespace SA.Web.Shared.Data.WebSockets
                     if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
 
                     string propName = reader.GetString();
-                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss");
+                    DateTime? key = DateTimeHelper.GetDateTimeFromFormets(propName, "yyyy-MM-ddThh:mm:ss", "dd/MM/yyyy hh:mm:ss", "MM/dd/yyyy hh:mm:ss");
                     if (key == null) throw new JsonException("Unable to convert " + propName + " Output: " + key.ToString());
                     reader.Read();
                     dictionary.Add((DateTime)key, (RoadmapFeatureStatus)Enum.Parse(typeof(RoadmapFeatureStatus), reader.GetString()));
