@@ -62,9 +62,7 @@
     },
 
     "/css/bundle.scss": {
-      "enabled": true,
-      "relativeIncludePath": "css",
-      "precision": 3
+      "enabled": true
     },
     "/js/socket.js": {
       "enabled": true
@@ -73,10 +71,11 @@
       "enabled": true
     }
   },
-  "forceOverwrite": false,
   "formatWebsiteRoot": true,
+  "scssIncludeDirectory": "css",
+  "scssPrecision": 3,
   "blacklistedDirectories": [
-    "website_root_source_files/css/thirdparty"
+    "css/thirdparty"
   ],
   "sourceResourcesDir": "D:/Projects/StarAthenaeum/The-Website/website_root_source_files"
 }
