@@ -38,6 +38,7 @@
             }
             else await State.RequestPhotographyData();
         };
+        if (State.LocalUpdateTimes != null && State.PhotographyData == null) await State.RequestPhotographyData();
         await base.OnInitializedAsync();
     }
 }

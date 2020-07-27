@@ -34,6 +34,7 @@
             }
             else await State.RequestRoadmapData();
         };
+        if (State.LocalUpdateTimes != null && State.RoadmapData == null) await State.RequestRoadmapData();
         await base.OnInitializedAsync();
     }
 }

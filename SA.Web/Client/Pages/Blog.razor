@@ -44,6 +44,8 @@
             }
             else await State.RequestChangelogData();
         };
+        if (State.LocalUpdateTimes != null && State.BlogData == null) await State.RequestBlogData();
+        if (State.LocalUpdateTimes != null && State.ChangelogData == null) await State.RequestChangelogData();
         await base.OnInitializedAsync();
     }
 }
