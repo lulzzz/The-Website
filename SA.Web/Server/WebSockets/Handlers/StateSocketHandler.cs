@@ -25,6 +25,10 @@ namespace SA.Web.Server.WebSockets
             string message = Encoding.UTF8.GetString(buffer).Replace("\0", string.Empty);
             MemoryStream stream = new MemoryStream(buffer);
 
+            // This is a thing?
+            message = message.EndsWith("Datata") ? message.Substring(0, message.Length - 2) : message;
+            message = message.EndsWith("Dataata") ? message.Substring(0, message.Length - 3) : message;
+
             if (message.StartsWith("CMD.") && Enum.TryParse(typeof(Commands), message.Replace("CMD.", string.Empty), out object cmd))
             {
                 if ((Commands)cmd == Commands.GetUpdateData) await SendMessageAsync(socket, "JSON." + typeof(LastUpdateTimes).Name +
