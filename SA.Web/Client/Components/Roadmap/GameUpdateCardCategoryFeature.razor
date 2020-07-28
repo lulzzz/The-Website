@@ -1,17 +1,14 @@
 ﻿<div class="col">
     <div class="row feature">
         <div class="col">
-            @if (!NotAddedYet)
+            @if (HasData)
             {
                 <div class="row">
                     <div class="col feature-img">
                         <img src="/img/roadmap/@(Feature.Category.ToString().ToLower()).webp" draggable="false" alt="Feature Image" />
                         <div class="task-overlay">
                             <small>
-                                @(IsDataKnown ? "Tasks: " + (Status == RoadmapFeatureStatus.Released || Status == RoadmapFeatureStatus.Polishing ? TasksCompleted : TaskCount) + "/" + TasksCompleted + " | " + 
-                                    (Progress < 100D ? Progress.ToString("0.00") + "% | " : string.Empty) +
-                                        Regex.Replace(Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString(), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0") : 
-                                            "Data Unknown | " + Regex.Replace(RoadmapFeatureStatus.Released.ToString(), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0"))
+                                @FeatureStatusString
                             </small>
                         </div>
                     </div>
@@ -57,16 +54,17 @@
     [Parameter]
     public DateTime SelectedDate { get; set; }
 
-    public bool NotAddedYet { get; set; } = false;
+    public bool HasData { get; set; } = false;
 
     public int TaskCount { get; set; } = 0;
     public int TasksCompleted { get; set; } = 0;
     public double Progress { get; set; } = 0;
+    public string FeatureStatusString { get; set; } = string.Empty;
 
-    public RoadmapFeatureStatus Status;
-    public bool IsDataKnown = false;
+    public RoadmapFeatureStatus Status { get; set; }
+    public bool IsDataKnown { get; set; } = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         try
         {
@@ -74,20 +72,26 @@
             TaskCount = Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
             TasksCompleted = Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
 
-            IsDataKnown = Status != RoadmapFeatureStatus.Scheduled && TasksCompleted > 0;
+            IsDataKnown = (Status != RoadmapFeatureStatus.Scheduled && TasksCompleted > 0) || Status == RoadmapFeatureStatus.Scheduled;
 
             Progress = Status == RoadmapFeatureStatus.InDevelopment ?
-                100D * (double)TaskCount / (double)TasksCompleted : 
+                100D * (double)TaskCount / (double)TasksCompleted :
                 IsDataKnown ? 100D : 0D;
+
+            FeatureStatusString = IsDataKnown ? "Tasks: " + (Status == RoadmapFeatureStatus.Released || Status == RoadmapFeatureStatus.Polishing ? TasksCompleted : TaskCount) + "/" + TasksCompleted + " | " +
+                                (Progress < 100D ? Progress.ToString("0.00") + "% | " : string.Empty) + Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString() :
+                                        "Data Unknown | " + RoadmapFeatureStatus.Released.ToString();
+
+            HasData = true;
         }
-        catch (JSException)
+        catch (JSException e)
         {
-            NotAddedYet = true;
+            HasData = false;
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException e)
         {
-            NotAddedYet = true;
+            HasData = false;
         }
-        await base.OnInitializedAsync();
+        base.OnInitialized();
     }
 }
