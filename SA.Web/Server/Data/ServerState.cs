@@ -9,12 +9,25 @@ namespace SA.Web.Server.Data
 {
     public static class ServerState
     {
-        public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/update-times.json");
-        public static Uri BlogDataLink                          { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/blog-data.json");
-        public static Uri ChangelogDataLink                     { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/changelog-posts.json");
-        public static Uri RoadmapVersionsLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/roadmap-versions.json");
-        public static Uri PhotographyDataLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/photography-data.json");
-        public static Uri VideographyDataLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/videography-data.json");
+#if DEBUG
+        public static Uri LastUpdateTimesLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/update-times.json");
+        public static Uri BlogDataLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/blog-data.json");
+        public static Uri ChangelogDataLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/changelog-posts.json");
+        public static Uri RoadmapVersionsLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/roadmap-versions.json");
+        public static Uri PhotographyDataLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/photography-data.json");
+        public static Uri VideographyDataLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/videography-data.json");
+
+        public static Uri RoadmapVersionsIndividualLink { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/roadmap-cards/");
+#else
+        public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/update-times.json");
+        public static Uri BlogDataLink                          { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/blog-data.json");
+        public static Uri ChangelogDataLink                     { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/changelog-posts.json");
+        public static Uri RoadmapVersionsLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/roadmap-versions.json");
+        public static Uri PhotographyDataLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/photography-data.json");
+        public static Uri VideographyDataLink                   { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/videography-data.json");
+
+        public static Uri RoadmapVersionsIndividualLink         { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/roadmap-cards/");
+#endif
 
         public static LastUpdateTimes UpdateTimes               { get; set; } = null;
         public static string BlogData                         { get; set; } = null;

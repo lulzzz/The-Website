@@ -35,7 +35,7 @@ namespace SA.Web.Server.Data
                         try
                         {
                             r.Cards.Add(JsonSerializer.Deserialize<RoadmapCard>(Encoding.UTF8.GetBytes(await DownloadDataString(
-                                new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/roadmap-cards/" + v + ".json"))), ServerState.jsonoptions));
+                                new Uri(ServerState.RoadmapVersionsIndividualLink + v + ".json"))), ServerState.jsonoptions));
                         }
                         catch (JsonException e) { await Logger.LogError(e.Message); }
                     }
