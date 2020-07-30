@@ -22,7 +22,7 @@
                 </div>
                 <div class="row">
                     <div class="col feature-description">
-                        <small>@(Feature.Description)</small>
+                        <small>@Feature.Description</small>
                     </div>
                 </div>
             }
@@ -62,7 +62,7 @@
     public string FeatureStatusString { get; set; } = string.Empty;
 
     public RoadmapFeatureStatus Status { get; set; }
-    public bool IsDataKnown { get; set; } = false;
+    public bool AreTasksKnown { get; set; } = false;
 
     protected override void OnInitialized()
     {
@@ -71,27 +71,23 @@
             Status = Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()];
             TaskCount = Feature.TaskCount[Feature.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
             TasksCompleted = Feature.TasksCompleted[Feature.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
-
-            IsDataKnown = (Status != RoadmapFeatureStatus.Scheduled && TasksCompleted > 0) || Status == RoadmapFeatureStatus.Scheduled;
-
-            Progress = Status == RoadmapFeatureStatus.InDevelopment ?
-                100D * (double)TaskCount / (double)TasksCompleted :
-                IsDataKnown ? 100D : 0D;
-
-            FeatureStatusString = IsDataKnown ? "Tasks: " + (Status == RoadmapFeatureStatus.Released || Status == RoadmapFeatureStatus.Polishing ? TasksCompleted : TaskCount) + "/" + TasksCompleted + " | " +
-                                (Progress < 100D ? Progress.ToString("0.00") + "% | " : string.Empty) + Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString() :
-                                        "Data Unknown | " + RoadmapFeatureStatus.Released.ToString();
-
             HasData = true;
         }
-        catch (JSException e)
+        catch (JSException)
         {
             HasData = false;
         }
-        catch (InvalidOperationException e)
+        catch (InvalidOperationException)
         {
             HasData = false;
         }
+
+        AreTasksKnown = (Status != RoadmapFeatureStatus.Scheduled && TasksCompleted > 0) || Status == RoadmapFeatureStatus.Scheduled;
+        Progress = Status == RoadmapFeatureStatus.InDevelopment ? 100D * (double)TaskCount / (double)TasksCompleted : AreTasksKnown ? 100D : 0D;
+        FeatureStatusString = AreTasksKnown ? "Tasks: " + (Status == RoadmapFeatureStatus.Released || Status == RoadmapFeatureStatus.Polishing ? TasksCompleted : TaskCount) + "/" + TasksCompleted + " | " +
+                            (Progress < 100D ? Progress.ToString("0.00") + "% | " : string.Empty) + Feature.Status[Feature.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()].ToString() :
+                                    "Data Unknown | " + Status;
+
         base.OnInitialized();
     }
 }
