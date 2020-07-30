@@ -114,7 +114,7 @@
         }
 
         if (PolishingReleasedFeatures > 0 && InDevelopmentFeatures == 0 && ScheduledFeatures == 0) TaskCount = TasksCompleted;
-        Progress = TaskCount > 0 && TasksCompleted > 0 ? 100D * (double)TaskCount / (double)TasksCompleted : 0D;
+        Progress = InDevelopmentFeatures > 0 ? 100D * (double)TaskCount / (double)TasksCompleted : 100D;
 
         await base.OnInitializedAsync();
     }
