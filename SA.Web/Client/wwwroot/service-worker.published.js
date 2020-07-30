@@ -11,9 +11,9 @@ const offlineAssetsExclude = [ /^service-worker\.js$/ ];
 async function onInstall(event) 
 {
     const assetsRequests = self.assetsManifest.assets
-        .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url) && !asset.url.includes("service-worker.js")))
-        .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
-        .map(asset => new Request(asset.url, { integrity: asset.hash }));
+    .filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url) && !asset.url.includes("service-worker.js")))
+    .filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
+    .map(asset => new Request(asset.url/*, { integrity: asset.hash }*/));
     await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
 }
 
@@ -33,7 +33,6 @@ async function onFetch(event)
         if (event.request.method === 'GET') 
         {
             const shouldServeIndexHtml = event.request.mode === 'navigate';
-    
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
             const cache = await caches.open(cacheName);
             cachedResponse = await cache.match(request);
