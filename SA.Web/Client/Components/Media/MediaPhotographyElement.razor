@@ -7,7 +7,7 @@
     </div>
     <div class="row">
         <div class="col align-items-stretch justify-content-center">
-            <img src="@("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/photography-elements/" + Photo.Thumbnail)" draggable="false" alt="Photo" crossorigin="anonymous" />
+            <img src="@(Globals.CoreLink + "/photography-elements/" + Photo.Thumbnail)" draggable="false" alt="Photo" crossorigin="anonymous" />
         </div>
     </div>
     <div class="row">
@@ -20,7 +20,7 @@
             </select>
         </div>
         <div class="col-auto">
-            <form method="get" action="@("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/photography-elements/" + Photo.Resolutions.Find(o => o.Contains(ResolutionOption)))">
+            <form method="get" action="@(Globals.CoreLink + "/photography-elements/" + Photo.Resolutions.Find(o => o.Contains(ResolutionOption)))">
                 <button type="submit" title="Download"><i class="fas fa-arrow-down"></i></button>
             </form>
         </div>

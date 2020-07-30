@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.IO;
 
@@ -11,7 +12,7 @@ using Microsoft.Net.Http.Headers;
 
 using SA.Web.Shared.Data.WebSockets;
 using SA.Web.Server.WebSockets;
-using System.Text;
+using SA.Web.Shared;
 
 namespace SA.Web.Server.Data
 {
@@ -22,12 +23,12 @@ namespace SA.Web.Server.Data
             bool sendUpdate = false;
 
             await Logger.LogInfo("Checking for repository updates...");
-            WebRequest request = WebRequest.Create(ServerState.LastUpdateTimesLink);
-            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString(ServerState.LastUpdateTimesLink)));
+            WebRequest request = WebRequest.Create(Globals.LastUpdateTimesLink);
+            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString(Globals.LastUpdateTimesLink)));
             LastUpdateTimes upTimes = JsonSerializer.DeserializeAsync<LastUpdateTimes>(upTimesStream).Result;
             if (ServerState.RoadmapData == null || DateTime.Compare(upTimes.RoadmapDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.RoadmapDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Roadmap Data", ServerState.RoadmapVersionsLink, async (result) =>
+                await GetData("Roadmap Data", Globals.RoadmapVersionsLink, async (result) =>
                 {
                     RoadmapData r = new RoadmapData { Cards = new List<RoadmapCard>() };
                     foreach (string v in JsonSerializer.Deserialize<RoadmapCardVersions>(result).Versions)
@@ -35,7 +36,7 @@ namespace SA.Web.Server.Data
                         try
                         {
                             r.Cards.Add(JsonSerializer.Deserialize<RoadmapCard>(Encoding.UTF8.GetBytes(await DownloadDataString(
-                                new Uri(ServerState.RoadmapVersionsIndividualLink + v + ".json"))), ServerState.jsonoptions));
+                                new Uri(Globals.RoadmapVersionsIndividualLink + v + ".json"))), ServerState.jsonoptions));
                         }
                         catch (JsonException e) { await Logger.LogError(e.Message); }
                     }
@@ -44,19 +45,19 @@ namespace SA.Web.Server.Data
             }
             if (ServerState.BlogData == null || DateTime.Compare(upTimes.BlogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.BlogDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Blog Data", ServerState.BlogDataLink, (result) => { ServerState.BlogData = result; });
+                await GetData("Blog Data", Globals.BlogDataLink, (result) => { ServerState.BlogData = result; });
             }
             if (ServerState.ChangelogData == null || DateTime.Compare(upTimes.ChangelogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.ChangelogDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Changelog Data", ServerState.ChangelogDataLink, (result) => { ServerState.ChangelogData = result; });
+                await GetData("Changelog Data", Globals.ChangelogDataLink, (result) => { ServerState.ChangelogData = result; });
             }
             if (ServerState.PhotoData == null || DateTime.Compare(upTimes.PhotographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.PhotographyDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Photography Data", ServerState.PhotographyDataLink, (result) => { ServerState.PhotoData = result; });
+                await GetData("Photography Data", Globals.PhotographyDataLink, (result) => { ServerState.PhotoData = result; });
             }
             if (ServerState.VideoData == null || DateTime.Compare(upTimes.VideographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.VideographyDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Videography Data", ServerState.VideographyDataLink, (result) => { ServerState.VideoData = result; });
+                await GetData("Videography Data", Globals.VideographyDataLink, (result) => { ServerState.VideoData = result; });
             }
             ServerState.UpdateTimes = upTimes;
             if (Startup.Services != null && sendUpdate) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync(
