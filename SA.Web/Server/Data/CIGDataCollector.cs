@@ -43,7 +43,7 @@ namespace SA.Web.Server.Data
                         catch (JsonException e) { await Logger.LogError(e.Message); }
                     }
                     ServerState.RoadmapData = JsonSerializer.Serialize(r, typeof(RoadmapData));
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(RoadmapData).Name + ServerState.RoadmapData);
+                    if (Startup.Services != null) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(RoadmapData).Name + ServerState.RoadmapData);
                 });
             }
             if (ServerState.BlogData == null || DateTime.Compare(upTimes.BlogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.BlogDataUpdate.ToUniversalTime()) > 0)
@@ -51,7 +51,7 @@ namespace SA.Web.Server.Data
                 await GetData("Blog Data", Globals.BlogDataLink, async (result) => 
                 { 
                     ServerState.BlogData = result;
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(BlogData).Name + ServerState.BlogData);
+                    if (Startup.Services != null) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(BlogData).Name + ServerState.BlogData);
                 });
             }
             if (ServerState.ChangelogData == null || DateTime.Compare(upTimes.ChangelogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.ChangelogDataUpdate.ToUniversalTime()) > 0)
@@ -59,7 +59,7 @@ namespace SA.Web.Server.Data
                 await GetData("Changelog Data", Globals.ChangelogDataLink, async (result) => 
                 {
                     ServerState.ChangelogData = result;
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(ChangelogData).Name + ServerState.ChangelogData);
+                    if (Startup.Services != null) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(ChangelogData).Name + ServerState.ChangelogData);
                 });
             }
             if (ServerState.PhotoData == null || DateTime.Compare(upTimes.PhotographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.PhotographyDataUpdate.ToUniversalTime()) > 0)
@@ -67,7 +67,7 @@ namespace SA.Web.Server.Data
                 await GetData("Photography Data", Globals.PhotographyDataLink, async (result) => 
                 {
                     ServerState.PhotoData = result;
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaPhotographyData).Name + ServerState.PhotoData);
+                    if (Startup.Services != null) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaPhotographyData).Name + ServerState.PhotoData);
                 });
             }
             if (ServerState.VideoData == null || DateTime.Compare(upTimes.VideographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.VideographyDataUpdate.ToUniversalTime()) > 0)
@@ -75,14 +75,12 @@ namespace SA.Web.Server.Data
                 await GetData("Videography Data", Globals.VideographyDataLink, async (result) => 
                 {
                     ServerState.VideoData = result;
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaVideographyData).Name + ServerState.VideoData);
+                    if (Startup.Services != null) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaVideographyData).Name + ServerState.VideoData);
                 });
             }
             ServerState.UpdateTimes = upTimes;
             if (Startup.Services != null && sendUpdate) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync(
                 Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(ServerState.UpdateTimes)));
-
-            firstRound = false;
 
             async Task GetData(string logName, Uri link, Action<string> notify)
             {
