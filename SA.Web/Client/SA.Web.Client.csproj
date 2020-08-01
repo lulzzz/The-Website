@@ -32,6 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="OLD\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
