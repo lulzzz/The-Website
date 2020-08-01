@@ -61,7 +61,7 @@
       "quality": 90
     },
 
-    "/css/bundle.scss": {
+    "/css/theme.scss": {
       "enabled": true
     },
     "/js/socket.js": {
