@@ -1,0 +1,88 @@
+// BEGIN-Min-Width
+
+@include media-breakpoint-up(xs) {
+}
+
+@include media-breakpoint-up(sm) {
+}
+
+@include media-breakpoint-up(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-up(lg) {
+
+    .bordered-line-h {
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        width: 100%;
+        height: 6px;
+    }
+
+    .bordered-line-v {
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 1px;
+        border-right-width: 1px;
+        height: $navigation-bar-height + px;
+        width: 6px;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        
+        margin-top: 1.5px;
+        margin-left: 7px;
+        margin-right: -21px;
+    }
+
+    .bordered-line-h, .bordered-line-v {
+        border-color: $colour-grey-10;
+        border-style: solid;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+}
+
+// END-Min-Width
+
+// BEGIN-Max-Width
+
+@include media-breakpoint-down(xs) {
+}
+
+@include media-breakpoint-down(sm) {
+}
+
+// Desktop
+
+@include media-breakpoint-down(md) {
+}
+
+@include media-breakpoint-down(lg) {
+}
+
+// END-Max-Width
+
+// BEGIN-Width-Exclusivity
+
+@include media-breakpoint-only(xs) {
+}
+
+@include media-breakpoint-only(sm) {
+}
+
+@include media-breakpoint-only(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-only(lg) {
+}
+
+@include media-breakpoint-only(xl) {
+}
+
+// END-Width-Exclusivity

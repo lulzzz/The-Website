@@ -1,0 +1,403 @@
+
+// BEGIN-Min-Width
+
+@include media-breakpoint-up(xs) {
+}
+
+@include media-breakpoint-up(sm) {
+}
+
+@include media-breakpoint-up(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-up(lg) {
+
+    #main-nav {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        height: ($navigation-bar-height - 12) + px;
+        padding-left: 0px;
+        padding-right: 0px;
+        z-index: $zindex-navigation-bar;
+
+        .row {
+            flex-wrap: nowrap !important;
+            flex-direction: row !important;
+        }
+
+        .logo-container {
+            height: 70px;
+            width: 210px;
+
+            a {
+
+                &.active {
+                    img {
+                        background: conic-gradient(rgba($colour-red, 0.15), rgba($colour-green, 0.15), rgba($colour-blue, 0.15), rgba($colour-red, 0.15));
+                    }
+                }
+
+                &:hover {
+                    img {
+                        background: $colour-conic-trans-low;
+                    }
+                }
+
+                img {
+                    position: absolute;
+                    height: 170px;
+                    width: 170px;
+                    bottom: 0px;
+                    left: 18px;
+                    clip-path: polygon(50% 6px, 0px calc(100% - 18px), calc(100% + 0px) calc(100% - 18px));
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .corner-background {
+            position: absolute;
+            bottom: -112px;
+            left: -210.5px;
+            height: 600px;
+            width: 300px;
+            transform: rotate(-30deg);
+            backdrop-filter: $backdrop-blur-heavy;
+            background-color: $colour-grey-3-trans-high;
+        }
+
+        .discord-icon {
+            bottom: ($navigation-bar-height * 1.6) + px;
+            left: 48px;
+        }
+
+        .twitter-icon {
+            bottom: ($navigation-bar-height * 1.2) + px;
+            left: 30px;
+        }
+
+        .github-icon {
+            bottom: ($navigation-bar-height * 0.8) + px;
+            left: 12px;
+        }
+
+        .discord-icon, .twitter-icon, .github-icon {
+            position: absolute;
+            padding: 0px;
+            width: 23.333px;
+            
+            a {
+                color: $colour-grey-10;
+
+                i {
+                    font-size: 22px;
+                    padding: 5px;
+                }
+
+                &:hover {
+                    color: $colour-red-trans-low;
+                }
+            }
+        }
+
+        .headline-ticker {
+            bottom: ($navigation-bar-height * 1.625) + px;
+            left: ($navigation-bar-height * 1.66) + px;
+            width: calc(100% - #{($navigation-bar-height * 4) + px});
+            clip-path: polygon(12px 0%, calc(100% - 34px) 0, calc(100% - 12px) 100%, 34px 100%);
+
+            .headline-ticker-content {
+                background-color: $colour-grey-3-trans-high;
+                overflow-y: hidden;
+                overflow-x: scroll;
+
+                & > .row {
+                    flex-wrap: nowrap;
+
+                    & > .col-auto {
+                        padding-right: 0px;
+
+                        h6 {
+                            font-weight: 300;
+                            white-space: nowrap;
+                            padding-right: 24px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .economy-ticker {
+            bottom: ($navigation-bar-height) + px;
+            left: ($navigation-bar-height * 2) + px;
+            width: calc(100% - #{($navigation-bar-height * 4) + px});
+            clip-path: polygon(12px 0%, calc(100% - 34px) 0, calc(100% - 12px) 100%, 34px 100%);
+        }
+
+        .headline-ticker, .economy-ticker {
+            position: absolute;
+            backdrop-filter: $backdrop-blur-heavy;
+
+            h6 {
+                float: left;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 14px;
+                padding-right: 14px;
+                margin: 0px;
+                font-weight: 300;
+            }
+
+            .economy-ticker-title, .headline-ticker-title {
+                border-right: 1px solid $colour-grey-10;
+                
+                h6 {
+                    padding-left: 30px;
+                    background-color: $colour-grey-5-trans-high;
+                }
+            }
+
+            .economy-ticker-content {
+                background-color: $colour-grey-3-trans-high;
+                overflow-y: hidden;
+                overflow-x: scroll;
+
+                & > .row {
+                    flex-wrap: nowrap;
+
+                    & > .col-auto {
+                        padding-right: 0px;
+
+                        h6 {
+
+                            &:nth-child(2), &:nth-child(2), &:nth-child(3) {
+                                font-weight: 300;
+                            }
+
+                            &:nth-child(1) {
+                                background-color: $colour-grey-4-trans-high;
+                            }
+            
+                            &:nth-child(2) {
+                                color: $colour-green;
+                            }
+            
+                            &:nth-child(3) {
+                                color: $colour-red;
+                            }
+            
+                            &:nth-child(4) {
+                                color: $colour-blue;
+                            }
+                        }
+
+                        &:last-child {
+                            padding-right: 24px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .bordered-line-v {
+            transform: rotate(-30deg);
+        }
+
+        .bordered-line-above {
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+            border-left-width: 1px;
+            border-right-width: 1px;
+            height: 400px;
+            width: 9px;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            position: absolute;
+            bottom: ($navigation-bar-height - 42) + px;
+            left: 82.5px;
+
+            transform: rotate(-30deg);
+        }
+
+        .bordered-line-patch {
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+            border-left-width: 1px;
+            border-right-width: 0px;
+            height: 9.5px;
+            width: 0px;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            position: absolute;
+            bottom: ($navigation-bar-height - 22) + px;
+            left: 183px;
+
+            transform: rotate(-30deg);
+        }
+
+        .bordered-line-above, .bordered-line-patch {
+            border-color: $colour-grey-10;
+            border-style: solid;
+        }
+
+        #main-nav-buttons {
+
+            & > .col {
+                backdrop-filter: $backdrop-blur-heavy;
+                background-color: $colour-grey-3-trans-high;
+                clip-path: polygon(0.5px 0%, 100% 0, 100% 100%, 48px 100%);
+                overflow-y: hidden;
+                overflow-x: scroll;
+                margin-top: 0px;
+                margin-bottom: 0px;
+                margin-left: 0px;
+                margin-right: -20px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 10px;
+
+                & > .row {
+                    padding: 0px;
+                    margin: 0px;
+    
+                    & > .col-auto {
+                        padding: 0px;
+        
+                        &:first-child {
+                            a {
+                                padding-left: 20px;
+                            }
+                        }
+    
+                        a {
+                            text-decoration: none;
+                            transform: skewX(30deg);
+        
+                            p {
+                                transform: skewX(-30deg);
+                                font-size: 16px;
+                                font-weight: 300;
+                                padding-top: 22px;
+                                padding-bottom: 22px;
+                                padding-left: 50px;
+                                padding-right: 50px;
+                                margin: 0px;
+                            }
+        
+                            &.active {
+                                background-color: $colour-grey-8-trans-high;
+                                color: $colour-white !important;
+                            }
+        
+                            &:hover {
+                                background-color: $colour-grey-6-trans-high;
+                                color: $colour-white !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #settings-button {
+            background-color: $colour-grey-4;
+            backdrop-filter: $backdrop-blur-heavy;
+            border-left: 1px solid $colour-grey-10;
+            cursor: pointer;
+            transform: skewX(30deg);
+
+            i {
+                padding-top: 20px;
+                padding-left: 26px;
+                padding-right: 16px;
+                font-size: 24px;
+                transform: skewX(-30deg);
+            }
+        }
+
+        #id-card {
+            width: ($navigation-bar-height * 4) + px;
+            height: $navigation-bar-height + px;
+            background-color: $colour-grey-4;
+            backdrop-filter: $backdrop-blur-heavy;
+            border-left: 1px solid $colour-grey-10;
+            overflow: hidden;
+            cursor: pointer;
+            transform: skewX(30deg);
+            margin-right: -20px;
+            padding-right: 20px;
+
+            & > .row {
+                transform: skewX(-30deg);
+
+                small {
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
+    
+                #id-card-name {
+                    height: 100%;
+                    word-wrap: break-word;
+                    padding-left: 10px;
+                }
+    
+                #id-card-avatar {
+    
+                    img {
+                        width: $navigation-bar-height + px;
+                        height: $navigation-bar-height + px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(xl) {
+}
+
+// END-Min-Width
+
+// BEGIN-Max-Width
+
+@include media-breakpoint-down(xs) {
+}
+
+@include media-breakpoint-down(sm) {
+}
+
+// Desktop
+
+@include media-breakpoint-down(md) {
+}
+
+@include media-breakpoint-down(lg) {
+}
+
+// END-Max-Width
+
+// BEGIN-Width-Exclusivity
+
+@include media-breakpoint-only(xs) {
+}
+
+@include media-breakpoint-only(sm) {
+}
+
+@include media-breakpoint-only(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-only(lg) {
+}
+
+@include media-breakpoint-only(xl) {
+}
+
+// END-Width-Exclusivity

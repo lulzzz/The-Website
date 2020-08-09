@@ -1,0 +1,137 @@
+@import "variables";
+
+h1 {
+    font-size: 1em * 2.5;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 1em * 2;
+    letter-spacing: 1px;
+}
+
+h3 {
+    font-size: 1em * 1.75;
+    letter-spacing: 0.9px;
+}
+
+h4 {
+    font-size: 1em * 1.5;
+    letter-spacing: 0.9px;
+}
+
+h5 {
+    font-size: 1em * 1.25;
+    letter-spacing: 0.75px;
+}
+
+h6 {
+    font-size: 1em;
+    letter-spacing: 0.75px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+}
+
+p, li {
+    font-size: 0.9em;
+    font-weight: 300;
+    letter-spacing: 0.75px;
+}
+
+small {
+    display: block;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+a {
+    display: block;
+    color: white;
+
+    &:hover {
+        color: $colour-blue;
+    }
+}
+
+img {
+    display: block;
+    object-fit: contain;
+}
+
+button {
+    display: block;
+    border: none;
+    outline: none;
+    border-radius: 0px;
+    background-color: $colour-blue;
+    backdrop-filter: $backdrop-blur-heavy;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $colour-blue;
+    }
+}
+
+// BEGIN-Min-Width
+
+@include media-breakpoint-up(xs) {
+}
+
+@include media-breakpoint-up(sm) {
+}
+
+@include media-breakpoint-up(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-up(lg) {
+
+}
+
+@include media-breakpoint-up(xl) {
+}
+
+// END-Min-Width
+
+// BEGIN-Max-Width
+
+@include media-breakpoint-down(xs) {
+}
+
+@include media-breakpoint-down(sm) {
+}
+
+// Desktop
+
+@include media-breakpoint-down(md) {
+}
+
+@include media-breakpoint-down(lg) {
+}
+
+// END-Max-Width
+
+// BEGIN-Width-Exclusivity
+
+@include media-breakpoint-only(xs) {
+}
+
+@include media-breakpoint-only(sm) {
+}
+
+@include media-breakpoint-only(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-only(lg) {
+}
+
+@include media-breakpoint-only(xl) {
+}
+
+// END-Width-Exclusivity

@@ -5,8 +5,125 @@
 @import "thirdparty/fontawesome/scss/solid";
 
 @import "variables";
+@import "globalClasses";
+@import "elements";
 
+@import "components/mainNavigationBar";
 
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 100;
+    src: url('/fonts/Roboto-Thin.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-style: italic;
+    src: url('/fonts/Roboto-ThinItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 200;
+    src: url('/fonts/Roboto-Light.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 200;
+    font-style: italic;
+    src: url('/fonts/Roboto-LightItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 400;
+    src: url('/fonts/Roboto-Medium.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-style: italic;
+    src: url('/fonts/Roboto-MediumItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 600;
+    src: url('/fonts/Roboto-Bold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 600;
+    font-style: italic;
+    src: url('/fonts/Roboto-BoldItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 800;
+    src: url('/fonts/Roboto-Black.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 800;
+    font-style: italic;
+    src: url('/fonts/Roboto-BlackItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+* {
+    user-select: none;
+}
+
+html {
+
+}
+
+body {
+    background-color: $colour-grey-2;
+    color: $colour-white;
+    font-family: 'Roboto';
+    padding: 0px;
+    margin: 0px;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+}
+
+main {
+    z-index: $zindex-main;
+    overflow-y: auto;
+    height: 100vh;
+    padding: 0px !important;
+
+    & > .row {
+        margin-left: ($navigation-bar-height * 1.5) + px;
+        margin-right: 0px;
+        padding-bottom: ($navigation-bar-height * 2.5) + px;
+    }
+}
 
 // BEGIN-Min-Width
 

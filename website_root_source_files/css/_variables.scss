@@ -1,0 +1,85 @@
+// Colours
+$colour-black: rgb(0, 0, 0);
+$colour-white: rgb(255, 255, 255);
+
+$colour-grey-1: rgb(10, 10, 10);
+$colour-grey-2: rgb(20, 20, 20);
+$colour-grey-3: rgb(30, 30, 30);
+$colour-grey-4: rgb(40, 40, 40);
+$colour-grey-5: rgb(50, 50, 50);
+$colour-grey-6: rgb(60, 60, 60);
+$colour-grey-7: rgb(70, 70, 70);
+$colour-grey-8: rgb(80, 80, 80);
+$colour-grey-9: rgb(90, 90, 90);
+$colour-grey-10: rgb(100, 100, 100);
+
+$colour-red: rgb(194, 30, 86);
+$colour-green: rgb(141, 182, 0);
+$colour-blue: rgb(21, 244, 238);
+
+// Colours Transparent
+$colour-trans-low: 0.35;
+$colour-trans-high: 0.75;
+
+$colour-black-trans-low: rgba(0, 0, 0, $colour-trans-low);
+$colour-white-trans-low: rgba(255, 255, 255, $colour-trans-low);
+
+$colour-grey-1-trans-low: rgba($colour-grey-1, $colour-trans-low);
+$colour-grey-2-trans-low: rgba($colour-grey-2, $colour-trans-low);
+$colour-grey-3-trans-low: rgba($colour-grey-3, $colour-trans-low);
+$colour-grey-4-trans-low: rgba($colour-grey-4, $colour-trans-low);
+$colour-grey-5-trans-low: rgba($colour-grey-5, $colour-trans-low);
+$colour-grey-6-trans-low: rgba($colour-grey-6, $colour-trans-low);
+$colour-grey-7-trans-low: rgba($colour-grey-7, $colour-trans-low);
+$colour-grey-8-trans-low: rgba($colour-grey-8, $colour-trans-low);
+$colour-grey-9-trans-low: rgba($colour-grey-9, $colour-trans-low);
+$colour-grey-10-trans-low: rgba($colour-grey-10, $colour-trans-low);
+
+$colour-red-trans-low: rgba(194, 30, 86, $colour-trans-low);
+$colour-green-trans-low: rgba(141, 182, 0, $colour-trans-low);
+$colour-blue-trans-low: rgba(21, 244, 238, $colour-trans-low);
+
+$colour-black-trans-high: rgba(0, 0, 0, $colour-trans-high);
+$colour-white-trans-high: rgba(255, 255, 255, $colour-trans-high);
+
+$colour-grey-1-trans-high: rgba($colour-grey-1, $colour-trans-high);
+$colour-grey-2-trans-high: rgba($colour-grey-2, $colour-trans-high);
+$colour-grey-3-trans-high: rgba($colour-grey-3, $colour-trans-high);
+$colour-grey-4-trans-high: rgba($colour-grey-4, $colour-trans-high);
+$colour-grey-5-trans-high: rgba($colour-grey-5, $colour-trans-high);
+$colour-grey-6-trans-high: rgba($colour-grey-6, $colour-trans-high);
+$colour-grey-7-trans-high: rgba($colour-grey-7, $colour-trans-high);
+$colour-grey-8-trans-high: rgba($colour-grey-8, $colour-trans-high);
+$colour-grey-9-trans-high: rgba($colour-grey-9, $colour-trans-high);
+$colour-grey-10-trans-high: rgba($colour-grey-10, $colour-trans-high);
+
+$colour-red-trans-high: rgba(194, 30, 86, $colour-trans-high);
+$colour-green-trans-high: rgba(141, 182, 0, $colour-trans-high);
+$colour-blue-trans-high: rgba(21, 244, 238, $colour-trans-high);
+
+$colour-conic: conic-gradient($colour-red, $colour-green, $colour-blue);
+$colour-conic-trans-low: conic-gradient($colour-red-trans-low, $colour-green-trans-low, $colour-blue-trans-low, $colour-red-trans-low);
+$colour-conic-trans-high: conic-gradient($colour-red-trans-high, $colour-green-trans-high, $colour-blue-trans-high, $colour-red-trans-high);
+
+// Stylings
+
+$backdrop-blur-light: blur(10px);
+$backdrop-blur-heavy: blur(20px);
+
+$box-shadow-down-smooth: 0px 10px 50px -10px rgba(0, 0, 0, 0.75);
+$box-shadow-down-sharp: 0px 15px 10px -10px rgba(0, 0, 0, 0.4);
+$box-shadow-up-smooth: 0px -10px 50px -10px rgba(0, 0, 0, 0.75);
+$box-shadow-up-sharp: 0px -15px 10px -10px rgba(0, 0, 0, 0.4);
+$box-shadow-left-smooth: -10px -9px 50px -10px rgba(0, 0, 0, 0.75);
+$box-shadow-left-sharp: -15px -9px 10px -10px rgba(0, 0, 0, 0.4);
+$box-shadow-right-smooth: 10px -9px 50px -10px rgba(0, 0, 0, 0.75);
+$box-shadow-right-sharp: 15px -9px 10px -10px rgba(0, 0, 0, 0.4);
+
+// Z-Index
+
+$zindex-main: 0;
+$zindex-navigation-bar: 1;
+
+// Elements
+
+$navigation-bar-height: 82;
