@@ -305,7 +305,7 @@
         }
 
         #settings-button {
-            background-color: $colour-grey-4;
+            background-color: $colour-grey-4-trans-high;
             backdrop-filter: $backdrop-blur-heavy;
             border-left: 1px solid $colour-grey-10;
             cursor: pointer;
@@ -323,7 +323,7 @@
         #id-card {
             width: ($navigation-bar-height * 4) + px;
             height: $navigation-bar-height + px;
-            background-color: $colour-grey-4;
+            background-color: $colour-grey-4-trans-high;
             backdrop-filter: $backdrop-blur-heavy;
             border-left: 1px solid $colour-grey-10;
             overflow: hidden;
