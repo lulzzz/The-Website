@@ -77,8 +77,9 @@ $box-shadow-right-sharp: 15px -9px 10px -10px rgba(0, 0, 0, 0.4);
 
 // Z-Index
 
-$zindex-main: 0;
-$zindex-navigation-bar: 1;
+$zindex-background-container: 0;
+$zindex-main: 1;
+$zindex-navigation-bar: 2;
 
 // Elements
 

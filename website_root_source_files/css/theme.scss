@@ -10,6 +10,8 @@
 
 @import "components/mainNavigationBar";
 
+@import "pages/index";
+
 @font-face {
     font-family: 'Roboto';
     font-weight: 100;
@@ -95,6 +97,9 @@ html {
 
 body {
     background-color: $colour-grey-2;
+    background-image: url("/img/background.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
     color: $colour-white;
     font-family: 'Roboto';
     padding: 0px;
@@ -117,11 +122,14 @@ main {
     overflow-y: auto;
     height: 100vh;
     padding: 0px !important;
+    backdrop-filter: $backdrop-blur-heavy;
 
     & > .row {
-        margin-left: ($navigation-bar-height * 1.5) + px;
-        margin-right: 0px;
-        padding-bottom: ($navigation-bar-height * 2.5) + px;
+        min-height: 100vh;
+        
+        &:not(.no-scroll) {
+            padding-bottom: ($navigation-bar-height * 2.5) + px;
+        }
     }
 }
 

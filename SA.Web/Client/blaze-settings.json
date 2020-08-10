@@ -1,5 +1,11 @@
 {
   "fileConfigs": {
+    "/img/background.png": {
+      "enabled": true,
+      "width": 3840,
+      "height": 2160,
+      "quality": 75
+    },
     "/css/theme.scss": {
       "enabled": true
     },
