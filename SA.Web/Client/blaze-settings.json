@@ -9,34 +9,6 @@
     "/css/theme.scss": {
       "enabled": true
     },
-    "/js/thirdparty/gsap.min.js": {
-      "enabled": true,
-      "order": 0
-    },
-    "/js/thirdparty/Draggable.min.js": {
-      "enabled": true,
-      "order": 1
-    },
-    "/js/thirdparty/EasePack.min.js": {
-      "enabled": true,
-      "order": 2
-    },
-    "/js/thirdparty/CSSRulePlugin.min.js": {
-      "enabled": true,
-      "order": 3
-    },
-    "/js/thirdparty/ScrollToPlugin.min.js": {
-      "enabled": true,
-      "order": 4
-    },
-    "/js/thirdparty/moment.min.js": {
-      "enabled": true,
-      "order": 5
-    },
-    "/js/thirdparty/chart.min.js": {
-      "enabled": true,
-      "order": 6
-    },
     "/js/socket.js": {
       "enabled": true,
       "order": 7
@@ -50,7 +22,7 @@
   "scssIncludeDirectory": "css",
   "scssPrecision": 3,
   "blacklistedDirectories": [
-    "css/thirdparty"
+
   ],
   "sourceResourcesDir": "D:/Projects/StarAthenaeum/The-Website/website_root_source_files"
 }
