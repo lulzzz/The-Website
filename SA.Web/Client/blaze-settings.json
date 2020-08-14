@@ -18,11 +18,21 @@
       "order": 8
     }
   },
+  "jsDependencyLinks": [
+    "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/CSSRulePlugin.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/Draggable.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/EasePack.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/ScrollToPlugin.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0-alpha.2/chart.js"
+
+  ],
   "formatWebsiteRoot": true,
   "scssIncludeDirectory": "css",
   "scssPrecision": 3,
   "blacklistedDirectories": [
-
+    "/css/thirdparty"
   ],
   "sourceResourcesDir": "D:/Projects/StarAthenaeum/The-Website/website_root_source_files"
 }
