@@ -91,7 +91,7 @@
             width: 23.333px;
             
             a {
-                color: $colour-grey-10;
+                color: $colour-green-trans-high;
 
                 i {
                     font-size: 22px;
@@ -290,12 +290,12 @@
                             }
         
                             &.active {
-                                background-color: $colour-grey-8-trans-high;
+                                background-color: $colour-grey-10-trans-low;
                                 color: $colour-white !important;
                             }
         
                             &:hover {
-                                background-color: $colour-grey-6-trans-high;
+                                background-color: $colour-grey-6-trans-low;
                                 color: $colour-white !important;
                             }
                         }
