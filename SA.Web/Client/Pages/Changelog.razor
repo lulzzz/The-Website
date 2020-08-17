@@ -1,7 +1,38 @@
 ﻿@page "/changelog"
 
-<h3>Changelog</h3>
+<main id="blog-container" class="container-fluid">
+    <div class="row">
+        <div class="col">
+            @if (State.ChangelogData != null)
+            {
+                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
+                {
+                    <ChangelogPost Entry="@b" />
+                }
+            }
+        </div>
+    </div>
+</main>
+
+@inject ClientState State
 
 @code {
 
+    protected override async Task OnInitializedAsync()
+    {
+        State.OnChangelogDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
+        {
+            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+            {
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
+            }
+            else await State.RequestChangelogData();
+        };
+        if (State.LocalUpdateTimes != null)
+        {
+            if (State.ChangelogData == null) await State.RequestChangelogData();
+        }
+        await base.OnInitializedAsync();
+    }
 }
