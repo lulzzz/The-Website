@@ -91,7 +91,7 @@
             width: 23.333px;
             
             a {
-                color: $colour-green-trans-high;
+                color: $colour-green-trans-low;
 
                 i {
                     font-size: 22px;
@@ -99,7 +99,7 @@
                 }
 
                 &:hover {
-                    color: $colour-red-trans-low;
+                    color: $colour-green-trans-high;
                 }
             }
         }
