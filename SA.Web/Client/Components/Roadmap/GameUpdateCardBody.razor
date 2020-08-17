@@ -1,0 +1,69 @@
+﻿<div class="row body">
+    <div class="col">
+        <GameUpdateCardItemFrame Title="Information"                IsCollapsed="IsCollapsed" SpecialClasses="section-item-important">
+            <GameUpdateCardInformation Card="Card" AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+        </GameUpdateCardItemFrame>
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.Characters))
+        {
+            <GameUpdateCardItemFrame Title="Characters"             IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.Characters)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.Characters)"                      AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.Locations))
+        {
+            <GameUpdateCardItemFrame Title="Locations"              IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.Locations)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.Locations)"           AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.AI))
+        {
+            <GameUpdateCardItemFrame Title="AI"                     IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.AI)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.AI)"                  AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.Gameplay))
+        {
+            <GameUpdateCardItemFrame Title="Gameplay"               IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.Gameplay)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.Gameplay)"            AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.ShipsAndVehicles))
+        {
+            <GameUpdateCardItemFrame Title="Ships And Vehicles"     IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.ShipsAndVehicles)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.ShipsAndVehicles)"    AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.WeaponsAndItems))
+        {
+            <GameUpdateCardItemFrame Title="Weapons And Items"      IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.WeaponsAndItems)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.WeaponsAndItems)"     AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+        @if (Card != null && Card.VersionFeatures.Any(o => o.Category == RoadmapCardCategory.CoreTech))
+        {
+            <GameUpdateCardItemFrame Title="Core Tech"              IsChanged="State.ChangedFeatures.Any(x => x.Category == RoadmapCardCategory.CoreTech)" IsCollapsed="IsCollapsed">
+                <GameUpdateCardCategory Card="Card" Features="Card.VersionFeatures.FindAll(o => o.Category == RoadmapCardCategory.CoreTech)"            AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+            </GameUpdateCardItemFrame>
+        }
+    </div>
+</div>
+
+@inject ClientState State
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    [Parameter]
+    public bool IsCollapsed { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; }
+
+    public bool Changed { get; set; }
+
+}

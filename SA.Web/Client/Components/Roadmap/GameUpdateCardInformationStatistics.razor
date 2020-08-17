@@ -1,0 +1,121 @@
+﻿<div class="col">
+    <div class="row">
+        <div class="col-4">
+            <small>Features</small>
+        </div>
+        <div class="col">
+            <small>@Card.VersionFeatures.Count()</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Scheduled</small>
+        </div>
+        <div class="col">
+            <small>@ScheduledFeatures</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>In Development</small>
+        </div>
+        <div class="col">
+            <small>@InDevelopmentFeatures</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Polish/Released</small>
+        </div>
+        <div class="col">
+            <small>@PolishingReleasedFeatures</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Tasks</small>
+        </div>
+        <div class="col">
+            <small>@((TaskCount != -1 ? TaskCount.ToString() : "Unknown") + "/" + (TasksCompleted != -1 ? TasksCompleted.ToString() : "Unknown"))</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Completion</small>
+        </div>
+        <div class="col">
+            <small>@Progress.ToString("0.00")%</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Version String</small>
+        </div>
+        <div class="col">
+            <small>@(Card.Patches[0].VersionString != null ? Card.Patches[0].VersionString : "Unknown")</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>PU Release</small>
+        </div>
+        <div class="col">
+            <small>@(Card.Patches[0].PUReleaseDate != null ? Card.Patches[0].PUReleaseDate?.ToShortDateString() : "Unknown")</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>PTU Release</small>
+        </div>
+        <div class="col">
+            <small>@(Card.Patches[0].PTUTestingStartDate != null ? Card.Patches[0].PTUTestingStartDate?.ToShortDateString() : "Unknown")</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <small>Evocati Release</small>
+        </div>
+        <div class="col">
+            <small>@(Card.Patches[0].EvocatiTestingDate != null ? Card.Patches[0].EvocatiTestingDate?.ToShortDateString() : "Unknown")</small>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; }
+
+    public int TaskCount { get; set; } = 0;
+    public int TasksCompleted { get; set; } = 0;
+    public double Progress { get; set; } = 0;
+    public int ScheduledFeatures { get; set; } = 0;
+    public int InDevelopmentFeatures { get; set; } = 0;
+    public int PolishingReleasedFeatures { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (RoadmapFeature f in Card.VersionFeatures)
+        {
+            RoadmapFeatureStatus status = f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TaskCount += f.TaskCount[f.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TasksCompleted += f.TasksCompleted[f.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            bool IsDataKnown = status != RoadmapFeatureStatus.Scheduled && TaskCount > 0 && TasksCompleted > 0;
+
+            if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled) ScheduledFeatures++;
+            else if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.InDevelopment) InDevelopmentFeatures++;
+            else PolishingReleasedFeatures++;
+        }
+
+        if (PolishingReleasedFeatures > 0 && InDevelopmentFeatures == 0 && ScheduledFeatures == 0) TaskCount = TasksCompleted;
+        Progress = InDevelopmentFeatures > 0 ? 100D * (double)TaskCount / (double)TasksCompleted : 100D;
+
+        await base.OnInitializedAsync();
+    }
+}

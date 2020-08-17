@@ -1,0 +1,43 @@
+﻿@page "/roadmap"
+
+<main id="roadmap-container" class="container-fluid">
+    <div class="row align-items-stretch">
+        <div id="graph-coming-soon">
+            <h3>Advanced Statistics Coming Soon</h3>
+        </div>
+        <div class="col">
+            <div id="roadmap-cards" class="row align-items-stretch">
+                @if (State.RoadmapData != null)
+                {
+                    @foreach (RoadmapCard card in State.RoadmapData.Cards)
+                    {
+                        <GameUpdateCard Card="card" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+@inject ClientState State
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        State.OnRoadmapCardDataChanged += StateHasChanged;
+        State.OnUpdateTimesChanged += async () =>
+        {
+            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+            {
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
+            }
+            else await State.RequestRoadmapData();
+        };
+        if (State.LocalUpdateTimes != null)
+        {
+            if (State.RoadmapData == null) await State.RequestRoadmapData();
+        }
+        await base.OnInitializedAsync();
+    }
+}

@@ -1,0 +1,83 @@
+﻿<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col-4">
+                <small>Scheduled</small>
+            </div>
+            <div class="col">
+                <small>@ScheduledFeatures</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <small>In Development</small>
+            </div>
+            <div class="col">
+                <small>@InDevelopmentFeatures</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <small>Polish/Released</small>
+            </div>
+            <div class="col">
+                <small>@PolishingReleasedFeatures</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <small>Tasks</small>
+            </div>
+            <div class="col">
+                <small>@(TaskCount.ToString() + "/" + TasksCompleted.ToString())</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <small>Completion</small>
+            </div>
+            <div class="col">
+                <small>@Progress.ToString("0.00")%</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<RoadmapFeature> Features { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; }
+
+    public int TaskCount { get; set; } = 0;
+    public int TasksCompleted { get; set; } = 0;
+    public double Progress { get; set; } = 0;
+    public int ScheduledFeatures { get; set; } = 0;
+    public int InDevelopmentFeatures { get; set; } = 0;
+    public int PolishingReleasedFeatures { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (RoadmapFeature f in Features)
+        {
+            RoadmapFeatureStatus status = f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TaskCount += f.TaskCount[f.TaskCount.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            TasksCompleted += f.TasksCompleted[f.TasksCompleted.Keys.Where(x => x <= SelectedDate).Reverse().First()];
+            bool IsDataKnown = status != RoadmapFeatureStatus.Scheduled && TaskCount > 0 && TasksCompleted > 0;
+
+            if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.Scheduled) ScheduledFeatures++;
+            else if (f.Status[f.Status.Keys.Where(x => x <= SelectedDate).Reverse().First()] == RoadmapFeatureStatus.InDevelopment) InDevelopmentFeatures++;
+            else PolishingReleasedFeatures++;
+        }
+
+        if (PolishingReleasedFeatures > 0 && InDevelopmentFeatures == 0 && ScheduledFeatures == 0) TaskCount = TasksCompleted;
+        Progress = TaskCount > 0 && TasksCompleted > 0 ? 100D * (double)TaskCount / (double)TasksCompleted : 0D;
+
+        await base.OnInitializedAsync();
+    }
+}

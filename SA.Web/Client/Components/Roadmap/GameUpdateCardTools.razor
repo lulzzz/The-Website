@@ -1,0 +1,38 @@
+﻿<div class="row align-items-stretch tools">
+    <div class="col">
+        <small>Select a roadmap update</small>
+        <select @onchange="@ChangeDate">
+            @foreach (DateTime d in AvailableDates)
+            {
+                <option>@d.ToShortDateString()</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="collapse-button" title="Collapse All" @onclick="async () => await ToggleCollapse()">
+            <i class="fas fa-angle-double-@(IsCollapsed ? "down" : "up")"></i>
+        </button>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CollapseAllState { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime> SelectedDateState { get; set; }
+
+    public bool IsCollapsed { get; set; } = true;
+    public DateTime SelectedDate { get; set; }
+
+    private async Task ToggleCollapse() => await CollapseAllState.InvokeAsync(IsCollapsed = !IsCollapsed);
+
+    private async Task ChangeDate(ChangeEventArgs args) => await SelectedDateState.InvokeAsync(SelectedDate = DateTime.Parse(args.Value.ToString()));
+}

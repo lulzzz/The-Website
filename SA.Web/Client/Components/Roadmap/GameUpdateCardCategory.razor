@@ -1,0 +1,32 @@
+﻿<div class="col">
+    <GameUpdateCardCategoryItemFrame Title="Statistics" SpecialClasses="section-item-important">
+        <GameUpdateCardCategoryStatistics Features="Features" AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+    </GameUpdateCardCategoryItemFrame>
+    <div class="row category">
+        <div class="col">
+            @foreach (RoadmapFeature feature in Features)
+            {
+                <GameUpdateCardCategoryItemFrame Title="@(feature.Title)" IsChanged="State.ChangedFeatures.Contains(feature)">
+                    <GameUpdateCardCategoryFeature Card="Card" Feature="feature" AvailableDates="AvailableDates" SelectedDate="SelectedDate" />
+                </GameUpdateCardCategoryItemFrame>
+            }
+        </div>
+    </div>
+</div>
+
+@inject ClientState State
+
+@code {
+
+    [Parameter]
+    public RoadmapCard Card { get; set; }
+
+    [Parameter]
+    public List<RoadmapFeature> Features { get; set; }
+
+    [Parameter]
+    public List<DateTime> AvailableDates { get; set; }
+
+    [Parameter]
+    public DateTime SelectedDate { get; set; }
+}
