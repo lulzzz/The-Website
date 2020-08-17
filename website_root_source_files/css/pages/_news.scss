@@ -1,0 +1,130 @@
+
+// BEGIN-Min-Width
+
+@include media-breakpoint-up(xs) {
+}
+
+@include media-breakpoint-up(sm) {
+}
+
+@include media-breakpoint-up(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-up(lg) {
+
+    #news-page {
+
+        a {
+            display: inline;
+        }
+
+        & > .col-2 {
+            padding-top: 40px;
+        }
+
+        .news-entry {
+            background-color: $colour-grey-3-trans-high;
+            box-shadow: $box-shadow-down-sharp;
+            margin: 40px;
+
+            .news-header {
+                background-color: $colour-green-trans-low;
+
+                h4 {
+                    margin-top: 18px;
+                    margin-bottom: 18px;
+                    margin-left: 18px;
+                    margin-right: 18px;
+                    font-weight: 200;
+                }
+            }
+
+            .news-content {
+                background-color: rgba(0, 0, 0, 0.25);
+
+                & > .col {
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                    padding-left: 40px;
+                    padding-right: 40px;
+                }
+
+                img {
+                    box-shadow: $box-shadow-down-smooth;
+                    margin-top: 25px;
+                    margin-bottom: 25px;
+                    display: inline-block;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: white;
+                    font-style: italic;
+
+                    &:hover {
+                        color: $colour-red;
+                    }
+                }
+            }
+
+            .news-footer {
+                background-color: $colour-green-trans-low;
+
+                small {
+                    margin-top: 12px;
+                    margin-bottom: 12px;
+                    margin-left: 12px;
+                    margin-right: 12px;
+                }
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(xl) {
+}
+
+// END-Min-Width
+
+// BEGIN-Max-Width
+
+@include media-breakpoint-down(xs) {
+}
+
+@include media-breakpoint-down(sm) {
+}
+
+// Desktop
+
+@include media-breakpoint-down(md) {
+}
+
+@include media-breakpoint-down(lg) {
+}
+
+// END-Max-Width
+
+// BEGIN-Width-Exclusivity
+
+@include media-breakpoint-only(xs) {
+}
+
+@include media-breakpoint-only(sm) {
+}
+
+@include media-breakpoint-only(md) {
+}
+
+// Desktop
+
+@include media-breakpoint-only(lg) {
+}
+
+@include media-breakpoint-only(xl) {
+}
+
+// END-Width-Exclusivity

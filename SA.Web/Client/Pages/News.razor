@@ -1,18 +1,79 @@
 ﻿@page "/news"
 
-<main id="blog-container" class="container-fluid">
-    <div class="row">
-        <div class="col">
-            @if (State.BlogData != null)
+<div id="news-page" class="row no-scroll">
+    <div class="col-8 alt-scroll">
+        @if (State.NewsData != null)
+        {
+            if (State.NewsData.NewsPosts != null)
             {
-                @foreach (BlogEntryData b in State.BlogData.BlogPosts.Reverse<BlogEntryData>())
+                foreach (NewsEntryData entry in State.NewsData.NewsPosts)
                 {
-                    <BlogPost Entry="@b" />
+                    <div class="row news-entry">
+                        <div class="col">
+                            <div class="row news-header">
+                                <div class="col">
+                                    <h4>@entry.Title</h4>
+                                </div>
+                            </div>
+                            <div class="row news-content">
+                                <div class="col">
+                                    @foreach (string c in entry.Content)
+                                    {
+                                        if (c.StartsWith("https://"))
+                                        {
+                                            if (c.EndsWith(".webp") || c.EndsWith(".gif") || c.EndsWith(".png") || c.EndsWith("jpg"))
+                                            {
+                                                <div class="row justify-content-center">
+                                                    <div class="col-auto">
+                                                        <img src="@c" draggable="false" alt="Blog Image" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <a href="@c" target="_blank" draggable="false">@c</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p>
+                                                @foreach (string f in c.Split(" "))
+                                                {
+                                                    @if (f.StartsWith("https://"))
+                                                    {
+                                                        <a href="@f" target="_blank" draggable="false">@f</a> @(" ")
+                                                    }
+                                                    else
+                                                    {
+                                                        @(f + " ")
+                                                    }
+                                                }
+                                            </p>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row news-footer">
+                                <div class="col">
+                                    <small>
+                                        Posted on @entry.Date.ToShortDateString() at @entry.Date.ToShortTimeString() @(entry.LastEditTime != null ?
+                                        "and last edited on " + ((DateTime)entry.LastEditTime).ToShortDateString() + " at " + ((DateTime)entry.LastEditTime).ToShortTimeString() : string.Empty)
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
-        </div>
+        }
     </div>
-</main>
+    <div class="col-2 alt-scroll">
+        <a class="twitter-timeline" data-dnt="true" data-theme="dark" href="https://twitter.com/RobertsSpaceInd?ref_src=twsrc%5Etfw"></a>
+    </div>
+    <div class="col-2 alt-scroll">
+        <a class="twitter-timeline" data-dnt="true" data-theme="dark" href="https://twitter.com/Stryxus?ref_src=twsrc%5Etfw"></a>
+    </div>
+</div>
 
 @inject ClientState State
 
@@ -20,18 +81,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        State.OnBlogDataChanged += StateHasChanged;
+        State.OnNewsDataChanged += StateHasChanged;
         State.OnUpdateTimesChanged += async () =>
         {
             if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
             {
-                if (DateTime.Compare(State.PreviousLocalUpdateTimes.BlogDataUpdate, State.LocalUpdateTimes.BlogDataUpdate) < 0) await State.RequestBlogData(true);
+                if (DateTime.Compare(State.PreviousLocalUpdateTimes.NewsDataUpdate, State.LocalUpdateTimes.NewsDataUpdate) < 0) await State.RequestChangelogData(true);
             }
-            else await State.RequestBlogData();
+            else await State.RequestNewsData();
         };
         if (State.LocalUpdateTimes != null)
         {
-            if (State.BlogData == null) await State.RequestBlogData();
+            if (State.NewsData == null) await State.RequestNewsData();
         }
         await base.OnInitializedAsync();
     }

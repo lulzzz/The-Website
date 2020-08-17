@@ -32,6 +32,13 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="Components\Changelog\" />
+    <Folder Include="Components\Fleeter\" />
+    <Folder Include="Components\Econome\" />
+    <Folder Include="Components\About\" />
+    <Folder Include="Components\News\" />
+    <Folder Include="Components\StarGazer\" />
+    <Folder Include="Components\Roadmap\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

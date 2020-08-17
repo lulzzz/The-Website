@@ -11,6 +11,7 @@
 @import "components/mainNavigationBar";
 
 @import "pages/index";
+@import "pages/news";
 @import "pages/roadmap";
 
 @font-face {
@@ -121,15 +122,27 @@ html, body {
 main {
     z-index: $zindex-main;
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100vh;
     padding: 0px !important;
     backdrop-filter: $backdrop-blur-heavy;
 
     & > .row {
         min-height: 100vh;
+
+        &.no-scroll {
+            height: 100vh !important;
+            overflow-y: hidden !important;
+        }
         
         &:not(.no-scroll) {
-            padding-bottom: ($navigation-bar-height * 2.5) + px;
+            padding-bottom: ($navigation-bar-height * 4.5) + px;
+        }
+
+        [class*='col-'].alt-scroll {
+            padding-bottom: ($navigation-bar-height * 4.5) + px;
+            overflow-y: scroll !important;
+            height: 100vh;
         }
     }
 }

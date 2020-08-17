@@ -10,7 +10,7 @@ namespace SA.Web.Server.Data
     public static class ServerState
     {
         public static LastUpdateTimes UpdateTimes               { get; set; } = null;
-        public static string BlogData                           { get; set; } = null;
+        public static string NewsData                           { get; set; } = null;
         public static string ChangelogData                      { get; set; } = null;
         public static string RoadmapData                        { get; set; } = null;
         public static string PhotoData                          { get; set; } = null;

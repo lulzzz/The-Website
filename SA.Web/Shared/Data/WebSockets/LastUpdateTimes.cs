@@ -7,8 +7,8 @@ namespace SA.Web.Shared.Data.WebSockets
     {
         [JsonPropertyName("RoadmapDataUpdate")]
         public DateTime RoadmapDataUpdate { get; set; }
-        [JsonPropertyName("BlogDataUpdate")]
-        public DateTime BlogDataUpdate { get; set; }
+        [JsonPropertyName("NewsDataUpdate")]
+        public DateTime NewsDataUpdate { get; set; }
         [JsonPropertyName("ChangelogDataUpdate")]
         public DateTime ChangelogDataUpdate { get; set; }
         [JsonPropertyName("PhotographyDataUpdate")]

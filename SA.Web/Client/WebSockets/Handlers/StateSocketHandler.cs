@@ -53,10 +53,10 @@ namespace SA.Web.Client.WebSockets
             catch (JsonException) { }
             try
             {
-                BlogData blogData;
-                if ((blogData = JsonSerializer.DeserializeAsync<BlogData>(stream).Result) != null)
+                NewsData blogData;
+                if ((blogData = JsonSerializer.DeserializeAsync<NewsData>(stream).Result) != null)
                 {
-                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyBlogDataChange(blogData, false);
+                    await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyNewsDataChange(blogData, false);
                     return;
                 }
             }

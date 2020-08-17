@@ -75,13 +75,13 @@ namespace SA.Web.Client.WebSockets
                     }
                 }
 
-                BlogData blogData;
-                if (message.StartsWith((type = typeof(BlogData)).Name))
+                NewsData blogData;
+                if (message.StartsWith((type = typeof(NewsData)).Name))
                 {
                     message = message.Substring(type.Name.Length);
-                    if ((blogData = JsonSerializer.Deserialize<BlogData>(message, ClientState.jsonoptions)) != null)
+                    if ((blogData = JsonSerializer.Deserialize<NewsData>(message, ClientState.jsonoptions)) != null)
                     {
-                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyBlogDataChange(blogData, false);
+                        await ((ClientState)Startup.Host.Services.GetService(typeof(ClientState))).NotifyNewsDataChange(blogData, false);
                         return;
                     }
                 }

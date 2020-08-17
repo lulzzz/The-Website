@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SA.Web.Shared
 {
@@ -8,7 +9,7 @@ namespace SA.Web.Shared
         public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST");
 
         public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri(CoreLink + "/update-times.json");
-        public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/blog-data.json");
+        public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/news-data.json");
         public static Uri ChangelogDataLink                     { get; private set; } = new Uri(CoreLink + "/changelog-posts.json");
         public static Uri RoadmapVersionsLink                   { get; private set; } = new Uri(CoreLink + "/roadmap-versions.json");
         public static Uri PhotographyDataLink                   { get; private set; } = new Uri(CoreLink + "/photography-data.json");
@@ -19,7 +20,7 @@ namespace SA.Web.Shared
         public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE");
 
         public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri(CoreLink + "/update-times.json");
-        public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/blog-data.json");
+        public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/news-data.json");
         public static Uri ChangelogDataLink                     { get; private set; } = new Uri(CoreLink + "/changelog-posts.json");
         public static Uri RoadmapVersionsLink                   { get; private set; } = new Uri(CoreLink + "/roadmap-versions.json");
         public static Uri PhotographyDataLink                   { get; private set; } = new Uri(CoreLink + "/photography-data.json");
@@ -31,5 +32,6 @@ namespace SA.Web.Shared
 
         public static bool IsDevelopmentMode { get; set; }
         public static int MaxWebSocketMessageBufferSize { get; set; } = 512 * 1024;
+        public static CultureInfo Culture = new CultureInfo("en-GB");
     }
 }

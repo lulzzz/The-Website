@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace SA.Web.Shared.Data.WebSockets
 {
-    public class BlogData
+    public class NewsData
     {
-        public List<BlogEntryData> BlogPosts { get; set; }
+        public List<NewsEntryData> NewsPosts { get; set; }
     }
 
-    public class BlogEntryData
+    public class NewsEntryData
     {
         public string Title { get; set; }
         public DateTime Date { get; set; }

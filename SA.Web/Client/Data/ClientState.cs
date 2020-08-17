@@ -41,23 +41,23 @@ namespace SA.Web.Client.Data
             OnUpdateTimesChanged?.Invoke();
         }
 
-        public BlogData BlogData { get; private set; } = null;
-        public event Action OnBlogDataChanged;
-        public async Task NotifyBlogDataChange(BlogData data, bool isLocalData)
+        public NewsData NewsData { get; private set; } = null;
+        public event Action OnNewsDataChanged;
+        public async Task NotifyNewsDataChange(NewsData data, bool isLocalData)
         {
             if (!isLocalData)
             {
                 if (Settings.ShowBlogUpdateNotification)
                 {
-                    await Logger.LogInfo("The blog section updated to " + LocalUpdateTimes.BlogDataUpdate.ToShortDateString() + " "
-                        + LocalUpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
-                    NotifyUserInfo("The blog section updated to " + LocalUpdateTimes.BlogDataUpdate.ToShortDateString() + " "
-                        + LocalUpdateTimes.BlogDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    await Logger.LogInfo("The news section updated to " + LocalUpdateTimes.NewsDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.NewsDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
+                    NotifyUserInfo("The news section updated to " + LocalUpdateTimes.NewsDataUpdate.ToShortDateString() + " "
+                        + LocalUpdateTimes.NewsDataUpdate.ToShortTimeString() + " and will be stored for offline usage.");
                 }
-                BlogData = data;
-                await SetLocalData<BlogData>();
+                NewsData = data;
+                await SetLocalData<NewsData>();
             }
-            OnBlogDataChanged?.Invoke();
+            OnNewsDataChanged?.Invoke();
         }
 
         public ChangelogData ChangelogData { get; private set; } = null;
@@ -233,11 +233,11 @@ namespace SA.Web.Client.Data
             else await GetLocalData<LastUpdateTimes>();
         }
 
-        public async Task RequestBlogData(bool getFreshCopy = false)
+        public async Task RequestNewsData(bool getFreshCopy = false)
         {
             if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
                 await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetBlogData);
-            else await GetLocalData<BlogData>();
+            else await GetLocalData<NewsData>();
         }
 
         public async Task RequestChangelogData(bool getFreshCopy = false)
@@ -326,9 +326,9 @@ namespace SA.Web.Client.Data
                     await JSRuntime.InvokeVoidAsync("localstorageinterface.setData", t.Name, 
                         JsonSerializer.Serialize(LocalUpdateTimes = defaultData ? new LastUpdateTimes() : LocalUpdateTimes, t, jsonoptions));
                     break;
-                case Type t when t == typeof(BlogData):
+                case Type t when t == typeof(NewsData):
                     await JSRuntime.InvokeVoidAsync("localstorageinterface.setData", t.Name, 
-                        JsonSerializer.Serialize(BlogData = defaultData ? new BlogData() : BlogData, t, jsonoptions));
+                        JsonSerializer.Serialize(NewsData = defaultData ? new NewsData() : NewsData, t, jsonoptions));
                     break;
                 case Type t when t == typeof(ChangelogData):
                     await JSRuntime.InvokeVoidAsync("localstorageinterface.setData", t.Name, 
@@ -373,13 +373,13 @@ namespace SA.Web.Client.Data
                         }
                         else await RequestUpdateData(true);
                         break;
-                    case Type t when t == typeof(BlogData):
+                    case Type t when t == typeof(NewsData):
                         if (!string.IsNullOrEmpty(content))
                         {
-                            BlogData = JsonSerializer.Deserialize<BlogData>(content, jsonoptions);
-                            await NotifyBlogDataChange(BlogData, true);
+                            NewsData = JsonSerializer.Deserialize<NewsData>(content, jsonoptions);
+                            await NotifyNewsDataChange(NewsData, true);
                         }
-                        else await RequestBlogData(true);
+                        else await RequestNewsData(true);
                         break;
                     case Type t when t == typeof(ChangelogData):
                         if (!string.IsNullOrEmpty(content))

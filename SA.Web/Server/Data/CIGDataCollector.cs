@@ -46,12 +46,12 @@ namespace SA.Web.Server.Data
                     if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(RoadmapData).Name + ServerState.RoadmapData);
                 });
             }
-            if (ServerState.BlogData == null || DateTime.Compare(upTimes.BlogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.BlogDataUpdate.ToUniversalTime()) > 0)
+            if (ServerState.NewsData == null || DateTime.Compare(upTimes.NewsDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.NewsDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Blog Data", Globals.BlogDataLink, async (result) => 
+                await GetData("News Data", Globals.BlogDataLink, async (result) => 
                 { 
-                    ServerState.BlogData = result;
-                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(BlogData).Name + ServerState.BlogData);
+                    ServerState.NewsData = result;
+                    if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(NewsData).Name + ServerState.NewsData);
                 });
             }
             if (ServerState.ChangelogData == null || DateTime.Compare(upTimes.ChangelogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.ChangelogDataUpdate.ToUniversalTime()) > 0)
