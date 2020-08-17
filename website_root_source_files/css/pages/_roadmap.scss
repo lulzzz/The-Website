@@ -14,6 +14,36 @@
 
 @include media-breakpoint-up(lg) {
 
+    #roadmap-page {
+
+        & > .col > .row, & > .row {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        #graph-coming-soon {
+            background-color: $colour-blue-trans-low;
+            position: fixed;
+            top: 0px;
+            bottom: $navigation-bar-height * 4 + px;
+            width: 100px;
+            margin-right: 10px;
+            border-right: 1px solid $colour-blue-trans-low;
+
+            h3 {
+                transform: rotate(-90deg) translateX(-190px) translateY(-215px);
+                width: 500px;
+            }
+        }
+
+        #roadmap-cards {
+            padding-left: 110px;
+            padding-bottom: 100px;
+        }
+    }
 }
 
 @include media-breakpoint-up(xl) {

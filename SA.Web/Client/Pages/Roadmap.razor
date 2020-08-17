@@ -1,23 +1,21 @@
 ﻿@page "/roadmap"
 
-<main id="roadmap-container" class="container-fluid">
-    <div class="row align-items-stretch">
-        <div id="graph-coming-soon">
-            <h3>Advanced Statistics Coming Soon</h3>
-        </div>
-        <div class="col">
-            <div id="roadmap-cards" class="row align-items-stretch">
-                @if (State.RoadmapData != null)
+<div id="roadmap-page" class="row align-items-stretch">
+    <div id="graph-coming-soon">
+        <h3>Advanced Statistics Coming Soon</h3>
+    </div>
+    <div class="col">
+        <div id="roadmap-cards" class="row align-items-stretch">
+            @if (State.RoadmapData != null)
+            {
+                @foreach (RoadmapCard card in State.RoadmapData.Cards)
                 {
-                    @foreach (RoadmapCard card in State.RoadmapData.Cards)
-                    {
-                        <GameUpdateCard Card="card" />
-                    }
+                    <GameUpdateCard Card="card" />
                 }
-            </div>
+            }
         </div>
     </div>
-</main>
+</div>
 
 @inject ClientState State
 

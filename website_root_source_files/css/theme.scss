@@ -8,11 +8,12 @@
 @import "globalClasses";
 @import "elements";
 
-@import "components/mainNavigationBar";
-
 @import "pages/index";
 @import "pages/news";
 @import "pages/roadmap";
+
+@import "components/mainNavigationBar";
+@import "components/roadmapCard";
 
 @font-face {
     font-family: 'Roboto';
