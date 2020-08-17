@@ -250,7 +250,7 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
-                                            <small>Citizen-59095694903</small>
+                                            <small>Citizen-@rand.Next(int.MinValue, int.MaxValue)</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -273,7 +273,9 @@
 
 @inject ClientState State
 
-@code {        
+@code {      
+
+    private Random rand = new Random();
 
     protected override async Task OnInitializedAsync()
     {
