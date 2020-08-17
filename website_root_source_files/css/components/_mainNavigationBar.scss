@@ -312,6 +312,14 @@
                 font-size: 24px;
                 transform: skewX(-30deg);
             }
+
+            &.active {
+                background-color: $colour-grey-10-trans-low;
+            }
+    
+            &:hover {
+                background-color: $colour-grey-6-trans-low;
+            }
         }
 
         #id-card {
@@ -347,6 +355,14 @@
                         height: $navigation-bar-height + px;
                     }
                 }
+            }
+            
+            &.active {
+                background-color: $colour-grey-10-trans-low;
+            }
+
+            &:hover {
+                background-color: $colour-grey-6-trans-low;
             }
         }
     }
