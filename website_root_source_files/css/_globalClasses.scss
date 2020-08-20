@@ -41,6 +41,16 @@
         border-color: $colour-grey-10;
         border-style: solid;
     }
+
+    .todo-page {
+
+        & > .col-auto {
+            background-color: $colour-grey-1-trans-low;
+            padding-left: 50px;
+            padding-right: 50px;
+            max-width: 60%;
+        }
+    }
 }
 
 @include media-breakpoint-up(xl) {
