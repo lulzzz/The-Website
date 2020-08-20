@@ -6,7 +6,7 @@ namespace SA.Web.Shared
     public static class Globals
     {
 #if DEBUG
-        public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST");
+        public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/v1");
 
         public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri(CoreLink + "/update-times.json");
         public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/news-data.json");
@@ -15,9 +15,9 @@ namespace SA.Web.Shared
         public static Uri PhotographyDataLink                   { get; private set; } = new Uri(CoreLink + "/photography-data.json");
         public static Uri VideographyDataLink                   { get; private set; } = new Uri(CoreLink + "/videography-data.json");
 
-        public static Uri RoadmapVersionsIndividualLink         { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/TEST/roadmap-cards/");
+        public static Uri RoadmapVersionsIndividualLink         { get; private set; } = new Uri(CoreLink + "/roadmap-cards/");
 #else
-        public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE");
+        public static Uri CoreLink                              { get; private set; } = new Uri("https://raw.githubusercontent.com/Star-Athenaeum/Data-Vault/master/LIVE/v1");
 
         public static Uri LastUpdateTimesLink                   { get; private set; } = new Uri(CoreLink + "/update-times.json");
         public static Uri BlogDataLink                          { get; private set; } = new Uri(CoreLink + "/news-data.json");
