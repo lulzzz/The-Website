@@ -6,6 +6,12 @@
       "height": 2160,
       "quality": 75
     },
+    "/img/about/stryxus.png": {
+      "enabled": true,
+      "width": 678,
+      "height": 1909,
+      "quality": 90
+    },
     "/css/theme.scss": {
       "enabled": true
     },

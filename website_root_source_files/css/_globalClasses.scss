@@ -37,7 +37,21 @@
         margin-right: -21px;
     }
 
-    .bordered-line-h, .bordered-line-v {
+    .bordered-line-h-alt {
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+    }
+
+    .bordered-line-v-alt {
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 1px;
+        border-right-width: 1px;
+    }
+
+    .bordered-line-h, .bordered-line-v, .bordered-line-h-alt, .bordered-line-v-alt {
         border-color: $colour-grey-10;
         border-style: solid;
     }
