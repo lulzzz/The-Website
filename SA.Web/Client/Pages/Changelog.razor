@@ -5,9 +5,12 @@
         <div class="col">
             @if (State.ChangelogData != null)
             {
-                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
+                if (State.ChangelogData.ChangelogPosts != null) 
                 {
-                    <ChangelogPost Entry="@b" />
+                    foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
+                    {
+                        <ChangelogPost Entry="@b" />
+                    }
                 }
             }
         </div>
