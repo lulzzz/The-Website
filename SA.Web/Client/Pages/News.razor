@@ -21,7 +21,7 @@
                                     {
                                         @if (c.StartsWith("https://"))
                                         {
-                                            @if (c.EndsWith(".webp") || c.EndsWith(".gif") || c.EndsWith(".png") || c.EndsWith("jpg"))
+                                            @if (c.Contains(".webp") || c.Contains(".gif") || c.Contains(".png") || c.Contains("jpg"))
                                             {
                                                 <div class="row justify-content-center">
                                                     <div class="col-auto">
