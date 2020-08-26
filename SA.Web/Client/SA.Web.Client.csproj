@@ -31,6 +31,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="Components\Changelog\" />
     <Folder Include="Components\Fleeter\" />
     <Folder Include="Components\Econome\" />
     <Folder Include="Components\About\" />

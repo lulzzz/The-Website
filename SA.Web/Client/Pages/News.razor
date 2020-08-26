@@ -4,24 +4,24 @@
     <div class="col-8 alt-scroll">
         @if (State.NewsData != null)
         {
-            if (State.NewsData.NewsPosts != null)
+            @if (State.NewsData.NewsPosts != null)
             {
-                foreach (NewsEntryData entry in State.NewsData.NewsPosts)
+                @foreach (NewsEntryData entry in State.NewsData.NewsPosts)
                 {
-                    <div class="row news-entry">
+                    <div class="row post-entry">
                         <div class="col">
-                            <div class="row news-header">
+                            <div class="row post-header">
                                 <div class="col">
                                     <h4>@entry.Title</h4>
                                 </div>
                             </div>
-                            <div class="row news-content">
+                            <div class="row post-content">
                                 <div class="col">
                                     @foreach (string c in entry.Content)
                                     {
-                                        if (c.StartsWith("https://"))
+                                        @if (c.StartsWith("https://"))
                                         {
-                                            if (c.EndsWith(".webp") || c.EndsWith(".gif") || c.EndsWith(".png") || c.EndsWith("jpg"))
+                                            @if (c.EndsWith(".webp") || c.EndsWith(".gif") || c.EndsWith(".png") || c.EndsWith("jpg"))
                                             {
                                                 <div class="row justify-content-center">
                                                     <div class="col-auto">
@@ -53,7 +53,7 @@
                                     }
                                 </div>
                             </div>
-                            <div class="row news-footer">
+                            <div class="row post-footer">
                                 <div class="col">
                                     <small>
                                         Posted on @entry.Date.ToShortDateString() at @entry.Date.ToShortTimeString() @(entry.LastEditTime != null ?

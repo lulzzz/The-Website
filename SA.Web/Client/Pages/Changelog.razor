@@ -1,21 +1,80 @@
 ﻿@page "/changelog"
 
-<main id="blog-container" class="container-fluid">
-    <div class="row">
-        <div class="col">
-            @if (State.ChangelogData != null)
+<div id="changelog-page" class="row">
+    <div class="col">
+        @if (State.ChangelogData != null)
+        {
+            @if (State.ChangelogData.ChangelogPosts != null) 
             {
-                if (State.ChangelogData.ChangelogPosts != null) 
+                @foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
                 {
-                    foreach (ChangelogEntryData b in State.ChangelogData.ChangelogPosts.Reverse<ChangelogEntryData>())
-                    {
-                        <ChangelogPost Entry="@b" />
-                    }
+                    <div class="row post-entry">
+                        <div class="col">
+                            <div class="row post-header">
+                                <div class="col">
+                                    <h4>@b.Title</h4>
+                                </div>
+                            </div>
+                            <div class="row post-content">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                @b.Description
+                                            </p>
+                                        </div>
+                                    </div>
+                                    @if (b.Additions.Count != 0)
+                                    {
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Added</h6>
+                                                <ul>
+                                                    @foreach (string c in b.Additions)
+                                                    {
+                                                        <li>@c</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (b.Removals.Count != 0)
+                                    {
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Removed</h6>
+                                                <ul>
+                                                    @foreach (string c in b.Removals)
+                                                    {
+                                                        <li>@c</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (b.Changes.Count != 0)
+                                    {
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6>Changes</h6>
+                                                <ul>
+                                                    @foreach (string c in b.Changes)
+                                                    {
+                                                        <li>@c</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
-        </div>
+        }
     </div>
-</main>
+</div>
 
 @inject ClientState State
 
