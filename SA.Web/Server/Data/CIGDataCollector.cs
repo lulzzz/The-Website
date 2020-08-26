@@ -26,18 +26,18 @@ namespace SA.Web.Server.Data
 
             await Logger.LogInfo("Checking for repository updates...");
             WebRequest request = WebRequest.Create(Globals.LastUpdateTimesLink);
-            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString(Globals.LastUpdateTimesLink)));
+            MemoryStream upTimesStream = new MemoryStream(Encoding.UTF8.GetBytes(await DownloadDataString<LastUpdateTimes>(Globals.LastUpdateTimesLink)));
             LastUpdateTimes upTimes = JsonSerializer.DeserializeAsync<LastUpdateTimes>(upTimesStream).Result;
             if (ServerState.RoadmapData == null || DateTime.Compare(upTimes.RoadmapDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.RoadmapDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Roadmap Data", Globals.RoadmapVersionsLink, async (result) =>
+                await GetData<RoadmapCardVersions>("Roadmap Data", Globals.RoadmapVersionsLink, async (result) =>
                 {
                     RoadmapData r = new RoadmapData { Cards = new List<RoadmapCard>() };
                     foreach (string v in JsonSerializer.Deserialize<RoadmapCardVersions>(result).Versions)
                     {
                         try
                         {
-                            r.Cards.Add(JsonSerializer.Deserialize<RoadmapCard>(Encoding.UTF8.GetBytes(await DownloadDataString(
+                            r.Cards.Add(JsonSerializer.Deserialize<RoadmapCard>(Encoding.UTF8.GetBytes(await DownloadDataString<RoadmapCard>(
                                 new Uri(Globals.RoadmapVersionsIndividualLink + v + ".json"))), ServerState.jsonoptions));
                         }
                         catch (JsonException e) { await Logger.LogError(e.Message); }
@@ -48,7 +48,7 @@ namespace SA.Web.Server.Data
             }
             if (ServerState.NewsData == null || DateTime.Compare(upTimes.NewsDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.NewsDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("News Data", Globals.BlogDataLink, async (result) => 
+                await GetData<NewsData>("News Data", Globals.BlogDataLink, async (result) => 
                 { 
                     ServerState.NewsData = result;
                     if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(NewsData).Name + ServerState.NewsData);
@@ -56,7 +56,7 @@ namespace SA.Web.Server.Data
             }
             if (ServerState.ChangelogData == null || DateTime.Compare(upTimes.ChangelogDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.ChangelogDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Changelog Data", Globals.ChangelogDataLink, async (result) => 
+                await GetData<ChangelogData>("Changelog Data", Globals.ChangelogDataLink, async (result) => 
                 {
                     ServerState.ChangelogData = result;
                     if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(ChangelogData).Name + ServerState.ChangelogData);
@@ -64,7 +64,7 @@ namespace SA.Web.Server.Data
             }
             if (ServerState.PhotoData == null || DateTime.Compare(upTimes.PhotographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.PhotographyDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Photography Data", Globals.PhotographyDataLink, async (result) => 
+                await GetData<MediaPhotographyData>("Photography Data", Globals.PhotographyDataLink, async (result) => 
                 {
                     ServerState.PhotoData = result;
                     if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaPhotographyData).Name + ServerState.PhotoData);
@@ -72,7 +72,7 @@ namespace SA.Web.Server.Data
             }
             if (ServerState.VideoData == null || DateTime.Compare(upTimes.VideographyDataUpdate.ToUniversalTime(), ServerState.UpdateTimes.VideographyDataUpdate.ToUniversalTime()) > 0)
             {
-                await GetData("Videography Data", Globals.VideographyDataLink, async (result) => 
+                await GetData<MediaVideographyData>("Videography Data", Globals.VideographyDataLink, async (result) => 
                 {
                     ServerState.VideoData = result;
                     if (!firstRound) await ((StateSocketHandler)Startup.Services.GetService(typeof(StateSocketHandler))).SendMessageToAllAsync("JSON." + typeof(MediaVideographyData).Name + ServerState.VideoData);
@@ -84,15 +84,15 @@ namespace SA.Web.Server.Data
 
             firstRound = false;
 
-            async Task GetData(string logName, Uri link, Action<string> notify)
+            async Task GetData<T>(string logName, Uri link, Action<string> notify)
             {
                 await Logger.LogInfo("  -  " + logName + " update available.");
-                notify.Invoke(await DownloadDataString(link));
+                notify.Invoke(await DownloadDataString<T>(link));
                 sendUpdate = true;
             }
         }
 
-        private static async Task<string> DownloadDataString(Uri uri)
+        private static async Task<string> DownloadDataString<T>(Uri uri)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -104,7 +104,7 @@ namespace SA.Web.Server.Data
                 msg.Headers.Add(HeaderNames.UserAgent, "StarAthenaeumWebsiteServer");
                 string result = string.Empty;
                 await client.SendAsync(msg).ContinueWith(async (msgTask) => result = await msgTask.Result.Content.ReadAsStringAsync());
-                return result;
+                return Encoding.UTF8.GetString(JsonSerializer.SerializeToUtf8Bytes(JsonSerializer.Deserialize<T>(Encoding.UTF8.GetBytes(result)), ServerState.jsonoptions));
             }
         }
     }

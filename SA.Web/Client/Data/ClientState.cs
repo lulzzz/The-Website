@@ -20,8 +20,7 @@ namespace SA.Web.Client.Data
         private IJSRuntime JSRuntime { get; set; }
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            DefaultBufferSize = Globals.MaxSocketBufferSize,
-            NumberHandling = JsonNumberHandling.Strict
+            DefaultBufferSize = Globals.MaxSocketBufferSize
         };
 
         public ClientState(IJSRuntime jsruntime)

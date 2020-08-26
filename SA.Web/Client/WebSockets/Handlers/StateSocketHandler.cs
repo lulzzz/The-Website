@@ -23,6 +23,7 @@ namespace SA.Web.Client.WebSockets
         {
             string message = Encoding.UTF8.GetString(buffer);
             message = message.Replace("\0", string.Empty);
+            await Logger.LogInfo(message);
             if (message.StartsWith("CMD.") && Enum.TryParse(typeof(Commands), message.Replace("CMD.", string.Empty), out object cmd))
             {
                 //message = message.Replace("CMD.", string.Empty);

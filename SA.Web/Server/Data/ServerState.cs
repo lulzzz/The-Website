@@ -20,8 +20,7 @@ namespace SA.Web.Server.Data
         public static Timer DataUpdateTimer                     { get; private set; } = null;
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            DefaultBufferSize = Globals.MaxSocketBufferSize,
-            NumberHandling = JsonNumberHandling.Strict
+            DefaultBufferSize = Globals.MaxSocketBufferSize
         };
 
         public static void StartDataCollection()
