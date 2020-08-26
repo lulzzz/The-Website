@@ -70,9 +70,11 @@
         background-color: $colour-grey-3-trans-high;
         box-shadow: $box-shadow-down-sharp;
         margin: 40px;
+        clip-path: polygon(0 0, calc(100% - 65px) 0, 100% 65px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
 
         .post-header {
             background-color: $colour-green-trans-low;
+            padding-right: 40px;
 
             h4 {
                 margin-top: 18px;
@@ -115,6 +117,7 @@
 
         .post-footer {
             background-color: $colour-green-trans-low;
+            padding-left: 24px;
 
             small {
                 margin-top: 12px;
