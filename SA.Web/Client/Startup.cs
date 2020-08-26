@@ -18,11 +18,10 @@ namespace SA.Web.Client
         {
             WebAssemblyHostBuilder HostBuilder = WebAssemblyHostBuilder.CreateDefault(args);
             HostBuilder.RootComponents.Add<App>("app");
-            //HostBuilder.Services.AddTransient<ConnectionManager>();
-            //HostBuilder.Services.AddScoped<StateSocketHandler>();
+            HostBuilder.Services.AddTransient<ConnectionManager>();
+            HostBuilder.Services.AddScoped<StateSocketHandler>();
             HostBuilder.Services.AddScoped<ClientState>();
-            //HostBuilder.Services.AddScoped<WebSocketManagerMiddleware>();
-            HostBuilder.Services.AddScoped<JSSocketInterface>();
+            HostBuilder.Services.AddScoped<WebSocketManagerMiddleware>();
             Host = HostBuilder.Build();
             await Host.RunAsync();
         }

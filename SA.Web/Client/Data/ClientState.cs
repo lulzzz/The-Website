@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 
 using Microsoft.JSInterop;
 
@@ -18,8 +20,8 @@ namespace SA.Web.Client.Data
         private IJSRuntime JSRuntime { get; set; }
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
-            MaxDepth = Globals.MaxWebSocketMessageBufferSize
+            DefaultBufferSize = Globals.MaxSocketBufferSize,
+            NumberHandling = JsonNumberHandling.Strict
         };
 
         public ClientState(IJSRuntime jsruntime)
@@ -174,98 +176,52 @@ namespace SA.Web.Client.Data
 
         // Requests
 
-        /*
-
-        public async Task RequestUpdateData(bool forceUpdate = false) =>            await Send(async (ClientWebSocket socket) => 
+        public async Task RequestUpdateData(bool getFreshCopy = false) =>            await Send(async (ClientWebSocket socket) => 
         {
-            if (!forceUpdate && UpdateTimes != null) await GetLocalData<LastUpdateTimes>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetUpdateData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetUpdateData);
+            else await GetLocalData<LastUpdateTimes>();
         });
 
-        public async Task RequestBlogData(bool forceUpdate = false) =>              await Send(async (ClientWebSocket socket) =>
+        public async Task RequestNewsData(bool getFreshCopy = false) =>              await Send(async (ClientWebSocket socket) =>
         {
-            if (!forceUpdate && BlogData != null) await GetLocalData<BlogData>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetBlogData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetBlogData);
+            else await GetLocalData<NewsData>();
         });
 
-        public async Task RequestChangelogData(bool forceUpdate = false) =>         await Send(async (ClientWebSocket socket) =>
+        public async Task RequestChangelogData(bool getFreshCopy = false) =>         await Send(async (ClientWebSocket socket) =>
         {
-            if (!forceUpdate && ChangelogData != null) await GetLocalData<ChangelogData>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetChangelogData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetChangelogData);
+            else await GetLocalData<ChangelogData>();
         });
 
-        public async Task RequestRoadmapData(bool forceUpdate = false) =>           await Send(async (ClientWebSocket socket) =>
+        public async Task RequestRoadmapData(bool getFreshCopy = false) =>           await Send(async (ClientWebSocket socket) =>
         {
-            if (!forceUpdate && RoadmapData != null) await GetLocalData<RoadmapData>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetRoadmapData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetRoadmapData);
+            else await GetLocalData<RoadmapData>();
         });
 
-        public async Task RequestPhotographyData(bool forceUpdate = false) =>       await Send(async (ClientWebSocket socket) =>
+        public async Task RequestPhotographyData(bool getFreshCopy = false) =>       await Send(async (ClientWebSocket socket) =>
         {
-            if (!forceUpdate && PhotographyData != null) await GetLocalData<MediaPhotographyData>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetPhotographyData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetPhotographyData);
+            else await GetLocalData<MediaPhotographyData>();
         });
 
-        public async Task RequestVideographyData(bool forceUpdate = false) =>       await Send(async (ClientWebSocket socket) =>
+        public async Task RequestVideographyData(bool getFreshCopy = false) =>       await Send(async (ClientWebSocket socket) =>
         {
-            if (!forceUpdate && VideographyData != null) await GetLocalData<MediaVideographyData>();
-            else await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket,
-                JsonConvert.SerializeObject(Commands.GetVideographyData, JSONSettings));
+            if ((((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).IsConnected && getFreshCopy))
+                await ((StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler))).SendMessageAsync(socket, "CMD." + Commands.GetVideographyData);
+            else await GetLocalData<MediaVideographyData>();
         });
 
-        private Task Send(Action<ClientWebSocket> act)
+        private static Task Send(Action<ClientWebSocket> act)
         {
             act.Invoke(((WebSocketManagerMiddleware)Startup.Host.Services.GetService(typeof(WebSocketManagerMiddleware))).ClientSocket);
             return Task.CompletedTask;
-        }
-
-        */
-
-        public async Task RequestUpdateData(bool getFreshCopy = false)
-        {
-            if ((((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy))
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetUpdateData);
-            else await GetLocalData<LastUpdateTimes>();
-        }
-
-        public async Task RequestNewsData(bool getFreshCopy = false)
-        {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetBlogData);
-            else await GetLocalData<NewsData>();
-        }
-
-        public async Task RequestChangelogData(bool getFreshCopy = false)
-        {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetChangelogData);
-            else await GetLocalData<ChangelogData>();
-        }
-
-        public async Task RequestRoadmapData(bool getFreshCopy = false)
-        {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetRoadmapData);
-            else await GetLocalData<RoadmapData>();
-        }
-
-        public async Task RequestPhotographyData(bool getFreshCopy = false)
-        {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetPhotographyData);
-            else await GetLocalData<MediaPhotographyData>();
-        }
-
-        public async Task RequestVideographyData(bool getFreshCopy = false) 
-        {
-            if (((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).IsConnected && getFreshCopy)
-                await ((JSSocketInterface)Startup.Host.Services.GetService(typeof(JSSocketInterface))).Send("CMD." + Commands.GetVideographyData);
-            else await GetLocalData<MediaVideographyData>();
         }
 
         // UI State

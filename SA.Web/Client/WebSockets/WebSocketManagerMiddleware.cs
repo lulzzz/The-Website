@@ -13,6 +13,8 @@ namespace SA.Web.Client.WebSockets
     {
         public WebSocketHandler SocketHandler { get; private set; } = (StateSocketHandler)Startup.Host.Services.GetService(typeof(StateSocketHandler));
         public ClientWebSocket ClientSocket { get; private set; }
+        public bool IsConnected { get; private set; }
+        public event Action OnServerConnected;
 
         public async Task Connect(ClientState state)
         {
@@ -21,30 +23,37 @@ namespace SA.Web.Client.WebSockets
             try
             {
 #if DEBUG
-                await ClientSocket.ConnectAsync(new Uri("ws://localhost:5000/state"), CancellationToken.None);
+                await ClientSocket.ConnectAsync(new Uri("ws://localhost:5000/state"), CancellationToken.None).ContinueWith(async (task) => await Continued());
 #else
-                await ClientSocket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None);
+                await ClientSocket.ConnectAsync(new Uri("wss://ueesa.net/state"), CancellationToken.None).ContinueWith(async (task) => await Continued());
 #endif
 
-                if (ClientSocket.State == WebSocketState.Open)
+                async Task Continued()
                 {
-                    await Logger.LogInfo("Connection to server was successful.");
-                    await SocketHandler.OnConnected(ClientSocket);
-                    await Receive(ClientSocket, async (result, buffer) =>
+                    if (ClientSocket.State == WebSocketState.Open)
                     {
-                        if (result.MessageType == WebSocketMessageType.Text)
+                        await SocketHandler.OnConnected(ClientSocket);
+                        IsConnected = true;
+                        OnServerConnected?.Invoke();
+                        await Logger.LogInfo("Connection to server was successful.");
+                        await Receive(ClientSocket, async (result, buffer) =>
                         {
-                            await SocketHandler.Receive(ClientSocket, result, buffer);
-                            return;
-                        }
-                        else if (result.MessageType == WebSocketMessageType.Close)
-                        {
-                            await SocketHandler.OnDisconnected(ClientSocket);
-                            return;
-                        }
-                    });
+                            if (result.MessageType == WebSocketMessageType.Text)
+                            {
+                                await SocketHandler.Receive(ClientSocket, result, buffer);
+                                return;
+                            }
+                            else if (result.MessageType == WebSocketMessageType.Close)
+                            {
+                                await SocketHandler.OnDisconnected(ClientSocket);
+                                return;
+                            }
+                        });
+                    }
+                    else if (ClientSocket.State == WebSocketState.None || 
+                        ClientSocket.State == WebSocketState.Closed ||
+                        ClientSocket.State == WebSocketState.Aborted) await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
                 }
-                else await Logger.LogInfo("Connection to the server cannot be established. Running in offline mode.");
             }
             catch (WebSocketException)
             {
@@ -55,13 +64,13 @@ namespace SA.Web.Client.WebSockets
 
         private async Task Receive(ClientWebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
         {
-            byte[] buffer = new byte[Globals.MaxWebSocketMessageBufferSize];
+            ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[Globals.MaxSocketBufferSize]);
             try
             {
                 while (socket.State == WebSocketState.Open)
                 {
-                    WebSocketReceiveResult result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                    handleMessage(result, buffer);
+                    WebSocketReceiveResult result = await socket.ReceiveAsync(buffer, CancellationToken.None);
+                    handleMessage(result, buffer.ToArray());
                 }
             }
             catch (WebSocketException) 

@@ -55,7 +55,7 @@ namespace SA.Web.Client.WebSockets
 
         public async Task SendMessageAsync(ClientWebSocket socket, string message)
         {
-            byte[] msg = Encoding.ASCII.GetBytes(message);
+            byte[] msg = Encoding.UTF8.GetBytes(message);
             if (socket == null || socket.State != WebSocketState.Open) Backlog.Enqueue(msg);
             else await socket.SendAsync(msg, WebSocketMessageType.Text, true, CancellationToken.None);
         }

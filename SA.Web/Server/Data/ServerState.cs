@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using SA.Web.Shared.Data.WebSockets;
 using SA.Web.Shared;
@@ -19,8 +20,8 @@ namespace SA.Web.Server.Data
         public static Timer DataUpdateTimer                     { get; private set; } = null;
         public static JsonSerializerOptions jsonoptions = new JsonSerializerOptions
         {
-            DefaultBufferSize = Globals.MaxWebSocketMessageBufferSize,
-            MaxDepth = Globals.MaxWebSocketMessageBufferSize
+            DefaultBufferSize = Globals.MaxSocketBufferSize,
+            NumberHandling = JsonNumberHandling.Strict
         };
 
         public static void StartDataCollection()

@@ -82,18 +82,6 @@
     protected override async Task OnInitializedAsync()
     {
         State.OnNewsDataChanged += StateHasChanged;
-        State.OnUpdateTimesChanged += async () =>
-        {
-            if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
-            {
-                if (DateTime.Compare(State.PreviousLocalUpdateTimes.NewsDataUpdate, State.LocalUpdateTimes.NewsDataUpdate) < 0) await State.RequestChangelogData(true);
-            }
-            else await State.RequestNewsData();
-        };
-        if (State.LocalUpdateTimes != null)
-        {
-            if (State.NewsData == null) await State.RequestNewsData();
-        }
         await base.OnInitializedAsync();
     }
 }

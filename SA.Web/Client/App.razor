@@ -10,7 +10,7 @@
 </Router>
 
 @inject ClientState State
-@inject JSSocketInterface SocketInterface
+@inject WebSocketManagerMiddleware WebSockets
 
 @code {
 
@@ -19,11 +19,28 @@
     {
         await base.OnInitializedAsync();
         await State.GetLocalData<GlobalSettings>();
-        //await WebSockets.Connect(State);
-        await SocketInterface.Connect();
-        SocketInterface.OnServerConnected += async () =>
+        WebSockets.OnServerConnected += async () =>
         {
+            State.OnUpdateTimesChanged += async () => 
+            {
+                if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+                {
+                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.NewsDataUpdate, State.LocalUpdateTimes.NewsDataUpdate) < 0) await State.RequestNewsData(true);
+                }
+                else await State.RequestNewsData();
+                if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+                {
+                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.RoadmapDataUpdate, State.LocalUpdateTimes.RoadmapDataUpdate) < 0) await State.RequestRoadmapData(true);
+                }
+                else await State.RequestRoadmapData();
+                if (State.PreviousLocalUpdateTimes != null && State.PreviousLocalUpdateTimes != State.LocalUpdateTimes)
+                {
+                    if (DateTime.Compare(State.PreviousLocalUpdateTimes.ChangelogDataUpdate, State.LocalUpdateTimes.ChangelogDataUpdate) < 0) await State.RequestChangelogData(true);
+                }
+                else await State.RequestChangelogData();
+            }; 
             await State.RequestUpdateData();
         };
+        await WebSockets.Connect(State);
     }
 }

@@ -44,13 +44,13 @@ namespace SA.Web.Server.WebSockets
 
         private async Task Receive(WebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
         {
-            byte[] buffer = new byte[Globals.MaxWebSocketMessageBufferSize];
+            ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[Globals.MaxSocketBufferSize]);
             try
             {
                 while (socket.State == WebSocketState.Open)
                 {
                     WebSocketReceiveResult result = await socket.ReceiveAsync(buffer, CancellationToken.None);
-                    handleMessage(result, buffer);
+                    handleMessage(result, buffer.ToArray());
                     GC.Collect();
                 }
             } 

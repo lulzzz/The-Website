@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace SA.Web.Shared
 {
@@ -31,7 +30,6 @@ namespace SA.Web.Shared
 
 
         public static bool IsDevelopmentMode { get; set; }
-        public static int MaxWebSocketMessageBufferSize { get; set; } = 512 * 1024;
-        public static CultureInfo Culture = new CultureInfo("en-GB");
+        public static int MaxSocketBufferSize { get; private set; } = 256 * 1024;
     }
 }

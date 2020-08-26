@@ -20,14 +20,9 @@ async function onInstall(event)
 async function onActivate(event) 
 {
     const cacheKeys = await caches.keys();
-    try {
-        await Promise.all(cacheKeys
-            .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
-            .map(key => caches.delete(key)));
-    } catch (e) {
-        await Promise.all(cacheKeys.map(key => caches.delete(key)));
-        location.reload(true);
-    }
+    await Promise.all(cacheKeys
+        .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
+        .map(key => caches.delete(key)));
 }
 
 async function onFetch(event) 

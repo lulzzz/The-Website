@@ -25,6 +25,7 @@ namespace SA.Web.Client.WebSockets
         {
             return socketDictionary.FirstOrDefault(p => p.Value == socket).Key;
         }
+
         public void AddSocket(ClientWebSocket socket)
         {
             socketDictionary.TryAdd(Guid.NewGuid(), socket);
