@@ -35,6 +35,7 @@ namespace SA.Web.Server
 #if !DEBUG
             if (!string.IsNullOrEmpty(SA.Web.Server.Properties.Resources.ApplicationInsightsKey)) services.AddApplicationInsightsTelemetry(SA.Web.Server.Properties.Resources.ApplicationInsightsKey);
 #endif
+            services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddRouting();
             services.AddResponseCompression(options =>
@@ -65,7 +66,11 @@ namespace SA.Web.Server
             Services = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider;
             Enviroment = env;
             Globals.IsDevelopmentMode = env.IsDevelopment();
-            if (Globals.IsDevelopmentMode) app.UseDeveloperExceptionPage();
+            if (Globals.IsDevelopmentMode)
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
+            }
             else app.UseExceptionHandler("/Error");
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
