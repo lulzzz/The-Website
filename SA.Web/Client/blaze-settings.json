@@ -15,13 +15,9 @@
     "/css/theme.scss": {
       "enabled": true
     },
-    "/js/socket.js": {
+    "/js/browser-storage.js": {
       "enabled": true,
-      "order": 7
-    },
-    "/js/misc.js": {
-      "enabled": true,
-      "order": 8
+      "order": 0
     }
   },
   "jsDependencyLinks": [
